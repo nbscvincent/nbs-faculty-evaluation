@@ -1,6 +1,4 @@
-package com.nbscollege.facultyevaluation.model
-
-import android.provider.ContactsContract
+package com.nbscollege.facultyevaluation.data
 
 data class Register(
     var studentNo: String,
