@@ -1,5 +1,6 @@
 package com.nbscollege.facultyevaluation
 
+import Registration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,8 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-
-import com.nbscollege.facultyevaluation.model.HomePage
+import com.nbscollege.facultyevaluation.model.ForgotPass
 import com.nbscollege.facultyevaluation.ui.theme.FacultyEvaluationTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,17 +27,11 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = Color(0xffD22023)
                 ) {
-                    HomePage()
+//                    HomePage()
+//                    Registration()
+                    ForgotPass()
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }

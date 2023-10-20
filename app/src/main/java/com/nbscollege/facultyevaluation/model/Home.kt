@@ -127,17 +127,5 @@ fun HomePage(){
         }
 
 }
-@Composable
-fun ComposablNav(){
-    val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "First"){
-        composable("Home"){
-            HomePage()
-        }
-        composable("Registration"){
-            Registration()
-        }
-    }
-}
 
