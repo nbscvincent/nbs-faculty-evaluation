@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nbscollege.facultyevaluation.model.ForgotPass
 import com.nbscollege.facultyevaluation.model.HomePage
 import com.nbscollege.facultyevaluation.model.Nav
+import com.nbscollege.facultyevaluation.model.Question
 import com.nbscollege.facultyevaluation.ui.theme.FacultyEvaluationTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,8 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = Color(0xffD22023)
                 ) {
-                      Nav()
+                    Question()
+//                      Nav()
 //                    Registration()
 //                    ForgotPass()
                 }

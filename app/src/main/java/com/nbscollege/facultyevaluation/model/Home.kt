@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,9 +63,9 @@ fun HomePage(navController: NavController){
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "",
                     modifier = Modifier
-                        .size(300.dp, 400.dp)
+                        .size(200.dp, 300.dp)
                         .zIndex(2f))
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
 
@@ -71,11 +74,13 @@ fun HomePage(navController: NavController){
                         containerColor = Color.White,
                     ),
                     modifier = Modifier
-                        .size(400.dp, 100.dp)
+                        .size(400.dp, 50.dp)
                         .zIndex(2f)
+                        .padding(horizontal = 30.dp),
+                    shape = RoundedCornerShape(10.dp)
 
                 ){
-                    Text("SIGN IN", fontSize = 35.sp)
+                    Text("SIGN IN", fontSize = 20.sp)
                 }
             }
 
@@ -106,8 +111,8 @@ fun HomePage(navController: NavController){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Don't have an account?", color = Color.White, fontSize = 25.sp)
-                Spacer(modifier = Modifier.height(20.dp))
+                Text(text = "Don't have an account?", color = Color.White, fontSize = 15.sp)
+                Spacer(modifier = Modifier.height(10.dp))
                 Button(
                     onClick = {
                         navController.navigate(Screen.RegScreen.route)
@@ -115,11 +120,14 @@ fun HomePage(navController: NavController){
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White
                     ),
-                    modifier = Modifier.size(350.dp, 60.dp)
+                    modifier = Modifier
+                        .size(350.dp, 50.dp)
+                        .padding(horizontal = 30.dp),
+                    shape = RoundedCornerShape(10.dp)
                 ) {
-                    Text(text = "REGISTER", fontSize = 25.sp)
+                    Text(text = "REGISTER", fontSize = 15.sp, fontFamily = FontFamily.Monospace)
                 }
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(30.dp))
             }
 
         }

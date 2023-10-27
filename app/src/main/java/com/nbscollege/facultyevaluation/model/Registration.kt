@@ -1,6 +1,7 @@
 import android.annotation.SuppressLint
 import android.service.autofill.OnClickAction
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +15,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import com.nbscollege.facultyevaluation.R
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
@@ -60,6 +65,9 @@ fun Registration(navController: NavController){
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by remember {
+        mutableStateOf(false)
+    }
     Scaffold(
         topBar = {
             TextButton(onClick = {
@@ -69,7 +77,7 @@ fun Registration(navController: NavController){
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(50.dp)
                         .padding(10.dp),
                     tint = Color.White) }
             },
@@ -86,6 +94,7 @@ fun Registration(navController: NavController){
                     .size(100.dp, 200.dp)
                     .align(Alignment.TopEnd))
         }
+
         Box(
             modifier = Modifier
                 .zIndex(1f)
@@ -110,103 +119,124 @@ fun Registration(navController: NavController){
                 .zIndex(2f),
             contentAlignment = Alignment.BottomCenter
         ){
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(40.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer(translationY = 170f)) {
+                        Spacer(modifier = Modifier.height(50.dp))
+//                Student Number TextField
                         OutlinedTextField(
                             value = studentNo,
                             onValueChange = {studentNo = it},
-                            placeholder = {Text(text = "Student Number", fontSize = 30.sp, textAlign = TextAlign.Center)},
+                            placeholder = {Text(text = "Student Number", fontSize = 20.sp, textAlign = TextAlign.Center)},
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            textStyle = TextStyle(fontSize = 30.sp, letterSpacing = 4.sp),
+                            textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 3.sp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 50.dp, end = 50.dp),
+                                .padding(horizontal = 20.dp),
                             singleLine = true,
-                            shape = RoundedCornerShape(50.dp),
+                            
+                            shape = RoundedCornerShape(10.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.White,
                                 textColor = Color.Black
 
                             ))
-
+//                  First Name TextField
                         OutlinedTextField(
                             value = firstName,
                             onValueChange = {firstName = it},
-                            placeholder = {Text(text = "First Name", fontSize = 30.sp, textAlign = TextAlign.Center)},
-                            textStyle = TextStyle(fontSize = 30.sp, letterSpacing = 4.sp),
+                            placeholder = {Text(text = "First Name", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                            textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 3.sp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 50.dp, end = 50.dp),
+                                .padding(horizontal = 20.dp),
                             singleLine = true,
-                            shape = RoundedCornerShape(50.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.White,
                                 textColor = Color.Black
                             ))
-
+//                Last Name TextField
                         OutlinedTextField(
                             value = lastName,
                             onValueChange = {lastName = it},
-                            placeholder = {Text(text = "Last Name", fontSize = 30.sp, textAlign = TextAlign.Center)},
-                            textStyle = TextStyle(fontSize = 30.sp, letterSpacing = 4.sp),
+                            placeholder = {Text(text = "Last Name", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                            textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 3.sp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 50.dp, end = 50.dp),
+                                .padding(horizontal = 20.dp),
                             singleLine = true,
-                            shape = RoundedCornerShape(50.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.White,
                                 textColor = Color.Black
                             ))
-
+//                  Email TextField
                         OutlinedTextField(
                             value = email,
                             onValueChange = {email = it},
-                            placeholder = {Text(text = "Email", fontSize = 30.sp, textAlign = TextAlign.Center)},
+                            placeholder = {Text(text = "Email", fontSize = 20.sp, textAlign = TextAlign.Center)},
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                            textStyle = TextStyle(fontSize = 30.sp, letterSpacing = 4.sp),
+                            textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 3.sp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 50.dp, end = 50.dp),
+                                .padding(horizontal = 20.dp),
                             singleLine = true,
-                            shape = RoundedCornerShape(50.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.White,
                                 textColor = Color.Black
                             ))
-
+//                  Password TextField
                         OutlinedTextField(
                             value = password,
                             onValueChange = {password = it},
-                            placeholder = {Text(text = "Password", fontSize = 30.sp, textAlign = TextAlign.Center)},
-                            visualTransformation = PasswordVisualTransformation(),
+                            placeholder = {Text(text = "Password", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                            visualTransformation = if(passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            textStyle = TextStyle(fontSize = 30.sp, letterSpacing = 5.sp),
+                            textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 3.sp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 50.dp, end = 50.dp),
+                                .padding(horizontal = 20.dp),
                             singleLine = true,
-                            shape = RoundedCornerShape(50.dp),
+                            shape = RoundedCornerShape(10.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color.White,
                                 textColor = Color.Black
-                            ))
-                Spacer(modifier = Modifier.height(50.dp))
+                            ),
+                            trailingIcon = {
+
+                                val image = if (passwordVisible)
+                                    Icons.Filled.Visibility
+                                else Icons.Filled.VisibilityOff
+
+                                // Localized description for accessibility services
+                                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                                // Toggle button to hide or display password
+                                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                                    Icon(imageVector  = image, description, tint = Color.Black)
+                                }
+                            })
+//                Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
 
                     },
                     modifier = Modifier
-                        .size(700.dp, 70.dp)
-                        .padding(start = 80.dp, end = 80.dp),
+                        .fillMaxWidth()
+                        .padding(horizontal = 50.dp)
+                        .height(50.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White
-                    )) {
-                    Text(text = "REGISTER", fontSize = 30.sp)
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "REGISTER", fontSize = 20.sp)
                 }
 
             }
