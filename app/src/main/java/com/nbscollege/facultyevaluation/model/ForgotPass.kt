@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.nbscollege.facultyevaluation.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -46,10 +47,11 @@ import com.nbscollege.facultyevaluation.R
 @Composable
 fun ForgotPass(){
     var email by remember { mutableStateOf("") }
+    var navControl = rememberNavController()
     Scaffold(
         topBar = {
             TextButton(onClick = {
-
+                navControl.navigate("")
             }) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,

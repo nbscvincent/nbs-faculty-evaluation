@@ -32,7 +32,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,12 +44,17 @@ import androidx.compose.ui.unit.sp
 import com.nbscollege.facultyevaluation.R
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.nbscollege.facultyevaluation.model.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registration(){
+fun Registration(navController: NavController){
     var studentNo by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -56,7 +63,7 @@ fun Registration(){
     Scaffold(
         topBar = {
             TextButton(onClick = {
-
+                navController.navigate(Screen.HomeScreen.route)
             }) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
@@ -66,7 +73,6 @@ fun Registration(){
                         .padding(10.dp),
                     tint = Color.White) }
             },
-        modifier = Modifier.padding(12.dp),
         containerColor = Color.Transparent) {
         Box(
             modifier = Modifier
@@ -82,9 +88,26 @@ fun Registration(){
         }
         Box(
             modifier = Modifier
+                .zIndex(1f)
+                .graphicsLayer(translationY = 200f, translationX = -350f)
+        ){
+
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(color = Color(0x33000000)),
+                modifier = Modifier
+                    .size(1500.dp, 2000.dp)
+                    .rotate(56.03f)
+            )
+        }
+
+        Box(
+            modifier = Modifier
                 .fillMaxHeight(0.8f)
                 .fillMaxWidth()
-                .padding(top = 50.dp),
+                .padding(top = 50.dp)
+                .zIndex(2f),
             contentAlignment = Alignment.BottomCenter
         ){
             Column(
@@ -174,7 +197,9 @@ fun Registration(){
                             ))
                 Spacer(modifier = Modifier.height(50.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+
+                    },
                     modifier = Modifier
                         .size(700.dp, 70.dp)
                         .padding(start = 80.dp, end = 80.dp),

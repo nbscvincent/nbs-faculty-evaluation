@@ -4,7 +4,6 @@ import Registration
 import android.graphics.ColorSpace
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,9 +29,11 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,11 +43,10 @@ import com.nbscollege.facultyevaluation.R
 
 
 @Composable
-fun HomePage(){
-        val navHost: NavHostController
+fun HomePage(navController: NavController){
+
         Box(
             modifier = Modifier
-                .border(1.dp, Color.Black)
                 .zIndex(2f)
                 .fillMaxWidth(),
             contentAlignment = Alignment.TopCenter
@@ -64,7 +64,9 @@ fun HomePage(){
                         .zIndex(2f))
                 Spacer(modifier = Modifier.height(100.dp))
                 Button(
-                    onClick = {},
+                    onClick = {
+
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White,
                     ),
@@ -81,7 +83,6 @@ fun HomePage(){
 
         Box(
             modifier = Modifier
-//                .border(1.dp, Color.Black)
                 .zIndex(1f)
                 .graphicsLayer(translationY = 200f, translationX = -350f)
         ){
@@ -93,13 +94,11 @@ fun HomePage(){
                 modifier = Modifier
                     .size(1500.dp, 2000.dp)
                     .rotate(56.03f)
-//                    .border(1.dp, Color.Black)
             )
         }
         Box(
             modifier = Modifier
                 .graphicsLayer(translationY = 00f)
-                .border(1.dp, color = Color.Black)
                 .zIndex(3f),
             contentAlignment = Alignment.BottomCenter
 
@@ -111,8 +110,7 @@ fun HomePage(){
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = {
-//                        navHost.navigate("Register")
-
+                        navController.navigate(Screen.RegScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White

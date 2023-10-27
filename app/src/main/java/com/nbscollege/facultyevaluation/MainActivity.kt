@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.nbscollege.facultyevaluation.model.ForgotPass
+import com.nbscollege.facultyevaluation.model.HomePage
+import com.nbscollege.facultyevaluation.model.Nav
 import com.nbscollege.facultyevaluation.ui.theme.FacultyEvaluationTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,15 +23,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FacultyEvaluationTheme {
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
                     color = Color(0xffD22023)
                 ) {
-//                    HomePage()
+                      Nav()
 //                    Registration()
-                    ForgotPass()
+//                    ForgotPass()
                 }
             }
         }
