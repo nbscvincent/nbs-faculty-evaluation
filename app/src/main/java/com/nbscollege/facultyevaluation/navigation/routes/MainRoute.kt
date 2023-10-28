@@ -6,5 +6,7 @@ enum class MainScreen(){
     Splash,
     Registration,
     ForgotPass,
-    Dashboard
+    Dashboard,
+    UserList,
+    UserListAdd
 }

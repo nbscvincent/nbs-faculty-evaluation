@@ -67,7 +67,7 @@ fun UserList(
     Scaffold(
         topBar = {
             TextButton(onClick = {
-                //navController.navigate("")
+                navController.navigate("UserListAdd")
             }) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,

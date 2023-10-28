@@ -31,7 +31,8 @@ fun SplashScreen(
         Image(
             painter = painterResource(id = R.drawable.nbsc_logo_main),
             contentDescription = "NBS College",
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(400.dp)
         )
+
     }
 }

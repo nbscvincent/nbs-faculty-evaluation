@@ -1,14 +1,19 @@
 package com.nbscollege.facultyevaluation
 
 import ScreenViewModel
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph
 import androidx.navigation.compose.rememberNavController
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.nbscollege.facultyevaluation.model.Dashboard
 import com.nbscollege.facultyevaluation.model.ForgotPass
 import com.nbscollege.facultyevaluation.model.HomePage
@@ -18,6 +23,8 @@ import com.nbscollege.facultyevaluation.model.SplashScreen
 
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FacultyApp(
     //viewModel: ScreenViewModel = viewModel(),
@@ -28,7 +35,7 @@ fun FacultyApp(
 
     NavHost(
         navController = navController,
-        startDestination = MainScreen.Home.name,
+        startDestination = "",
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -60,6 +67,15 @@ fun FacultyApp(
         composable(route = MainScreen.Dashboard.name){
             Dashboard(navController = navController)
         }
+//        composable(route = MainScreen.UserList.name){
+//            Dashboard(navController = navController)
+//        }
+//        composable(route = MainScreen.UserListAdd.name){
+//            Dashboard(navController = navController)
+//        }
+
+
     }
+
 }
 
