@@ -2,4 +2,8 @@
 <resources>
 
     <style name="Theme.FacultyEvaluation" parent="android:Theme.Material.Light.NoActionBar" />
+<!--    <item name="windowSplashScreenBackground" type="color">#D20223</item>-->
+<!--    <item name="windowSplashScreenAnimatedIcon" type="drawable">@drawable/nbsc_logo_main</item>-->
+<!--    <item name="postSplashScreenTheme" type="style">@style/Theme.FacultyEvaluation</item>-->
+
 </resources>
