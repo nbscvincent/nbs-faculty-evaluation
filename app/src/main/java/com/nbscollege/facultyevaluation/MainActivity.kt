@@ -31,10 +31,30 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = Color(0xffD22023)
                 ) {
+<<<<<<< Updated upstream
                     Question()
 //                      Nav()
 //                    Registration()
 //                    ForgotPass()
+=======
+
+//                    Login()
+                    FacultyApp()
+//                    if(!screenViewModel.isUserSignedIn()){
+//                        Login()
+//                    }else{
+//                        Dashboard()
+//                    }
+                    //Login()
+                    //HomePage()
+                    //Registration()
+                    //ForgotPass()
+                    //UserListAdd()
+                    //UserList()
+                    //SplashScreen()
+                    //UserInfo()
+
+>>>>>>> Stashed changes
                 }
             }
         }
