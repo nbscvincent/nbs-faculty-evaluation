@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 import androidx.navigation.compose.NavHost
@@ -27,15 +28,15 @@ import com.nbscollege.facultyevaluation.model.SplashScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FacultyApp(
-    //viewModel: ScreenViewModel = viewModel(),
-    //navController: NavHostController = rememberNavController()
+//    viewModel: ScreenViewModel = viewModel(),
+//    navController: NavHostController = rememberNavController()
 ){
     val viewModel: ScreenViewModel = viewModel()
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = "",
+        startDestination = MainScreen.Splash.name,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
@@ -50,7 +51,7 @@ fun FacultyApp(
         }
     ){
         composable(route = MainScreen.Home.name){
-            HomePage(navController = navController)
+            HomePage(navController = navController, viewModel)
         }
         composable(route = MainScreen.Login.name){
             Login(navController = navController)

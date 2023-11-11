@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 class ScreenViewModel : ViewModel() {
     private val _loading = MutableStateFlow(true)
-
     val loading = _loading.asStateFlow()
 
     private val _uiState = MutableStateFlow(ScreenUiState())
@@ -31,8 +30,8 @@ class ScreenViewModel : ViewModel() {
         }
     }
 
-     fun isUserSignedIn(): Boolean {
+fun isUserSignedIn(): Boolean {
 // User Authentication
-        return true
-    }
+    return true
+}
 }

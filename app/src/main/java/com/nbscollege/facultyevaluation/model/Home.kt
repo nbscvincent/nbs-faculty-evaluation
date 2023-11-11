@@ -1,5 +1,6 @@
 package com.nbscollege.facultyevaluation.model
 
+import ScreenViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +34,8 @@ import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 
 @Composable
 fun HomePage(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    screenViewModel: ScreenViewModel
 ) {
 
     Box(

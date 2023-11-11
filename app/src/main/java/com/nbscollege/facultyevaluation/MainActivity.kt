@@ -27,12 +27,10 @@ class MainActivity : ComponentActivity() {
 
         val screenViewModel: ScreenViewModel by viewModels()
 
-
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 screenViewModel.loading.value
             }
-
 
         }
 
@@ -51,7 +49,7 @@ class MainActivity : ComponentActivity() {
 //                    if(!screenViewModel.isUserSignedIn()){
 //                        Login()
 //                    }else{
-//                        Dashboard()
+//                        FacultyApp()
 //                    }
                     //Login()
                     //HomePage()
