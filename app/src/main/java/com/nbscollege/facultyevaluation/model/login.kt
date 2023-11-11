@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,18 +49,22 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nbscollege.facultyevaluation.R
+import com.nbscollege.facultyevaluation.model.data.LoginReq
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController
 
 ){
 
-    var studentId by remember { mutableStateOf("") }
+    var studentNo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(value = false) }
+    var error by remember {
+        mutableStateOf(false)
+    }
 
 
     Box(
@@ -76,7 +81,7 @@ fun Login(
             Box(modifier = Modifier.fillMaxWidth()) {
 
                 TextButton(onClick = {
-                    navController.navigate("Home")
+//                    navController.navigate("Home")
                 }) {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
@@ -94,8 +99,8 @@ fun Login(
                 modifier = Modifier
                     .size(200.dp, 400.dp)
             )
-            TextField(value = studentId,
-                onValueChange = {studentId = it},
+            TextField(value = studentNo,
+                onValueChange = {studentNo = it},
                 placeholder = { Text(text = "Student ID Number" )},
                 textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
                 modifier = Modifier.height(50.dp),
@@ -108,10 +113,13 @@ fun Login(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ))
-            
+
+
+
             Spacer(modifier = Modifier.height(20.dp))
-            
-            TextField(value = password,
+
+            TextField(
+                value = password,
                 onValueChange = {password = it},
                 placeholder = { Text(text = "Password" )},
                 textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
@@ -147,7 +155,9 @@ fun Login(
                             )
                         }
                     }
-                }
+                },
+                isError = error
+
             )
 
             Box(
@@ -159,7 +169,7 @@ fun Login(
             ){
                 TextButton(
                     onClick = {
-                       navController.navigate("ForgotPass")
+//                       navController.navigate("ForgotPass")
                     },
 
                     ) {
@@ -204,12 +214,13 @@ fun Login(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            
+
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
-                navController.navigate("Dashboard")
-
+                    if(loginAuth(studentNo,password))
+                        navController.navigate(MainScreen.Dashboard.name)
+                    else error = true
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.LightGray
@@ -221,8 +232,66 @@ fun Login(
                     color = Color.Black)
             }
             Spacer(modifier = Modifier.height(50.dp))
+            if(error){
+                AlertDialog(
+                    onDismissRequest = { error = false },
+                    confirmButton = {
+                        Button(onClick = {
+                            navController.navigate(MainScreen.Login.name)
+                        }) {
+                            Text(text = "OK")
+                        }
+
+                    },
+                    title = { Text("Invalid Credentials") },
+                    text = { Text(text = "Incorrect Student Number or Password")}
+                )
+
+            }
+
         }
+
 
     }
 
+
 }
+
+fun loginAuth(studentNo: String, password: String): Boolean{
+
+    var success = false
+    val userList = listOf(
+        LoginReq(1, "101", "test1"),
+        LoginReq(2, "102", "test2"),
+        LoginReq(3, "103", "test3")
+    )
+
+    for (i in userList){
+        if(studentNo == i.studentNo && password == i.password){
+            println("Successfully Logged In")
+            success = true
+        }
+
+    }
+    println("Invalid Credentials")
+
+    return success
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
