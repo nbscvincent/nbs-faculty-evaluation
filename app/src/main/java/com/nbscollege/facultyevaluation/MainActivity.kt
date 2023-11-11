@@ -47,12 +47,12 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xffD22023)
                 ) {
 
-//                    FacultyApp()
-                    if(!screenViewModel.isUserSignedIn()){
-                        Login()
-                    }else{
-                        Dashboard()
-                    }
+                    FacultyApp()
+//                    if(!screenViewModel.isUserSignedIn()){
+//                        Login()
+//                    }else{
+//                        Dashboard()
+//                    }
                     //Login()
                     //HomePage()
                     //Registration()
