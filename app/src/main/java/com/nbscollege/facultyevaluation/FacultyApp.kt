@@ -37,18 +37,18 @@ fun FacultyApp(
     NavHost(
         navController = navController,
         startDestination = MainScreen.Splash.name,
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(900)
-            )
-},
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(900)
-            )
-        }
+//        enterTransition = {
+//            slideIntoContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Left,
+//                animationSpec = tween(900)
+//            )
+//},
+//        exitTransition = {
+//            slideOutOfContainer(
+//                AnimatedContentTransitionScope.SlideDirection.Right,
+//                animationSpec = tween(900)
+//            )
+//        }
     ){
         composable(route = MainScreen.Home.name){
             HomePage(navController = navController, viewModel)

@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
-                    color = Color(0xffD22023)
+                    color = Color.White
                 ) {
 
                     FacultyApp()

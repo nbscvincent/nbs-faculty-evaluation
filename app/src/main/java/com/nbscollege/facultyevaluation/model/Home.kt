@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -37,98 +39,92 @@ fun HomePage(
     navController: NavHostController = rememberNavController(),
     screenViewModel: ScreenViewModel
 ) {
-
-    Box(
-        modifier = Modifier
-            .border(1.dp, Color.Black)
-            .zIndex(2f)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.TopCenter
-    ){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(100.dp))
             Image(
-                painter = painterResource(id = R.drawable.nbsc_logo_main),
+                painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
                     .size(300.dp, 280.dp)
-                    .zIndex(2f))
+                    .graphicsLayer(translationX = 6f))
             Spacer(modifier = Modifier.height(60.dp))
-            Button(
-                onClick = {
-                          navController.navigate("Login")
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.LightGray,
-                ),
-                modifier = Modifier
-                    .size(280.dp, 50.dp)
-                    .zIndex(2f)
-
+            Column (
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
-                Text("SIGN IN", fontSize = 25.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black)
+                Button(
+                    onClick = {
+                        navController.navigate(MainScreen.Login.name)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red
+                    ),
+                    modifier = Modifier
+                        .size(280.dp, 50.dp),
+                    shape = RoundedCornerShape(10.dp)
 
+                ){
+                    Text("SIGN IN", fontSize = 25.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White)
+
+
+                }
+                Column (
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(text = "Don't have an account?", color = Color.Black,
+                        fontSize = 15.sp, fontWeight = FontWeight.W300)
+
+
+                    Button(
+                        onClick = {
+                            navController.navigate(MainScreen.Registration.name)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Red
+                        ),
+                        modifier = Modifier.size(280.dp, 50.dp),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Text(text = "REGISTER", fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White)
+                    }
+                }
 
             }
+
+
         }
 
-    }
+//    Box(
+//        modifier = Modifier
+////                .border(1.dp, Color.Black)
+//            .zIndex(1f)
+//            .graphicsLayer(translationY = 200f, translationX = -350f)
+//    ){
+//
+//        Image(
+//            painter = painterResource(id = R.drawable.nbsc_logo_main),
+//            contentDescription = "",
+//            colorFilter = ColorFilter.tint(color = Color(0x33000000)),
+//            modifier = Modifier
+//                .size(1500.dp, 2000.dp)
+//                .rotate(56.03f)
+////                    .border(1.dp, Color.Black)
+//        )
+//    }
 
-    Box(
-        modifier = Modifier
-//                .border(1.dp, Color.Black)
-            .zIndex(1f)
-            .graphicsLayer(translationY = 200f, translationX = -350f)
-    ){
 
-        Image(
-            painter = painterResource(id = R.drawable.nbsc_logo_main),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(color = Color(0x33000000)),
-            modifier = Modifier
-                .size(1500.dp, 2000.dp)
-                .rotate(56.03f)
-//                    .border(1.dp, Color.Black)
-        )
-    }
-    Box(
-        modifier = Modifier
-            .graphicsLayer(translationY = 00f)
-            .border(1.dp, color = Color.Black)
-            .zIndex(3f),
-        contentAlignment = Alignment.BottomCenter
-
-    ){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Don't have an account?", color = Color.White,
-                fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-
-            Spacer(modifier = Modifier.height(5.dp))
-            Button(
-                onClick = {
-                    navController.navigate("Registration")
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.LightGray
-                ),
-                modifier = Modifier.size(280.dp, 50.dp)
-            ) {
-                Text(text = "REGISTER", fontSize = 25.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black)
-            }
-            Spacer(modifier = Modifier.height(80.dp))
-        }
 
     }
 
-}
+
 
 

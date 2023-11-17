@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -65,7 +66,7 @@ fun Registration(
     Scaffold(
         topBar = {
             TextButton(onClick = {
-                navController.navigate("Home")
+                navController.navigate(MainScreen.Home.name)
             }) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,

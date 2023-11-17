@@ -2,10 +2,16 @@ package com.nbscollege.facultyevaluation.model
 
 import android.text.InputType
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,6 +43,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -67,192 +74,207 @@ fun Login(
     }
 
 
-    Box(
-        modifier = Modifier
-            .border(1.dp, Color.Black)
-            .zIndex(2f)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.TopCenter
-
-    ){
+//    Box(
+//        modifier = Modifier
+//            .border(1.dp, Color.Black)
+//            .zIndex(2f)
+//            .fillMaxWidth(),
+//        contentAlignment = Alignment.TopCenter
+//
+//    ){
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
 
                 TextButton(onClick = {
-//                    navController.navigate("Home")
+                    navController.navigate(MainScreen.Home.name)
                 }) {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBack,
                         contentDescription = null,
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(45.dp)
                             .padding(10.dp),
-                        tint = Color.White
+//                            .border(1.dp, Color.Black),
+                        tint = Color.DarkGray
                     )
                 }
             }
-            Image (
-                painter = painterResource(id = R.drawable.nbsc_logo_main),
+
+            Image(
+                painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(200.dp, 400.dp)
+                    .size(225.dp ,300.dp)
+                    .graphicsLayer(translationX = 6f),
+//                    .border(1.dp, Color.Black),
+                contentScale = ContentScale.FillBounds,
+                alignment = Alignment.Center
             )
-            TextField(value = studentNo,
-                onValueChange = {studentNo = it},
-                placeholder = { Text(text = "Student ID Number" )},
-                textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
-                modifier = Modifier.height(50.dp),
-                singleLine = true,
-                shape = RoundedCornerShape(50.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White,
-                    textColor = Color.Black,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Welcome!", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+                Text(text = "Sign In to access your account", fontSize = 15.sp)
+            }
 
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+//                modifier = Modifier.border(1.dp, Color.Black)
+            ) {
+                TextField(
+                    value = studentNo,
+                    onValueChange = { studentNo = it },
+                    placeholder = { Text(text = "Student ID Number") },
+                    textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                    singleLine = true,
+                    shape = RoundedCornerShape(10.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        textColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
+                )
 
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            TextField(
-                value = password,
-                onValueChange = {password = it},
-                placeholder = { Text(text = "Password" )},
-                textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
-                modifier = Modifier.height(50.dp) ,
-                singleLine = true,
-                shape = RoundedCornerShape(50.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White,
-                    textColor = Color.Black,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                visualTransformation = if (showPassword) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    if (showPassword) {
-                        IconButton(onClick = { showPassword = false }) {
-                            Icon(
-                                imageVector = Icons.Filled.Visibility,
-                                contentDescription = "hide_password"
-                            )
-                        }
+                TextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = { Text(text = "Password") },
+                    textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                    singleLine = true,
+                    shape = RoundedCornerShape(50.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        textColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    visualTransformation = if (showPassword) {
+                        VisualTransformation.None
                     } else {
-                        IconButton(
-                            onClick = { showPassword = true }) {
-                            Icon(
-                                imageVector = Icons.Filled.VisibilityOff,
-                                contentDescription = "hide_password"
-                            )
-                        }
-                    }
-                },
-                isError = error
-
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 30.dp)
-                    .padding(vertical = 15.dp),
-                contentAlignment = Alignment.CenterEnd
-            ){
-                TextButton(
-                    onClick = {
-//                       navController.navigate("ForgotPass")
+                        PasswordVisualTransformation()
                     },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        if (showPassword) {
+                            IconButton(onClick = { showPassword = false }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Visibility,
+                                    contentDescription = "hide_password"
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { showPassword = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.VisibilityOff,
+                                    contentDescription = "hide_password"
+                                )
+                            }
+                        }
+                    },
+                    isError = error
 
-                    ) {
-                    Text(text = "Forgot Password?",
-                        color = Color.White, fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp),
+//                        .border(1.dp, Color.Black),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Text(text = "Forgot Password?", modifier = Modifier.clickable(
+                        onClick = { navController .navigate(MainScreen.ForgotPass.name)}
+                    ), fontSize = 13.sp)
+
+                }
+
+
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+
+                Button(
+                    onClick = {
+                        if(loginAuth(studentNo,password))
+                            navController.navigate(MainScreen.Dashboard.name)
+                        else error = true
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red
+                    ),
+                    modifier = Modifier
+                        .size(280.dp, 50.dp),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(
+                        text = "SIGN IN", fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White)
+                }
+                Row {
+                    Text(text = "Don't have an account? ",fontSize = 14.sp)
+                    Text(
+                        text = "Register Here",
+                        modifier = Modifier
+                            .clickable(
+                            onClick = {
+                                navController.navigate(MainScreen.Registration.name)
+                            }),
+                        fontSize = 14.sp,
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
 
                     )
+                }
+                if(error){
+                    AlertDialog(
+                        onDismissRequest = { error = false },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                navController.navigate(MainScreen.Login.name)
+                            },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Red,
+                                    contentColor = Color.White
+                                )) {
+                                Text(text = "OK")
+                            }
+
+                        },
+                        title = { Text("Invalid Credentials") },
+                        text = { Text(text = "Incorrect Student Number or Password")},
+                        containerColor = Color.White,
+                        textContentColor = Color.DarkGray,
+                        titleContentColor = Color.DarkGray
+                    )
+
                 }
 
             }
 
         }
 
-    }
-
-    Box(
-        modifier = Modifier
-            .zIndex(1f)
-            .graphicsLayer(translationY = 200f, translationX = -350f)
-    ){
-
-        Image(
-            painter = painterResource(id = R.drawable.nbsc_logo),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(color = Color(0x33000000)),
-            modifier = Modifier
-                .size(1500.dp, 2000.dp)
-                .rotate(56.03f)
-                .zIndex(2f))
-
-    }
-
-    Box(
-        modifier = Modifier
-            .graphicsLayer(translationY = 00f)
-            .border(1.dp, color = Color.Black)
-            .zIndex(3f),
-        contentAlignment = Alignment.BottomCenter
-
-    ){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = {
-                    if(loginAuth(studentNo,password))
-                        navController.navigate(MainScreen.Dashboard.name)
-                    else error = true
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.LightGray
-                ),
-                modifier = Modifier.size(280.dp, 50.dp)
-            ) {
-                Text(text = "SIGN IN", fontSize = 25.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black)
-            }
-            Spacer(modifier = Modifier.height(50.dp))
-            if(error){
-                AlertDialog(
-                    onDismissRequest = { error = false },
-                    confirmButton = {
-                        Button(onClick = {
-                            navController.navigate(MainScreen.Login.name)
-                        }) {
-                            Text(text = "OK")
-                        }
-
-                    },
-                    title = { Text("Invalid Credentials") },
-                    text = { Text(text = "Incorrect Student Number or Password")}
-                )
-
-            }
-
-        }
 
 
-    }
+
+//    }
 
 
 }
@@ -295,3 +317,30 @@ fun loginAuth(studentNo: String, password: String): Boolean{
 
 
 
+//    }
+
+//    Box(
+//        modifier = Modifier
+//            .zIndex(1f)
+//            .graphicsLayer(translationY = 200f, translationX = -350f)
+//    ){
+//
+////        Image(
+////            painter = painterResource(id = R.drawable.nbsc_logo),
+////            contentDescription = "",
+////            colorFilter = ColorFilter.tint(color = Color(0x33000000)),
+////            modifier = Modifier
+////                .size(1500.dp, 2000.dp)
+////                .rotate(56.03f)
+////                .zIndex(2f))
+//
+//    }
+
+//    Box(
+//        modifier = Modifier
+//            .graphicsLayer(translationY = 1f)
+//            .border(3.dp, color = Color.Black)
+//            .zIndex(2f),
+//        contentAlignment = Alignment.BottomCenter
+//
+//    ){
