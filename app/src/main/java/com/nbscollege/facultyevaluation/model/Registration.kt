@@ -72,9 +72,9 @@ fun Registration(
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(45.dp)
                         .padding(10.dp),
-                    tint = Color.White)
+                    tint = Color.DarkGray)
             }
         },
         modifier = Modifier.padding(10.dp),
@@ -86,10 +86,10 @@ fun Registration(
         )
         {
             Image(
-                painter = painterResource(id = R.drawable.nbsc_logo_main),
+                painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(100.dp, 130.dp)
+                    .size(110.dp, 160.dp)
                     .align(Alignment.TopEnd)
             )
         }
@@ -109,7 +109,9 @@ fun Registration(
                 OutlinedTextField(
                     value = studentNo,
                     onValueChange = {studentNo = it},
-                    placeholder = {Text(text = "Student ID Number", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                    placeholder = {Text(text = "Student ID Number", fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White)},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
@@ -118,14 +120,16 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color.LightGray,
                         textColor = Color.Black
                     ))
 
                 OutlinedTextField(
                     value = firstName,
                     onValueChange = {firstName = it},
-                    placeholder = {Text(text = "First Name", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                    placeholder = {Text(text = "First Name", fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White)},
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -133,14 +137,16 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color.LightGray,
                         textColor = Color.Black
                     ))
 
                 OutlinedTextField(
                     value = lastName,
                     onValueChange = {lastName = it},
-                    placeholder = {Text(text = "Last Name", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                    placeholder = {Text(text = "Last Name", fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White)},
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,14 +154,16 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color.LightGray,
                         textColor = Color.Black
                     ))
 
                 OutlinedTextField(
                     value = email,
                     onValueChange = {email = it},
-                    placeholder = {Text(text = "School Email", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                    placeholder = {Text(text = "School Email", fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White)},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
@@ -164,14 +172,16 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color.LightGray,
                         textColor = Color.Black
                     ))
 
                 OutlinedTextField(
                     value = password,
                     onValueChange = {password = it},
-                    placeholder = {Text(text = "Password", fontSize = 20.sp, textAlign = TextAlign.Center)},
+                    placeholder = {Text(text = "Password", fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White)},
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
@@ -181,23 +191,23 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
+                        containerColor = Color.LightGray,
                         textColor = Color.Black
                     ))
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
-                        navController.navigate("Login")
+                        navController.navigate(MainScreen.Dashboard.name)
                     },
-                    modifier = Modifier
-                        .size(280.dp, 50.dp)
-                        .padding(start = 30.dp, end = 30.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.LightGray
-                    )) {
-                    Text(text = "REGISTER", fontSize = 25.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.Black)
+                        containerColor = Color.Red
+                    ),
+                    modifier = Modifier.size(280.dp, 50.dp),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "REGISTER", fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White)
                 }
 
             }

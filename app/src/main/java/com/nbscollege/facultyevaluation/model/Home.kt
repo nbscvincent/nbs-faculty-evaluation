@@ -48,7 +48,7 @@ fun HomePage(
                 painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(300.dp, 280.dp)
+                    .size(400.dp, 280.dp)
                     .graphicsLayer(translationX = 6f))
             Spacer(modifier = Modifier.height(60.dp))
             Column (

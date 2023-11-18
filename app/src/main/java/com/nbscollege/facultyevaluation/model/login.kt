@@ -107,7 +107,8 @@ fun Login(
                 painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(225.dp ,300.dp)
+//                    .size(225.dp ,300.dp)
+                    .size(220.dp,220.dp)
                     .graphicsLayer(translationX = 6f),
 //                    .border(1.dp, Color.Black),
                 contentScale = ContentScale.FillBounds,
