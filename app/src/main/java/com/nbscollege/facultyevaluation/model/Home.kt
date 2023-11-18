@@ -41,9 +41,8 @@ fun HomePage(
 ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
             Image(
                 painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
@@ -52,8 +51,7 @@ fun HomePage(
                     .graphicsLayer(translationX = 6f))
             Spacer(modifier = Modifier.height(60.dp))
             Column (
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly,
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 Button(
@@ -68,35 +66,35 @@ fun HomePage(
                     shape = RoundedCornerShape(10.dp)
 
                 ){
-                    Text("SIGN IN", fontSize = 25.sp,
+                    Text("Get Started", fontSize = 25.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White)
 
 
                 }
-                Column (
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Text(text = "Don't have an account?", color = Color.Black,
-                        fontSize = 15.sp, fontWeight = FontWeight.W300)
-
-
-                    Button(
-                        onClick = {
-                            navController.navigate(MainScreen.Registration.name)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Red
-                        ),
-                        modifier = Modifier.size(280.dp, 50.dp),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(text = "REGISTER", fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White)
-                    }
-                }
+//                Column (
+//                    verticalArrangement = Arrangement.spacedBy(10.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ){
+//                    Text(text = "Don't have an account?", color = Color.Black,
+//                        fontSize = 15.sp, fontWeight = FontWeight.W300)
+//
+//
+//                    Button(
+//                        onClick = {
+//                            navController.navigate(MainScreen.Registration.name)
+//                        },
+//                        colors = ButtonDefaults.buttonColors(
+//                            containerColor = Color.Red
+//                        ),
+//                        modifier = Modifier.size(280.dp, 50.dp),
+//                        shape = RoundedCornerShape(10.dp)
+//                    ) {
+//                        Text(text = "REGISTER", fontSize = 20.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White)
+//                    }
+//                }
 
             }
 

@@ -173,7 +173,7 @@ fun ForgotPass(
                         textStyle = TextStyle(
                             fontSize = 15.sp,
                             color = Color.Black),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,

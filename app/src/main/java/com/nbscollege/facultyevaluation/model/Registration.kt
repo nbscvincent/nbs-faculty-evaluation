@@ -66,7 +66,7 @@ fun Registration(
     Scaffold(
         topBar = {
             TextButton(onClick = {
-                navController.navigate(MainScreen.Home.name)
+                navController.navigate(MainScreen.Login.name)
             }) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
@@ -111,16 +111,16 @@ fun Registration(
                     onValueChange = {studentNo = it},
                     placeholder = {Text(text = "Student ID Number", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.White)},
+                        color = Color.Black)},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp),
+                        .padding(horizontal = 20.dp),
                     singleLine = true,
-                    shape = RoundedCornerShape(40.dp),
+                    shape = RoundedCornerShape(10.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.LightGray,
+                        containerColor = Color.White,
                         textColor = Color.Black
                     ))
 
@@ -129,7 +129,7 @@ fun Registration(
                     onValueChange = {firstName = it},
                     placeholder = {Text(text = "First Name", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.White)},
+                        color = Color.Black)},
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -137,7 +137,7 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.LightGray,
+                        containerColor = Color.White,
                         textColor = Color.Black
                     ))
 
@@ -146,7 +146,7 @@ fun Registration(
                     onValueChange = {lastName = it},
                     placeholder = {Text(text = "Last Name", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.White)},
+                        color = Color.Black)},
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -154,7 +154,7 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.LightGray,
+                        containerColor = Color.White,
                         textColor = Color.Black
                     ))
 
@@ -163,7 +163,7 @@ fun Registration(
                     onValueChange = {email = it},
                     placeholder = {Text(text = "School Email", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.White)},
+                        color = Color.Black)},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
@@ -172,7 +172,7 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.LightGray,
+                        containerColor = Color.White,
                         textColor = Color.Black
                     ))
 
@@ -181,7 +181,7 @@ fun Registration(
                     onValueChange = {password = it},
                     placeholder = {Text(text = "Password", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.White)},
+                        color = Color.Black)},
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
@@ -191,13 +191,13 @@ fun Registration(
                     singleLine = true,
                     shape = RoundedCornerShape(40.dp),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.LightGray,
+                        containerColor = Color.White,
                         textColor = Color.Black
                     ))
                 Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
-                        navController.navigate(MainScreen.Dashboard.name)
+                        navController.navigate(MainScreen.Login.name)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Red

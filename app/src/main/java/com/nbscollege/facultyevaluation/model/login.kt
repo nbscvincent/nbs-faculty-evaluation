@@ -1,6 +1,7 @@
 package com.nbscollege.facultyevaluation.model
 
 import android.text.InputType
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -84,31 +85,31 @@ fun Login(
 //    ){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.Center
         ) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-
-                TextButton(onClick = {
-                    navController.navigate(MainScreen.Home.name)
-                }) {
-                    Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(45.dp)
-                            .padding(10.dp),
-//                            .border(1.dp, Color.Black),
-                        tint = Color.DarkGray
-                    )
-                }
-            }
+//            Box(modifier = Modifier.fillMaxWidth()) {
+//
+//                TextButton(onClick = {
+//                    navController.navigate(MainScreen.Home.name)
+//                }) {
+//                    Icon(
+//                        imageVector = Icons.Rounded.ArrowBack,
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(45.dp)
+//                            .padding(10.dp),
+////                            .border(1.dp, Color.Black),
+//                        tint = Color.DarkGray
+//                    )
+//                }
+//            }
 
             Image(
                 painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
 //                    .size(225.dp ,300.dp)
-                    .size(220.dp,220.dp)
+                    .size(220.dp, 220.dp)
                     .graphicsLayer(translationX = 6f),
 //                    .border(1.dp, Color.Black),
                 contentScale = ContentScale.FillBounds,
@@ -121,7 +122,7 @@ fun Login(
                 Text(text = "Welcome!", fontWeight = FontWeight.Bold, fontSize = 30.sp)
                 Text(text = "Sign In to access your account", fontSize = 15.sp)
             }
-
+            Spacer(modifier = Modifier.height(20.dp))
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -197,7 +198,7 @@ fun Login(
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Text(text = "Forgot Password?", modifier = Modifier.clickable(
-                        onClick = { navController .navigate(MainScreen.ForgotPass.name)}
+                        onClick = { navController .navigate(MainScreen.ForgotPass.name) }
                     ), fontSize = 13.sp)
 
                 }
@@ -212,8 +213,11 @@ fun Login(
 
                 Button(
                     onClick = {
-                        if(loginAuth(studentNo,password))
+                        if(loginAuth(studentNo,password)){
+
                             navController.navigate(MainScreen.Dashboard.name)
+                        }
+
                         else error = true
                     },
                     colors = ButtonDefaults.buttonColors(
