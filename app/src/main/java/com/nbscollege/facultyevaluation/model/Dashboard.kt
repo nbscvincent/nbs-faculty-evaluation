@@ -1,9 +1,7 @@
 package com.nbscollege.facultyevaluation.model
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import androidx.activity.compose.BackHandler
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,18 +11,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Person2
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -37,14 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogWindowProvider
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
+import com.nbscollege.facultyevaluation.model.data.LoginReq
 import kotlin.system.exitProcess
 
 
@@ -106,54 +97,32 @@ fun Dashboard(
         showDialog = true
         pressedbackCount = 0
     }
+
     Scaffold(
-            bottomBar = {
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+        topBar = {
+            Row {
+                Icon(imageVector = Icons.Rounded.Person2, contentDescription = "Icon Profile")
+                Text(text = "Welcome, $currentAcct")
+            }
+
+        },
+        bottomBar = {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
                 ){
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(color = Color.White)
-                        .padding(horizontal = 20.dp)){
-                        Text(text = "Hello")
-                    }
+                    Icon(imageVector = Icons.Rounded.Home, contentDescription = "Home")
+                    Icon(imageVector = Icons.Rounded.Person, contentDescription = "Profile")
+                    Icon(imageVector = Icons.Rounded.Settings, contentDescription = "Settings")
                 }
 
             }
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-//            TextButton(onClick = {
-//
-//            }) {
-//                Icon(
-//                    imageVector = Icons.Rounded.ArrowBack,
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .size(50.dp)
-//                        .padding(10.dp),
-//                    tint = Color.White
-//                )
-//            }
-
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "PAGE UNDER CONSTRUCTION",
-                        color = Color.White,
-                        fontSize = 25.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-
+            Column (
+                Modifier.fillMaxSize()
+                    .background(Color.White)
+            ){
 
             }
 

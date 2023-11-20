@@ -1,6 +1,7 @@
 package com.nbscollege.facultyevaluation.model
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.nbscollege.facultyevaluation.model.data.RegistrationReq
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 
 
@@ -60,7 +63,7 @@ fun Registration(
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
-
+    var context = LocalContext.current
 
 
     Scaffold(
@@ -197,7 +200,16 @@ fun Registration(
                 Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
-                        navController.navigate(MainScreen.Login.name)
+                        if(firstName.isNotEmpty() && lastName.isNotEmpty()
+                            && email.isNotEmpty() && studentNo.isNotEmpty()
+                            && password.isNotEmpty()){
+                            RegistrationReq(studentNo, firstName,lastName,email, password)
+                            navController.navigate(MainScreen.Login.name)
+                        }
+                        else {
+                            Toast.makeText(context, "Please fill Up all fields",Toast.LENGTH_LONG)
+                        }
+
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Red
@@ -212,7 +224,9 @@ fun Registration(
 
             }
 
+
         }
+
     }
 
 }

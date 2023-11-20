@@ -58,10 +58,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.nbscollege.facultyevaluation.R
 import com.nbscollege.facultyevaluation.model.data.LoginReq
+import com.nbscollege.facultyevaluation.model.data.RegistrationReq
+import com.nbscollege.facultyevaluation.model.data.userList
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
+
+var currentAcct: String = ""
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
+
 fun Login(
     navController: NavHostController
 
@@ -214,7 +220,7 @@ fun Login(
                 Button(
                     onClick = {
                         if(loginAuth(studentNo,password)){
-
+                            LoginReq(id = 0, studentNo, password)
                             navController.navigate(MainScreen.Dashboard.name)
                         }
 
@@ -287,25 +293,28 @@ fun Login(
 fun loginAuth(studentNo: String, password: String): Boolean{
 
     var success = false
-    val userList = listOf(
-        LoginReq(1, "101", "test1"),
-        LoginReq(2, "102", "test2"),
-        LoginReq(3, "103", "test3")
-    )
+    var x = 0
 
     for (i in userList){
         if(studentNo == i.studentNo && password == i.password){
             println("Successfully Logged In")
             success = true
+            currentAccountLoggedIn(userList[x])
+            x++
+            break
         }
 
     }
-    println("Invalid Credentials")
+    if(!success){
+        println("Invalid Credentials")
+    }
+
 
     return success
 }
-
-
+fun currentAccountLoggedIn(user: RegistrationReq) {
+    currentAcct = "${user.fName} ${user.lName}"
+}
 
 
 

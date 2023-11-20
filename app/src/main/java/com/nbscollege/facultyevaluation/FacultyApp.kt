@@ -41,7 +41,7 @@ fun FacultyApp(){
 
     NavHost(
         navController = navController,
-        startDestination = MainScreen.Splash.name
+        startDestination = MainScreen.Dashboard.name
     ){
 
         composable(route = MainScreen.Home.name){
