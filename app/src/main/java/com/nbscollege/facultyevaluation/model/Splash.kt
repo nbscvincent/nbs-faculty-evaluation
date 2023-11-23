@@ -46,7 +46,7 @@ fun SplashScreen(
             painter = painterResource(id = R.drawable.nbsc_logo),
             contentDescription = "NBS College",
             modifier = Modifier
-                .size(1400.dp,350.dp)
+                .size(300.dp)
         )
 
         LinearProgressIndicator(
