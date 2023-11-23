@@ -89,46 +89,51 @@ fun CourseCard(course: Course, navController: NavController){
             )
         ){
 
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(0.95f)
+                    .background(Color.White, RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Text(text = "Evaluation Form")
+                Row(
                     modifier = Modifier
-                        .fillMaxSize(0.95f)
-                        .background(Color.White, RoundedCornerShape(10.dp))
-                        .clip(RoundedCornerShape(10.dp)),
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                    Text(text = "Evaluation Form")
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ){
-                        Button(
-                            onClick = { showDialog = false },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.LightGray,
-                                contentColor = Color.White
-                            )) {
-                            Text(text = "Cancel")
-                        }
-                        Button(
-                            onClick = {
-
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                contentColor = Color.White,
-                                containerColor = Color.Red
-                            )
-                        ){
-                            Text(text = "Submit")
-                        }
+                    Button(
+                        onClick = { showDialog = false },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.LightGray,
+                            contentColor = Color.White
+                        )) {
+                        Text(text = "Cancel")
                     }
+                    Button(
+                        onClick = {
 
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White,
+                            containerColor = Color.Red
+                        )
+                    ){
+                        Text(text = "Submit")
+                    }
                 }
+
+            }
+
         }
     }
+
+
+    
+
 
 
 

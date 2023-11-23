@@ -50,9 +50,7 @@ fun FacultyApp(){
         composable(route = MainScreen.Dashboard.name){
             Dashboard(navController)
         }
-        composable(route = DashboardRoute.Form.name){
-            Form(navController)
-        }
+
 
 
 
