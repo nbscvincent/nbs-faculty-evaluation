@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nbscollege.facultyevaluation.model.data.courseList
+import com.nbscollege.facultyevaluation.model.data.questionList
 
 @Composable
 fun HomeDash(navController: NavController){

@@ -1,22 +1,21 @@
 package com.nbscollege.facultyevaluation.model
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
@@ -35,26 +34,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.zIndex
-import androidx.navigation.NavController
 import com.nbscollege.facultyevaluation.model.data.Course
-import com.nbscollege.facultyevaluation.model.data.courseList
-import com.nbscollege.facultyevaluation.model.data.facultyList
-import com.nbscollege.facultyevaluation.navigation.routes.DashboardRoute
-import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
+import com.nbscollege.facultyevaluation.model.data.QuestionData
+import com.nbscollege.facultyevaluation.model.data.questionList
 
 
-
+enum class RadioOption(val value: Int) {
+    Option1(4),
+    Option2(3),
+    Option3(2),
+    Option4(1)
+}
 // Student Dashboard
 @Composable
-fun CourseCard(course: Course){
+fun CourseCard(course: Course,){
+
+    var selectedOptions = listOf(RadioOption.Option1, RadioOption.Option2, RadioOption.Option3, RadioOption.Option4)
 
     var showDialog by remember {
         mutableStateOf(false)
@@ -63,6 +65,9 @@ fun CourseCard(course: Course){
         mutableStateOf(false)
     }
     var enabled by remember {
+        mutableStateOf(false)
+    }
+    var selected by remember {
         mutableStateOf(false)
     }
 //    var clickedNext by remember {
@@ -100,7 +105,7 @@ fun CourseCard(course: Course){
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "${course.course}")
+            Text(text = "${course.course}", fontWeight = FontWeight.ExtraBold)
             Text(text = "${course.courseDesc}")
             Text(text = "${course.facultyProfData.fName} ${course.facultyProfData.lName}")
         }
@@ -142,54 +147,42 @@ fun CourseCard(course: Course){
                     Column (
                         modifier = Modifier
                             .fillMaxSize()
-                            .border(1.dp, Color.Black),
+                            .border(1.dp, Color.Black)
+                            .padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Top
                     ){
-                        println("clicked: $clicked")
                         if(clicked){
-
                             when(qNo){
-
                                 1 -> {
-                                    Column(
-
-                                    ){
-                                        Text(text = "Question1")
-                                    }
-                                    Column(
-
+                                    LazyColumn(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .border(1.dp, Color.Red),
                                     ) {
-                                        Text(text = "Answer1")
+                                        questionList.forEach{ question ->
+                                            println(question.id)
+                                            items(questionList){
+                                                Questions(question = question)
+                                            }
+                                        }
+
+
+//                                    RadioButton(selected = selected, onClick = { selected = true})
+//                                    RadioButton(selected = selected, onClick = { selected = true})
+//                                    RadioButton(selected = selected, onClick = { selected = true})
+//                                    RadioButton(selected = selected, onClick = { selected = true})
+
                                     }
                                 }
-                                2 -> {
-                                    Column(
-
-                                    ){
-                                        Text(text = "Question2")
-                                    }
-                                    Column(
-
-                                    ) {
-                                        Text(text = "Answer2")
-                                    }
-                                }
-                                3 -> {
-                                    Column(
-
-                                    ){
-                                        Text(text = "Question3")
-                                    }
-                                    Column(
-
-                                    ) {
-                                        Text(text = "Answer3")
-                                    }
-                                }
-
+                                2 -> Text(text = questionList[1].question, color = Color.Black)
+                                3 -> Text(text = questionList[2].question, color = Color.Black)
+                                4 -> Text(text = questionList[3].question, color = Color.Black)
+                                5 -> Text(text = questionList[4].question, color = Color.Black)
                             }
+
                         }
+
 
                     }
 
@@ -211,7 +204,7 @@ fun CourseCard(course: Course){
                                 onClick = {
                                     clicked = true
                                     qNo--
-                                    if(qNo == 1){
+                                    if (qNo == 1) {
                                         qNo = 1
                                         enabled = false
                                     }
@@ -221,10 +214,10 @@ fun CourseCard(course: Course){
                                 enabled = enabled
 
 
-
                             )
                             .size(30.dp))
                     println("e = $enabled")
+
                     Icon(
                         imageVector = Icons.Rounded.KeyboardArrowRight,
                         contentDescription = "Next",
@@ -234,12 +227,16 @@ fun CourseCard(course: Course){
                                 onClick = {
                                     clicked = true
                                     qNo++
-                                    if(qNo > 1){
+                                    if (qNo < questionList.size) {
                                         enabled = true
+                                    } else if (qNo > questionList.size) {
+                                        qNo = questionList.size
                                     }
+
                                     println("qNo = $qNo")
-                                }
-                            )
+                                },
+
+                                )
                             .size(30.dp))
                 }
                 Row(
@@ -276,9 +273,12 @@ fun CourseCard(course: Course){
     }
 
 
-    
-
-
-
 
 }
+
+@Composable
+fun Questions(question: QuestionData) {
+    Text(text = question.question)
+}
+
+

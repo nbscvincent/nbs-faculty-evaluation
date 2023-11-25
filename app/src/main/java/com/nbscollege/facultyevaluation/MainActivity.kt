@@ -46,19 +46,6 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     FacultyApp()
-//                    if(!screenViewModel.isUserSignedIn()){
-//                        Login()
-//                    }else{
-//                        FacultyApp()
-//                    }
-                    //Login()
-                    //HomePage()
-                    //Registration()
-                    //ForgotPass()
-                    //UserListAdd()
-                    //UserList()
-                    //SplashScreen()
-                    //UserInfo()
 
                 }
             }
