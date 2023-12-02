@@ -1,8 +1,6 @@
 package com.nbscollege.facultyevaluation
 
 import android.app.Application
-import com.nbscollege.facultyevaluation.model.data.AppContainer
-import com.nbscollege.facultyevaluation.model.data.AppDataContainer
 
 class FacultyEvaluationApp : Application() {
 

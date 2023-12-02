@@ -7,12 +7,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.nbscollege.facultyevaluation.model.Dashboard
-import com.nbscollege.facultyevaluation.model.ForgotPass
-import com.nbscollege.facultyevaluation.model.HomePage
-import com.nbscollege.facultyevaluation.model.Login
-import com.nbscollege.facultyevaluation.model.Registration
-import com.nbscollege.facultyevaluation.model.SplashScreen
+import com.nbscollege.facultyevaluation.ui.Dashboard
+import com.nbscollege.facultyevaluation.user.ui.ForgotPass
+import com.nbscollege.facultyevaluation.ui.HomePage
+import com.nbscollege.facultyevaluation.user.ui.Login
+import com.nbscollege.facultyevaluation.registration.ui.Registration
+import com.nbscollege.facultyevaluation.ui.SplashScreen
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 
 
@@ -24,7 +24,7 @@ fun FacultyApp(){
 
     NavHost(
         navController = navController,
-        startDestination = MainScreen.Dashboard.name
+        startDestination = MainScreen.Splash.name
     ){
 
         composable(route = MainScreen.Home.name){
