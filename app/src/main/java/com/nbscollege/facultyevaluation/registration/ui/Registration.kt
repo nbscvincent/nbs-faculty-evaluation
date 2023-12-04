@@ -72,6 +72,9 @@ fun Registration(
     var password by rememberSaveable { mutableStateOf("") }
     var context = LocalContext.current
     var coroutineScope = rememberCoroutineScope();
+    var uiState = viewModel.userUiState
+
+
     Scaffold(
         topBar = {
             TextButton(onClick = {
@@ -210,12 +213,14 @@ fun Registration(
                             && email.isNotEmpty() && studentNo.isNotEmpty()
                             && password.isNotEmpty()){
                             coroutineScope.launch {
-                                var uiState = viewModel.userUiState
+
                                 uiState.userDetails = UserDetails(studentNo = studentNo, password = password)
                                 viewModel.saveUser()
                             }
-                            //RegistrationReq(studentNo, firstName,lastName,email, password)
-                        //    navController.navigate(MainScreen.Login.name)
+                            RegistrationReq(studentNo, firstName,lastName,email, password)
+                            navController.navigate(MainScreen.Login.name)
+
+
                         }
                         else {
                             Toast.makeText(context, "Please fill Up all fields",Toast.LENGTH_LONG)

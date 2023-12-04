@@ -24,6 +24,3 @@ object AppViewModelProvider {
  */
 fun CreationExtras.facultyEvaluationApp(): FacultyEvaluationApp =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as FacultyEvaluationApp)
-
-
-

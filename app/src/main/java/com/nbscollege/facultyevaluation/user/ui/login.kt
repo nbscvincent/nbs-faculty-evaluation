@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +69,8 @@ fun Login(
     var error by remember {
         mutableStateOf(false)
     }
-
+//    var coroutineScope = rememberCoroutineScope();
+//    var uiState = viewModel.userUiState
 
 //    Box(
 //        modifier = Modifier
