@@ -4,13 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.nbscollege.facultyevaluation.user.model.LoginReq
+import com.nbscollege.facultyevaluation.user.model.User
 import com.nbscollege.facultyevaluation.user.repository.UserRepository
 
 class RegistrationViewModel(private val usersRepository: UserRepository) : ViewModel() {
 
     /**
-     * Holds current user ui state
+     * Holds current user ui stateUser
      */
     var userUiState by mutableStateOf(UserUiState())
         private set
@@ -53,7 +53,7 @@ data class UserDetails(
  * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
  * [UserUiState] is not a valid [Int], then the quantity will be set to 0
  */
-fun UserDetails.toUser(): LoginReq = LoginReq(
+fun UserDetails.toUser(): User = User(
     id = id,
     studentNo = studentNo,
     password = password
@@ -61,14 +61,14 @@ fun UserDetails.toUser(): LoginReq = LoginReq(
 /**
  * Extension function to convert [Item] to [ItemUiState]
  */
-fun LoginReq.toUserUiState(isEntryValid: Boolean = false): UserUiState = UserUiState(
+fun User.toUserUiState(isEntryValid: Boolean = false): UserUiState = UserUiState(
     userDetails = this.toUserDetails(),
     isEntryValid = isEntryValid
 )
 /**
  * Extension function to convert [Item] to [ItemDetails]
  */
-fun LoginReq.toUserDetails(): UserDetails = UserDetails(
+fun User.toUserDetails(): UserDetails = UserDetails(
     id = id,
     studentNo = studentNo,
     password  = password

@@ -22,8 +22,5 @@ class ScreenViewModel : ViewModel() {
         }
     }
 
-fun isUserSignedIn(): Boolean {
-// User Authentication
-    return true
-}
+
 }

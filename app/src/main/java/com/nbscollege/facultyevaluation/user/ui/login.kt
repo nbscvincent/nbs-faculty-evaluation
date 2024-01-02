@@ -128,7 +128,7 @@ fun Login(
                 TextField(
                     value = studentNo,
                     onValueChange = { studentNo = it },
-                    placeholder = { Text(text = "Student ID Number") },
+                    placeholder = { Text(text = "User ID") },
                     textStyle = TextStyle(fontSize = 14.sp, letterSpacing = 2.sp),
                     modifier = Modifier
                         .height(50.dp)
@@ -210,12 +210,12 @@ fun Login(
 
                 Button(
                     onClick = {
-                        if(loginAuth(studentNo,password)){
-                            LoginReq(id = 0, studentNo, password)
-                            navController.navigate(MainScreen.Dashboard.name)
-                        }
 
-                        else error = true
+//                        if(loginAuth(studentNo,password)){
+//                            LoginReq(id = 0, studentNo, password)
+//                            navController.navigate(MainScreen.Dashboard.name)
+//                        }
+//                        else error = true
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Red

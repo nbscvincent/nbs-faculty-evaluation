@@ -1,11 +1,17 @@
 package com.nbscollege.facultyevaluation.registration.ui
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import android.widget.Toast
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,14 +19,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -55,6 +68,7 @@ import com.nbscollege.facultyevaluation.user.model.RegistrationReq
 import com.nbscollege.facultyevaluation.navigation.routes.MainScreen
 import com.nbscollege.facultyevaluation.registration.viewmodel.RegistrationViewModel
 import com.nbscollege.facultyevaluation.registration.viewmodel.UserDetails
+import com.nbscollege.facultyevaluation.ui.theme.fontFamily
 import kotlinx.coroutines.launch
 
 
@@ -73,7 +87,15 @@ fun Registration(
     var context = LocalContext.current
     var coroutineScope = rememberCoroutineScope();
     var uiState = viewModel.userUiState
-
+    var expanded by remember { mutableStateOf(false) }
+    var roles = listOf(
+        "SELECT YOUR ROLE: ",
+        "Student",
+        "Faculty",
+        "Admin"
+    )
+    var selectedIndex by remember { mutableStateOf(0) }
+    var disabledItem = "SELECT YOUR ROLE: "
 
     Scaffold(
         topBar = {
@@ -91,26 +113,23 @@ fun Registration(
         },
         modifier = Modifier.padding(10.dp),
         containerColor = Color.Transparent) {
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 5.dp)
-        )
-        {
+                .padding(it),
+            horizontalArrangement = Arrangement.End
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "",
                 modifier = Modifier
                     .size(110.dp, 160.dp)
-                    .align(Alignment.TopEnd)
             )
         }
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxHeight(0.8f)
-                .fillMaxWidth()
-                .padding(top = 80.dp),
-            contentAlignment = Alignment.BottomCenter
+
         ){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -121,9 +140,9 @@ fun Registration(
                 OutlinedTextField(
                     value = studentNo,
                     onValueChange = {studentNo = it},
-                    placeholder = {Text(text = "Student ID Number", fontSize = 20.sp,
+                    placeholder = {Text(text = "User ID", fontSize = 20.sp,
                         textAlign = TextAlign.Center,
-                        color = Color.Black)},
+                        color = Color.Gray)},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = TextStyle(fontSize = 20.sp, letterSpacing = 2.sp),
                     modifier = Modifier
@@ -187,7 +206,70 @@ fun Registration(
                         containerColor = Color.White,
                         textColor = Color.Black
                     ))
+                Box (
+                    modifier = Modifier
+                        .height(50.dp)
+                        .border(1.dp, Color.Black, RoundedCornerShape(5.dp))
+                        .wrapContentSize(Alignment.CenterStart)
+                ){
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = { expanded = true }
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
 
+                        Text(
+                            roles[selectedIndex],
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .background(
+                                    Color.Transparent
+                                )
+                                .wrapContentSize(Alignment.CenterStart)
+                                .padding(start = 20.dp)
+                        )
+                        if(!expanded){
+                            Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = "DropDown", modifier = Modifier.size(40.dp))
+                        }else{
+                            tween<Icon>(1000)
+                            Icon(Icons.Rounded.KeyboardArrowUp, contentDescription = "DropUp", modifier = Modifier.size(40.dp))
+                        }
+
+                    }
+
+
+                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false },  modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                    ) {
+                        roles.forEachIndexed { index, s ->
+                            DropdownMenuItem(
+                                text = {
+                                    val disabledColor = if (s == disabledItem) {
+                                        Color.Gray
+                                    } else {
+                                        Color.Black
+                                    }
+                                    Text(text = s, color =  disabledColor, fontFamily = fontFamily, fontSize = 20.sp)
+                                },
+                                onClick = {
+                                    selectedIndex = index
+                                    expanded = false
+
+                                },
+                                colors = MenuDefaults.itemColors(
+                                    textColor = Color.Black
+                                )
+
+                            )
+                        }
+                    }
+
+                }
                 OutlinedTextField(
                     value = password,
                     onValueChange = {password = it},
@@ -206,7 +288,7 @@ fun Registration(
                         containerColor = Color.White,
                         textColor = Color.Black
                     ))
-                Spacer(modifier = Modifier.height(50.dp))
+//                Spacer(modifier = Modifier.height(50.dp))
                 Button(
                     onClick = {
                         if(firstName.isNotEmpty() && lastName.isNotEmpty()
