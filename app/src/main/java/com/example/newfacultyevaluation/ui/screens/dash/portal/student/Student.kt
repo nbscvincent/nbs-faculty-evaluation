@@ -38,19 +38,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newfacultyevaluation.data.Course
 import com.example.newfacultyevaluation.ui.nav.StudentNav
+import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun StudentPortal() {
-    val studentNavController = rememberNavController()
-
+fun StudentPortal(
+    loginViewModel: LoginViewModel,
+    navController: NavController
+) {
+    val studentNav = rememberNavController()
     var openDrawer by remember {
         mutableStateOf(false)
     }
@@ -83,15 +87,15 @@ fun StudentPortal() {
     ){
 
 
-        NavHost(navController = studentNavController, startDestination = StudentNav.HOME.name, modifier = Modifier.padding(it)){
+        NavHost(navController = studentNav, startDestination = StudentNav.HOME.name, modifier = Modifier.padding(it)){
             composable(route = StudentNav.HOME.name){
-                SFaculty(studentNavController)
+                SFaculty(loginViewModel,studentNav, navController)
             }
             composable(StudentNav.COURSES.name){
-                Courses(navController = studentNavController)
+                Courses(navController = studentNav)
             }
             composable(StudentNav.FORM.name){
-                Form(navController = studentNavController)
+                Form(navController = studentNav)
             }
         }
 

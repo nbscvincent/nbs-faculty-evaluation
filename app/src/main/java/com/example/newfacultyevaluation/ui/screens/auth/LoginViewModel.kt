@@ -27,10 +27,16 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
 
+    var role by mutableStateOf("")
+    var status by mutableStateOf(false)
+    var userID by mutableStateOf("")
+    var password by mutableStateOf("")
 
     fun getUser(userID: String): LiveData<User>{
         return userRepository.getUsers(userID)
     }
+
+
 
 }
 

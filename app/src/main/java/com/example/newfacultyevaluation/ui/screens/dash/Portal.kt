@@ -11,6 +11,7 @@ fun Portal(
     role: String
 ) {
     navController.popBackStack()
+    println(role)
     when(role){
         "Student" -> {
             navController.navigate(Portal.STUDENT.name)

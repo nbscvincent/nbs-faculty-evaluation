@@ -75,7 +75,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Login(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel(factory = FacultyAppViewModelProvider.LoginFactory),
+    viewModel: LoginViewModel,
     roles: HashMap<String, String> = hashMapOf("20" to "Student", "30" to "Faculty", "40" to "Admin")
 ) {
     val scrollState = rememberScrollState()
@@ -183,17 +183,36 @@ fun Login(
                     onClick =
                     {
 
-                        println(user?.status)
                         if (user?.password == pass) {
+
                             roles.entries.forEach { role ->
+
                                 if(userID.startsWith(role.key)){
+
                                     navController.popBackStack()
-                                    navController.navigate(Main.PORTAL.name + roles[role.key])
+                                    navController.navigate(Main.PORTAL.name)
+                                    viewModel.status = true
+                                    viewModel.userID = userID
+                                    viewModel.password = pass
+                                    viewModel.role = roles[role.key].toString()
+                                    println(viewModel.role)
+                                    val preferences = context.getSharedPreferences("prefs", 0)
+                                    preferences.edit()
+                                        .putBoolean("status", true)
+                                        .putString("userID", viewModel.userID)
+                                        .putString("password", viewModel.password)
+                                        .putString("role", viewModel.role)
+                                        .apply()
+
                                     Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
                                         .show()
                                     return@Button
                                 }
+
+
                             }
+                            Toast.makeText(context, "ID not found in the list", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
                             Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT)
                                 .show()
@@ -228,3 +247,5 @@ fun Login(
     }
 
 }
+
+

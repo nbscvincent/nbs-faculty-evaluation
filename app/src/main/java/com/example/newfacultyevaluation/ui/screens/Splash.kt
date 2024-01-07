@@ -25,12 +25,13 @@ import com.example.newfacultyevaluation.R
 import com.example.newfacultyevaluation.data.User
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Main
+import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun Splash(
     navController: NavController,
-    viewModel: SplashViewModel = viewModel(factory = FacultyAppViewModelProvider.SplashFactory)
+    loginViewModel: LoginViewModel
 ) {
 
     var appearSplash by remember {
@@ -55,6 +56,12 @@ fun Splash(
                 ), tint = Color.Unspecified)
 
         }
-        if(appearSplash) navController.navigate(Main.AUTH.name)
+        if(appearSplash){
+            if(!loginViewModel.status){
+                navController.navigate(Main.AUTH.name)
+            }else {
+                navController.navigate(Main.PORTAL.name)
+            }
+        }
 
 }
