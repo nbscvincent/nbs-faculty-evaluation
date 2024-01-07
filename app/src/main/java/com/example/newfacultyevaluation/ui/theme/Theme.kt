@@ -59,7 +59,7 @@ fun NewFacultyEvaluationTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Red.copy(alpha = 0.7f).toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

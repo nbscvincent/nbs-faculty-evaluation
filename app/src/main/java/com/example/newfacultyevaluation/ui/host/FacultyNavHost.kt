@@ -26,6 +26,7 @@ import com.example.newfacultyevaluation.ui.screens.auth.Register
 import com.example.newfacultyevaluation.ui.screens.dash.Portal
 import com.example.newfacultyevaluation.ui.nav.Portal
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
+import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.StudentPortal
 import java.util.Locale
 
@@ -115,7 +116,7 @@ fun FacultyApp(){
                 }
             }
             composable(route = Portal.ADMIN.name){
-
+                AdminPortal()
             }
         }
 
