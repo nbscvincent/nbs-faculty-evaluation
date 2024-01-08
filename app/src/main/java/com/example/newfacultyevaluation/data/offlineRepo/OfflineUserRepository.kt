@@ -1,8 +1,9 @@
-package com.example.newfacultyevaluation.data
+package com.example.newfacultyevaluation.data.offlineRepo
 
 import androidx.lifecycle.LiveData
 import com.example.newfacultyevaluation.dao.UserDao
-import kotlinx.coroutines.flow.Flow
+import com.example.newfacultyevaluation.data.model.User
+import com.example.newfacultyevaluation.data.repo.UserRepository
 
 class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
     override suspend fun upsertUser(user: User) = userDao.upsertUser(user)

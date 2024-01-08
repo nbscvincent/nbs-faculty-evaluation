@@ -32,6 +32,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -48,13 +49,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.R
-import com.example.newfacultyevaluation.ui.nav.Auth
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
-import kotlinx.coroutines.launch
+import com.example.newfacultyevaluation.ui.nav.Auth
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -181,24 +182,30 @@ fun Register(
                 modifier = Modifier.fillMaxWidth()
             )
             val context = LocalContext.current
+            val user = viewModel.checkUserID(userID).observeAsState()
             Button(
                 onClick =
                 {
-                    viewModel.userID = userID
-                    viewModel.fullName = fullName
-                    viewModel.pass = pass
-                    viewModel.selectedCourse = selectedCourse
-                    roles.keys.forEach {
-                        if(userID.startsWith(it)){
-                            viewModel.role = roles[it].toString()
+                    if(user.value == null){
+                        viewModel.userID = userID
+                        viewModel.fullName = fullName
+                        viewModel.pass = pass
+                        viewModel.selectedCourse = selectedCourse
+                        roles.keys.forEach {
+                            if(userID.startsWith(it)){
+                                viewModel.role = roles[it].toString()
+                            }
                         }
+                        viewModel.date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                        if(viewModel.insertUser()){
+                            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
+                            navController.popBackStack()
+                            navController.navigate(Auth.LOGIN.name)
+                        }
+                        else Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+                    }else {
+                        Toast.makeText(context, "UserID is already taken", Toast.LENGTH_SHORT).show()
                     }
-                    if(viewModel.insertUser()){
-                        Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
-                        navController.popBackStack()
-                        navController.navigate(Auth.LOGIN.name)
-                    }
-                    else Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_LONG).show()
 
                 },
                 shape = RoundedCornerShape(10.dp),

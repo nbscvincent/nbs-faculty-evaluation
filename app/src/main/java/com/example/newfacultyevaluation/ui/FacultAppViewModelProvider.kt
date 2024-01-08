@@ -1,21 +1,22 @@
 package com.example.newfacultyevaluation.ui
 
-import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.newfacultyevaluation.FacultyEvaluationApp
-import com.example.newfacultyevaluation.ui.screens.SplashViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.RegisterViewModel
+import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminViewModel
 
 object FacultyAppViewModelProvider {
 
     val Factory = viewModelFactory {
         initializer {
             RegisterViewModel(
-                this.facultyEvaluationApp().container.userRepository
+                facultyEvaluationApp().container.userRepository,
+                facultyEvaluationApp().container.studentRepository
+
             )
         }
     }
@@ -28,13 +29,16 @@ object FacultyAppViewModelProvider {
         }
     }
 
-    val SplashFactory = viewModelFactory {
+    val AdminFactory = viewModelFactory {
         initializer {
-            SplashViewModel(
-                facultyEvaluationApp().container.userRepository
+            AdminViewModel(
+                facultyEvaluationApp().container.userRepository,
+                facultyEvaluationApp().container.facultyRepository
             )
         }
     }
+
+
 
 }
 

@@ -1,34 +1,25 @@
 package com.example.newfacultyevaluation.ui.host
 
-import android.content.SharedPreferences
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.toLowerCase
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
-import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.Auth
+import com.example.newfacultyevaluation.ui.nav.Main
+import com.example.newfacultyevaluation.ui.nav.Portal
 import com.example.newfacultyevaluation.ui.screens.Splash
 import com.example.newfacultyevaluation.ui.screens.auth.Login
-import com.example.newfacultyevaluation.ui.screens.auth.Register
-import com.example.newfacultyevaluation.ui.screens.dash.Portal
-import com.example.newfacultyevaluation.ui.nav.Portal
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
+import com.example.newfacultyevaluation.ui.screens.auth.Register
 import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.StudentPortal
-import java.util.Locale
 
 
 @Composable
@@ -116,7 +107,7 @@ fun FacultyApp(){
                 }
             }
             composable(route = Portal.ADMIN.name){
-                AdminPortal()
+                AdminPortal(navController, loginViewModel = loginViewModel)
             }
         }
 

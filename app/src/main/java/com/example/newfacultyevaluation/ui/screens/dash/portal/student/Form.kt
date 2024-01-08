@@ -1,8 +1,6 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.ui.nav.StudentNav

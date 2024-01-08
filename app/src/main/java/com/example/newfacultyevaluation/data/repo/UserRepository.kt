@@ -1,7 +1,7 @@
-package com.example.newfacultyevaluation.data
+package com.example.newfacultyevaluation.data.repo
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
+import com.example.newfacultyevaluation.data.model.User
 
 interface UserRepository {
 

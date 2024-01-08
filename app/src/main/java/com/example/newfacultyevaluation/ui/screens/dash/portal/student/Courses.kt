@@ -1,10 +1,8 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,8 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.newfacultyevaluation.data.Course
-import com.example.newfacultyevaluation.data.courses
+import com.example.newfacultyevaluation.data.model.Course
 
 @Composable
 fun Courses(
@@ -32,13 +29,13 @@ fun Courses(
     val scrollState = rememberScrollState()
 
 
-    courses.forEach { course ->
-        if(course.isCompleted){
-            completed.add(course)
-        }else{
-            pending.add(course)
-        }
-    }
+//    courses.forEach { course ->
+//        if(course.isCompleted){
+//            completed.add(course)
+//        }else{
+//            pending.add(course)
+//        }
+//    }
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -5,8 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.newfacultyevaluation.data.User
-import kotlinx.coroutines.flow.Flow
+import com.example.newfacultyevaluation.data.model.User
 
 @Dao
 interface UserDao {
