@@ -2,6 +2,7 @@ package com.example.newfacultyevaluation.ui.screens.auth
 
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +54,7 @@ import androidx.navigation.NavController
 import com.example.newfacultyevaluation.R
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
+import com.example.newfacultyevaluation.ui.nav.Portal
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +63,12 @@ fun Login(
     navController: NavController,
     viewModel: LoginViewModel
 ) {
+
+    BackHandler{
+        navController.popBackStack()
+        navController.navigate(Main.AUTH.name)
+    }
+
     val scrollState = rememberScrollState()
     var showPassword by remember { mutableStateOf(value = false) }
 

@@ -1,6 +1,7 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.admin
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +44,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.AdminNav
 import com.example.newfacultyevaluation.ui.nav.Main
+import com.example.newfacultyevaluation.ui.nav.Portal
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -56,6 +58,10 @@ fun AdminPortal(
     viewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory),
     loginViewModel: LoginViewModel
 ) {
+    BackHandler{
+        navController.popBackStack()
+        navController.navigate(Portal.ADMIN.name)
+    }
     val adminNavController = rememberNavController()
     Scaffold(
         topBar = {
