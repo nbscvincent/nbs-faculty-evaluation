@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.example.newfacultyevaluation.ui.host.FacultyApp
 import com.example.newfacultyevaluation.ui.theme.NewFacultyEvaluationTheme
 
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize().statusBarsPadding(),
-                    color = MaterialTheme.colorScheme.background,
+                    //color = MaterialTheme.colorScheme.background,
+                    color = Color.White,
                 ) {
                     FacultyApp()
                 }

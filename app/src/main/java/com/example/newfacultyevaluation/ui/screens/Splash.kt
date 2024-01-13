@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +41,9 @@ fun Splash(
         Column(
            modifier = Modifier
                .fillMaxSize()
-               .background(MaterialTheme.colorScheme.background),
+               //.background(MaterialTheme.colorScheme.background),
+               .background(color = Color.White),
+
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -49,6 +52,12 @@ fun Splash(
                 modifier = Modifier.graphicsLayer(
                     translationX = 15f
                 ), tint = Color.Unspecified)
+
+            LinearProgressIndicator(
+                modifier = Modifier,
+                color = Color.Green,
+                trackColor = Color.Gray
+            )
 
         }
         if(appearSplash){

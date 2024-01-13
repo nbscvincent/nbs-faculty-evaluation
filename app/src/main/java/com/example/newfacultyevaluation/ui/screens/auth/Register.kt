@@ -1,6 +1,7 @@
 package com.example.newfacultyevaluation.ui.screens.auth
 
 
+import android.icu.text.CaseMap.Upper
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,10 +21,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Key
 import androidx.compose.material.icons.rounded.KeyOff
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -30,6 +37,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -42,7 +51,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -95,22 +107,25 @@ fun Register(
         var selectedCourse by rememberSaveable {
             mutableStateOf(course[0])
         }
+
+
         Icon(
             painterResource(id = R.drawable.nbsc_logo),
             contentDescription = "Logo",
             modifier = Modifier
-                .border(1.dp, Color.Black)
+                .border(1.dp, Color.Transparent)
                 .graphicsLayer(
                     translationX = 10f
                 )
                 .size(200.dp),
             tint = Color.Unspecified)
         Column(
-            modifier = Modifier.border(1.dp, Color.Red),
+            modifier = Modifier.border(1.dp, Color.Transparent),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Register to create your account", fontWeight = FontWeight.W300, letterSpacing = 2.sp, modifier = Modifier.padding(10.dp))
+            Text(text = "Register to create your account", fontWeight = FontWeight.W500,
+                letterSpacing = 2.sp, modifier = Modifier.padding(10.dp))
         }
 
         Column(
@@ -128,10 +143,17 @@ fun Register(
                 OutlinedTextField(
                     value = userID,
                     onValueChange = { userID = it },
-                    label = { Text(text = "User ID", letterSpacing = 4.sp) },
+                    label = { Text(text = "User ID", letterSpacing = 2.sp) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.width(200.dp)
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent)
+
                 )
                 Column(
                     modifier = Modifier
@@ -144,7 +166,7 @@ fun Register(
                         horizontalArrangement = Arrangement.Center
                     ){
                         Text(text = selectedCourse)
-                        Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                        Icon(imageVector = if(expanded) Icons.Rounded.ArrowDropDown else Icons.Rounded.ArrowDropDown, contentDescription = "")
                     }
 
                     DropdownMenu(
@@ -163,23 +185,40 @@ fun Register(
             OutlinedTextField(
                 value = fullName,
                 onValueChange = { fullName = it },
-                label = { Text(text = "Full Name", letterSpacing = 4.sp) },
+                label = { Text(text = "Full Name", letterSpacing = 2.sp) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
+                    .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent)
             )
 
             OutlinedTextField(
                 value = pass,
                 onValueChange = { pass = it },
-                label = { Text(text = "Password", letterSpacing = 4.sp) },
+                label = { Text(text = "Password", letterSpacing = 2.sp) },
                 visualTransformation = if(seePass) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = { Icon(imageVector = if(seePass) Icons.Rounded.Key else Icons.Rounded.KeyOff, contentDescription = "Key", modifier = Modifier.clickable (
+                trailingIcon = { Icon(imageVector = if(seePass) Icons.Rounded.Visibility
+                else Icons.Rounded.VisibilityOff,
+                    contentDescription = "Visibility", modifier = Modifier.clickable (
                     onClick = { seePass = !seePass }
                 )) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
+                    .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent)
+
             )
             val context = LocalContext.current
             val user = viewModel.checkUserID(userID).observeAsState()
@@ -219,7 +258,7 @@ fun Register(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(40.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -234,7 +273,6 @@ fun Register(
                 ), color = Color.Red, fontWeight = FontWeight.W600)
             }
         }
-
 
     }
 

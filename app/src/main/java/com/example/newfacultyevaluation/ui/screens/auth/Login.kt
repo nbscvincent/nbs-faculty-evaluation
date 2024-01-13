@@ -2,10 +2,12 @@ package com.example.newfacultyevaluation.ui.screens.auth
 
 
 import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,16 +17,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -53,6 +63,7 @@ fun Login(
     roles: HashMap<String, String> = hashMapOf("20" to "Student", "30" to "Faculty", "40" to "Admin")
 ) {
     val scrollState = rememberScrollState()
+    var showPassword by remember { mutableStateOf(value = false) }
 
     Column(
         modifier = Modifier
@@ -91,12 +102,12 @@ fun Login(
                 text = "Welcome",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W700,
-                letterSpacing = 4.sp
+                letterSpacing = 2.sp
             )
             Text(
                 text = "Sign In to access your account",
                 fontWeight = FontWeight.W300,
-                letterSpacing = 2.sp
+                letterSpacing = 1.sp
             )
         }
 
@@ -109,21 +120,64 @@ fun Login(
                 OutlinedTextField(
                     value = userID,
                     onValueChange = { userID = it },
-                    label = { Text(text = "User ID", letterSpacing = 4.sp) },
+                    label = { Text(text = "User ID", letterSpacing = 2.sp) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        textColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
                 )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     value = pass,
                     onValueChange = { pass = it },
-                    label = { Text(text = "Password", letterSpacing = 4.sp) },
-                    visualTransformation = PasswordVisualTransformation(),
+                    label = { Text(text = "Password", letterSpacing = 2.sp) },
+                    visualTransformation = if (showPassword){
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+
+                    trailingIcon = {
+                        if (showPassword) {
+                            IconButton(onClick = { showPassword = false }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Visibility,
+                                    contentDescription = "hide_password"
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { showPassword = true }) {
+                                Icon(
+                                    imageVector = Icons.Filled.VisibilityOff,
+                                    contentDescription = "hide_password"
+                                )
+                            }
+                        }
+                    },
+
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        textColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+
                 )
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
