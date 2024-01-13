@@ -47,7 +47,7 @@ abstract class FacultyEvaluationDatabase: RoomDatabase() {
                 super.onCreate(db)
                 val adminid = "\'400023\'"
                 val password = "\'admin\'"
-                val role = "\'role\'"
+                val role = "\'Admin\'"
                 db.execSQL("INSERT INTO admin (adminid, password) VALUES ($adminid, $password);")
                 db.execSQL("INSERT INTO user (userid, password, role) VALUES ($adminid, $password, $role);")
             }

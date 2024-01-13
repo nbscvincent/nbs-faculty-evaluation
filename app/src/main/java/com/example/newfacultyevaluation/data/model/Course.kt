@@ -9,9 +9,7 @@ data class Course(
     @PrimaryKey
     @ColumnInfo("courseid")
     val courseID: String,
-    val courseName: String,
-    val facultyID: String,
-    val studentID: String
+    val courseName: String
 )
 
 //val courses = listOf<Course>(

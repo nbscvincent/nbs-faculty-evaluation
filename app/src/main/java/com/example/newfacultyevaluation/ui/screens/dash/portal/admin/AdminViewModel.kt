@@ -1,5 +1,6 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.admin
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Faculty
@@ -36,6 +37,10 @@ class AdminViewModel(private val userRepository: UserRepository,private val facu
             userRepository.upsertUser(User(_facultyID,_fullName,_password, _program, "Faculty", _date))
         }
 
+    }
+
+    fun getAllUsers(): LiveData<List<User>>{
+       return userRepository.getAllUsers()
     }
 
 }
