@@ -107,9 +107,7 @@ fun Register(
         var selectedCourse by rememberSaveable {
             mutableStateOf(course[0])
         }
-<<<<<<< Updated upstream
 
-=======
         var expanded1 by rememberSaveable {
             mutableStateOf(false)
         }
@@ -117,27 +115,18 @@ fun Register(
         var selectedRole by rememberSaveable {
             mutableStateOf(role[0])
         }
->>>>>>> Stashed changes
+
 
         Icon(
             painterResource(id = R.drawable.nbsc_logo),
             contentDescription = "Logo",
             modifier = Modifier
-<<<<<<< Updated upstream
-                .border(1.dp, Color.Transparent)
-=======
->>>>>>> Stashed changes
                 .graphicsLayer(
                     translationX = 10f
                 )
                 .size(200.dp),
             tint = Color.Unspecified)
         Column(
-<<<<<<< Updated upstream
-            modifier = Modifier.border(1.dp, Color.Transparent),
-=======
-            modifier = Modifier,
->>>>>>> Stashed changes
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -158,8 +147,7 @@ fun Register(
                     label = { Text(text = "User ID", letterSpacing = 2.sp) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
-<<<<<<< Updated upstream
-                    modifier = Modifier.width(200.dp)
+                    modifier = Modifier.fillMaxWidth()
                         .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
                     colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.White,
@@ -167,9 +155,6 @@ fun Register(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent)
 
-=======
-                    modifier = Modifier.fillMaxWidth()
->>>>>>> Stashed changes
                 )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -181,13 +166,10 @@ fun Register(
                         },
                         horizontalArrangement = Arrangement.Center
                     ){
-<<<<<<< Updated upstream
-                        Text(text = selectedCourse)
-                        Icon(imageVector = if(expanded) Icons.Rounded.ArrowDropDown else Icons.Rounded.ArrowDropDown, contentDescription = "")
-=======
+
                         Text(text = selectedRole)
                         Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
->>>>>>> Stashed changes
+
                     }
 
                     DropdownMenu(
