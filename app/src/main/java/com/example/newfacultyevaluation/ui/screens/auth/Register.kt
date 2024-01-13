@@ -107,20 +107,37 @@ fun Register(
         var selectedCourse by rememberSaveable {
             mutableStateOf(course[0])
         }
+<<<<<<< Updated upstream
 
+=======
+        var expanded1 by rememberSaveable {
+            mutableStateOf(false)
+        }
+        var role = listOf("ROLE: ","Admin", "Student", "Faculty")
+        var selectedRole by rememberSaveable {
+            mutableStateOf(role[0])
+        }
+>>>>>>> Stashed changes
 
         Icon(
             painterResource(id = R.drawable.nbsc_logo),
             contentDescription = "Logo",
             modifier = Modifier
+<<<<<<< Updated upstream
                 .border(1.dp, Color.Transparent)
+=======
+>>>>>>> Stashed changes
                 .graphicsLayer(
                     translationX = 10f
                 )
                 .size(200.dp),
             tint = Color.Unspecified)
         Column(
+<<<<<<< Updated upstream
             modifier = Modifier.border(1.dp, Color.Transparent),
+=======
+            modifier = Modifier,
+>>>>>>> Stashed changes
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -134,18 +151,14 @@ fun Register(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ){
+
                 OutlinedTextField(
                     value = userID,
                     onValueChange = { userID = it },
                     label = { Text(text = "User ID", letterSpacing = 2.sp) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
+<<<<<<< Updated upstream
                     modifier = Modifier.width(200.dp)
                         .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
                     colors = TextFieldDefaults.textFieldColors(
@@ -154,33 +167,63 @@ fun Register(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent)
 
+=======
+                    modifier = Modifier.fillMaxWidth()
+>>>>>>> Stashed changes
                 )
-                Column(
-                    modifier = Modifier
-                        .clickable { expanded = !expanded },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
                     Row (
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.weight(1f).clickable {
+                            expanded1 = !expanded1
+                        },
                         horizontalArrangement = Arrangement.Center
                     ){
+<<<<<<< Updated upstream
                         Text(text = selectedCourse)
                         Icon(imageVector = if(expanded) Icons.Rounded.ArrowDropDown else Icons.Rounded.ArrowDropDown, contentDescription = "")
+=======
+                        Text(text = selectedRole)
+                        Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+>>>>>>> Stashed changes
                     }
 
                     DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
+                        expanded = expanded1,
+                        onDismissRequest = { expanded1 = false },
                         modifier = Modifier
-                            .width(100.dp)
                             .background(Color.White),
                         offset = DpOffset(x = 10.dp, y= 10.dp)
                     ) {
-                        course.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedCourse = c; expanded = false }) }
+                        role.forEach { r -> DropdownMenuItem(text = { Text(text = r) }, onClick = { selectedRole = r; expanded1 = false }, enabled = r != role[0]) }
                     }
-                }
+
+                    if(selectedRole != "Admin"){
+                        Row (
+                            modifier = Modifier.weight(1f).clickable {
+                                expanded = !expanded
+                            },
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Text(text = selectedCourse)
+                            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                        }
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier
+                                .background(Color.White),
+                            offset = DpOffset(x = 200.dp, y= 10.dp)
+                        ) {
+                            course.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedCourse = c; expanded = false }, enabled = c != course[0]) }
+                        }
+                    }
+
             }
+
 
             OutlinedTextField(
                 value = fullName,
