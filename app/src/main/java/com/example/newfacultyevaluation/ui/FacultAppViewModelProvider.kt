@@ -14,6 +14,7 @@ object FacultyAppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             RegisterViewModel(
+                facultyEvaluationApp().container.facultyRepository,
                 facultyEvaluationApp().container.userRepository,
                 facultyEvaluationApp().container.studentRepository
 

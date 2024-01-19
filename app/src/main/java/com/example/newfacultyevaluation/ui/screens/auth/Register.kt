@@ -73,8 +73,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun Register(
     navController: NavController,
-    viewModel: RegisterViewModel = viewModel(factory = FacultyAppViewModelProvider.Factory),
-    roles: HashMap<String, String> = hashMapOf("20" to "Student", "30" to "Faculty", "40" to "Admin")
+    viewModel: RegisterViewModel = viewModel(factory = FacultyAppViewModelProvider.Factory)
 ) {
 
     var scrollState = rememberScrollState()
@@ -103,9 +102,9 @@ fun Register(
         var expanded by rememberSaveable {
             mutableStateOf(false)
         }
-        var course = listOf("COURSE: ","BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
-        var selectedCourse by rememberSaveable {
-            mutableStateOf(course[0])
+        val programs = listOf("PROGRAM: ","BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
+        var selectedProgram by rememberSaveable {
+            mutableStateOf(programs[0])
         }
 
         var expanded1 by rememberSaveable {
@@ -156,55 +155,7 @@ fun Register(
                     unfocusedIndicatorColor = Color.Transparent)
 
                 )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                    Row (
-                        modifier = Modifier.weight(1f).clickable {
-                            expanded1 = !expanded1
-                        },
-                        horizontalArrangement = Arrangement.Center
-                    ){
 
-                        Text(text = selectedRole)
-                        Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-                    }
-
-                    DropdownMenu(
-                        expanded = expanded1,
-                        onDismissRequest = { expanded1 = false },
-                        modifier = Modifier
-                            .background(Color.White),
-                        offset = DpOffset(x = 10.dp, y= 10.dp)
-                    ) {
-                        role.forEach { r -> DropdownMenuItem(text = { Text(text = r) }, onClick = { selectedRole = r; expanded1 = false }, enabled = r != role[0]) }
-                    }
-
-                    if(selectedRole != "Admin"){
-                        Row (
-                            modifier = Modifier.weight(1f).clickable {
-                                expanded = !expanded
-                            },
-                            horizontalArrangement = Arrangement.Center
-                        ){
-                            Text(text = selectedCourse)
-                            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-                        }
-
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
-                            modifier = Modifier
-                                .background(Color.White),
-                            offset = DpOffset(x = 200.dp, y= 10.dp)
-                        ) {
-                            course.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedCourse = c; expanded = false }, enabled = c != course[0]) }
-                        }
-                    }
-
-            }
 
 
             OutlinedTextField(
@@ -245,6 +196,56 @@ fun Register(
                     unfocusedIndicatorColor = Color.Transparent)
 
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Row (
+                    modifier = Modifier.weight(1f).clickable {
+                        expanded1 = !expanded1
+                    },
+                    horizontalArrangement = Arrangement.Center
+                ){
+
+                    Text(text = selectedRole)
+                    Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+                }
+
+                DropdownMenu(
+                    expanded = expanded1,
+                    onDismissRequest = { expanded1 = false },
+                    modifier = Modifier
+                        .background(Color.White),
+                    offset = DpOffset(x = 10.dp, y= 10.dp)
+                ) {
+                    role.forEach { r -> DropdownMenuItem(text = { Text(text = r) }, onClick = { selectedRole = r; expanded1 = false }, enabled = r != role[0]) }
+                }
+
+                if(selectedRole == "Student"){
+                    Row (
+                        modifier = Modifier.weight(1f).clickable {
+                            expanded = !expanded
+                        },
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(text = selectedProgram)
+                        Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier
+                            .background(Color.White),
+                        offset = DpOffset(x = 200.dp, y= 10.dp)
+                    ) {
+                        programs.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedProgram = c; expanded = false }, enabled = c != programs[0]) }
+                    }
+                }
+
+            }
             val context = LocalContext.current
             val user = viewModel.checkUserID(userID).observeAsState()
             Button(
@@ -254,12 +255,8 @@ fun Register(
                         viewModel.userID = userID
                         viewModel.fullName = fullName
                         viewModel.pass = pass
-                        viewModel.selectedCourse = selectedCourse
-                        roles.keys.forEach {
-                            if(userID.startsWith(it)){
-                                viewModel.role = roles[it].toString()
-                            }
-                        }
+                        viewModel.selectedProgram = selectedProgram
+                        viewModel.role = selectedRole
                         viewModel.date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                         if(viewModel.insertUser()){
                             Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()

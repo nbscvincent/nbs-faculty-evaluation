@@ -89,9 +89,7 @@ fun Login(
         var checked by rememberSaveable {
             mutableStateOf(false)
         }
-        var expanded by rememberSaveable {
-            mutableStateOf(false)
-        }
+
 
         Icon(
             painterResource(id = R.drawable.nbsc_logo),
@@ -189,27 +187,14 @@ fun Login(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier,
-                        horizontalArrangement = Arrangement.spacedBy(
-                            5.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = checked,
-                            onCheckedChange = { checked = !checked },
-                            modifier = Modifier
-                                .size(20.dp)
-                        )
-                        Text(text = "Remember Me")
-                    }
                     Text(text = "Forgot Password?", modifier = Modifier.clickable(
-                        onClick = {}
+                        onClick = {
+                            navController.popBackStack()
+                            navController.navigate(Auth.FORGOTPASS.name)
+                        }
                     ))
                 }
                 val context = LocalContext.current

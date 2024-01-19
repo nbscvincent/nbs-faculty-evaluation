@@ -39,7 +39,6 @@ import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 @Composable
 fun UserList(
     viewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory),
-    loginViewModel: LoginViewModel
 ) {
     Column(
         modifier = Modifier
