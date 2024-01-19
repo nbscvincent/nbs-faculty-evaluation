@@ -89,7 +89,6 @@ fun AdminPortal(
         bottomBar = {
             Column(
                 modifier = Modifier
-                    .background(Color.Green)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
@@ -130,7 +129,7 @@ fun AdminPortal(
                 UserList()
             }
             composable(route = AdminNav.AddCourse.name){
-                AddCourses()
+                AddCourses(viewModel)
             }
             composable(route = AdminNav.EditForm.name){
                 EditForm()
