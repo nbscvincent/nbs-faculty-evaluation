@@ -31,13 +31,6 @@ class AdminViewModel(private val userRepository: UserRepository,private val facu
         get() = fullName
     private val _password: String
         get() = password
-    fun setFaculty(){
-        viewModelScope.launch {
-            facultyRepo.upsertFaculty(Faculty(_facultyID,_fullName,_password,_program))
-            userRepository.upsertUser(User(_facultyID,_fullName,_password, _program, "Faculty", _date))
-        }
-
-    }
 
     fun getAllUsers(): LiveData<List<User>>{
        return userRepository.getAllUsers()

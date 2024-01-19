@@ -14,11 +14,14 @@ import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.Portal
+import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.Splash
+import com.example.newfacultyevaluation.ui.screens.auth.ForgotPass
 import com.example.newfacultyevaluation.ui.screens.auth.Login
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.Register
 import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
+import com.example.newfacultyevaluation.ui.screens.dash.portal.student.Profile
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.StudentPortal
 
 
@@ -50,6 +53,9 @@ fun FacultyApp(){
             }
             composable(Auth.REGISTER.name){
                 Register(navController = navController)
+            }
+            composable(route = Auth.FORGOTPASS.name){
+                ForgotPass(loginViewModel, navController)
             }
         }
 
@@ -108,6 +114,10 @@ fun FacultyApp(){
             }
             composable(route = Portal.ADMIN.name){
                 AdminPortal(navController, loginViewModel = loginViewModel)
+            }
+
+            composable(StudentNav.PROFILE.name){
+                Profile(loginViewModel)
             }
         }
 

@@ -11,6 +11,5 @@ data class Faculty(
     @ColumnInfo("facultyid")
     val facultyID: String,
     val fullName: String,
-    val password: String,
-    val program: String
+    val password: String
 )

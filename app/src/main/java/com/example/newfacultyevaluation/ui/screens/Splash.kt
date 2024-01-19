@@ -55,8 +55,8 @@ fun Splash(
 
             LinearProgressIndicator(
                 modifier = Modifier,
-                color = Color.Green,
-                trackColor = Color.Gray
+                color = Color.Red,
+                trackColor = Color.Unspecified
             )
 
         }

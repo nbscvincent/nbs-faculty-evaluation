@@ -74,7 +74,13 @@ fun StudentPortal(
 
 
                 Row(
-                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .clickable{
+                            navController.popBackStack()
+                            navController.navigate(StudentNav.PROFILE.name)
+                        },
                     horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start)
                 ){
                     Spacer(Modifier.width(5.dp))
@@ -165,6 +171,7 @@ fun StudentPortal(
                 composable(StudentNav.FORM.name) {
                     Form(navController = studentNav)
                 }
+
             }
 
         }

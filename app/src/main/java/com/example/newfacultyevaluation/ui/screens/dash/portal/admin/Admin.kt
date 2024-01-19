@@ -111,18 +111,6 @@ fun AdminPortal(
                     }) {
                         Text(text = "+ Course")
                     }
-                }
-                Row (
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ){
-
-                    Button(onClick = {
-                        adminNavController.popBackStack()
-                        adminNavController.navigate(AdminNav.AddStudent.name)
-                    }) {
-                        Text(text = "+ Student")
-                    }
                     Button(onClick = {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.EditForm.name)
@@ -130,6 +118,7 @@ fun AdminPortal(
                         Text(text = "Edit Form")
                     }
                 }
+
             }
         }
 
@@ -138,13 +127,10 @@ fun AdminPortal(
         NavHost(navController = adminNavController, startDestination = AdminNav.UserList.name,modifier = Modifier.padding(it)){
 
             composable(route = AdminNav.UserList.name){
-                UserList(loginViewModel = loginViewModel)
+                UserList()
             }
             composable(route = AdminNav.AddCourse.name){
                 AddCourses()
-            }
-            composable(route = AdminNav.AddStudent.name){
-                AddStudent()
             }
             composable(route = AdminNav.EditForm.name){
                 EditForm()
