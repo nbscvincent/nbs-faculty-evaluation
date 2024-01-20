@@ -36,4 +36,6 @@ class AdminViewModel(private val userRepository: UserRepository,private val facu
        return userRepository.getAllUsers()
     }
 
+
+
 }
