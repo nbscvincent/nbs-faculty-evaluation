@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
@@ -21,6 +22,7 @@ import com.example.newfacultyevaluation.ui.screens.auth.Login
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.Register
 import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
+import com.example.newfacultyevaluation.ui.screens.dash.portal.faculty.FacultyPortal
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.Profile
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.StudentPortal
 
@@ -96,21 +98,7 @@ fun FacultyApp(){
             }
             composable(route = Portal.FACULTY.name){
                 println("faculty: ${preferences.all}")
-                val context1 = LocalContext.current
-                Button(
-                    onClick = {
-                        loginViewModel.status = false
-                        val prefer = context1.getSharedPreferences("prefs", 0)
-                        prefer.edit()
-                            .clear()
-                            .apply()
-
-                        navController.popBackStack()
-                        navController.navigate(Main.AUTH.name)
-                    }
-                ) {
-                    Text(text = "Faculty Log out")
-                }
+                FacultyPortal(navController = navController, loginViewModel = loginViewModel)
             }
             composable(route = Portal.ADMIN.name){
                 AdminPortal(navController, loginViewModel = loginViewModel)

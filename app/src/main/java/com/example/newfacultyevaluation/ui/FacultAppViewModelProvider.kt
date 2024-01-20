@@ -8,6 +8,7 @@ import com.example.newfacultyevaluation.FacultyEvaluationApp
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.RegisterViewModel
 import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminViewModel
+import com.example.newfacultyevaluation.ui.screens.dash.portal.faculty.FacultyViewModel
 
 object FacultyAppViewModelProvider {
 
@@ -34,6 +35,14 @@ object FacultyAppViewModelProvider {
         initializer {
             AdminViewModel(
                 facultyEvaluationApp().container.userRepository,
+                facultyEvaluationApp().container.adminRepository
+            )
+        }
+    }
+
+    val FacultyFactory = viewModelFactory {
+        initializer {
+            FacultyViewModel(
                 facultyEvaluationApp().container.facultyRepository
             )
         }
