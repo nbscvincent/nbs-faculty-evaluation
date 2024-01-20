@@ -129,7 +129,7 @@ fun AdminPortal(
                 UserList()
             }
             composable(route = AdminNav.AddCourse.name){
-                AddCourses(viewModel)
+                AddCourses(adminNavController,viewModel)
             }
             composable(route = AdminNav.EditForm.name){
                 EditForm()

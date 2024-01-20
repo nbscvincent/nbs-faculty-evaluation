@@ -1,6 +1,8 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.admin
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,14 +35,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.Course
+import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.ui.nav.AdminNav
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCourses(
+    navController: NavController,
     adminViewModel: AdminViewModel
 ) {
     var courses by remember {
@@ -52,6 +61,14 @@ fun AddCourses(
 
     var selectedFaculty by remember {
         mutableStateOf("Select Faculty")
+    }
+
+    var selectedFacultyID by remember {
+        mutableStateOf("")
+    }
+
+    var validAll by remember {
+        mutableStateOf(false)
     }
     
     Column(
@@ -80,7 +97,7 @@ fun AddCourses(
             ) {
                 users.value?.forEach { user ->
                     if(user.role == "Faculty"){
-                        DropdownMenuItem(text = { Text(text = user.fullName.toString()) }, onClick = { selectedFaculty = user.fullName.toString();expanded = false })
+                        DropdownMenuItem(text = { Text(text = user.fullName.toString()) }, onClick = { selectedFacultyID = user.userID;selectedFaculty = user.fullName.toString();expanded = false })
                     }
                 }
 
@@ -88,7 +105,10 @@ fun AddCourses(
         }
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.height(550.dp)
+            modifier = Modifier
+                .height(550.dp)
+                .padding(10.dp)
+                .border(1.dp, Color.Black)
         ){
             item {
                 // Additional row for entering a new course
@@ -153,14 +173,33 @@ fun AddCourses(
 
         }
         Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .border(2.dp, Color.Black)
+                .height(50.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ){
+            val context = LocalContext.current
+
             Button(onClick = {
+                courses.forEach {
+                    validAll = it.courseID.isNotBlank() && it.courseName.isNotBlank()
+                }
+                if(validAll){
+                    courses.forEach {
+                        adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
+                    }
+                    navController.popBackStack()
+                    navController.navigate(AdminNav.AddCourse.name)
+                    Toast.makeText(context,"Successfully Added !", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"Please fill out all fields", Toast.LENGTH_SHORT).show()
+                }
 
             }) {
 
+                Text(text = "Save")
             }
             Icon(
                 imageVector = Icons.Outlined.Add,

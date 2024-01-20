@@ -1,11 +1,13 @@
 package com.example.newfacultyevaluation.data
 
 import android.content.Context
+import com.example.newfacultyevaluation.data.offlineRepo.OfflineAdminRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineCourseRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineFacultyRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineProgramRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineStudentRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineUserRepository
+import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.CourseRepo
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.ProgramRepo
@@ -19,6 +21,7 @@ interface FacultyAppContainer {
     val studentRepository: StudentRepo
     val courseRepository: CourseRepo
     val programRepository: ProgramRepo
+    val adminRepository: AdminRepo
 }
 
 class FacultyAppDataContainer(private val context: Context) : FacultyAppContainer {
@@ -40,4 +43,8 @@ class FacultyAppDataContainer(private val context: Context) : FacultyAppContaine
     override val programRepository: ProgramRepo by lazy {
         OfflineProgramRepository(FacultyEvaluationDatabase.getDatabase(context).programDao())
     }
+    override val adminRepository: AdminRepo by lazy {
+        OfflineAdminRepository(FacultyEvaluationDatabase.getDatabase(context).adminDao())
+    }
+
 }
