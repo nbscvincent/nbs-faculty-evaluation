@@ -17,6 +17,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.EditNote
+import androidx.compose.material.icons.rounded.LibraryAdd
+import androidx.compose.material.icons.rounded.PeopleAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -97,25 +100,30 @@ fun AdminPortal(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ){
-
-                    Button(onClick = {
+                    Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.UserList.name)
-                    }) {
-                        Text(text = "User List")
-                    }
-                    Button(onClick = {
+                    },
+                        imageVector = Icons.Rounded.PeopleAlt,
+                        contentDescription = "User List"
+                    )
+
+                    Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.AddCourse.name)
-                    }) {
-                        Text(text = "+ Course")
-                    }
-                    Button(onClick = {
+                    },
+                        imageVector = Icons.Rounded.LibraryAdd,
+                        contentDescription = "Add Course"
+                    )
+
+                    Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.EditForm.name)
-                    }) {
-                        Text(text = "Edit Form")
-                    }
+                    },
+                        imageVector = Icons.Rounded.EditNote,
+                        contentDescription = "Edit Form"
+                    )
+
                 }
 
             }
