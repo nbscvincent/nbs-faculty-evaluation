@@ -77,7 +77,7 @@ fun StudentPortal(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .clickable{
+                        .clickable {
                             navController.popBackStack()
                             navController.navigate(StudentNav.PROFILE.name)
                         },
@@ -98,8 +98,9 @@ fun StudentPortal(
                         .height(50.dp)
                         .clickable {
                             viewModel.status = false
-                            val preferences = context.getSharedPreferences("prefs",0)
-                            preferences.edit()
+                            val preferences = context.getSharedPreferences("prefs", 0)
+                            preferences
+                                .edit()
                                 .clear()
                                 .apply()
 
@@ -163,7 +164,8 @@ fun StudentPortal(
                 modifier = Modifier.padding(it)
             ) {
                 composable(route = StudentNav.HOME.name) {
-                    SFaculty(viewModel, studentNav, navController)
+//                    SFaculty(viewModel, studentNav, navController)
+                    Form(navController = studentNav)
                 }
                 composable(StudentNav.COURSES.name) {
                     Courses(navController = studentNav)
