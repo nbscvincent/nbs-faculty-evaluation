@@ -19,6 +19,4 @@ fun SFaculty(
     }
 
 
-
-
 }

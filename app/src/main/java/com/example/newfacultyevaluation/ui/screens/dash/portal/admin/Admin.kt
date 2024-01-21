@@ -19,7 +19,9 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.LibraryAdd
+import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.PeopleAlt
+import androidx.compose.material.icons.rounded.PersonAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -110,6 +112,15 @@ fun AdminPortal(
 
                     Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
+                        adminNavController.navigate(AdminNav.AddUser.name)
+                    },
+                        imageVector = Icons.Rounded.PersonAdd,
+                        contentDescription = "Add User"
+                    )
+
+
+                    Icon(modifier = Modifier.clickable {
+                        adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.AddCourse.name)
                     },
                         imageVector = Icons.Rounded.LibraryAdd,
@@ -136,6 +147,10 @@ fun AdminPortal(
             composable(route = AdminNav.UserList.name){
                 UserList()
             }
+            composable(route = AdminNav.AddUser.name){
+                AddUser(adminNavController,viewModel)
+            }
+
             composable(route = AdminNav.AddCourse.name){
                 AddCourses(adminNavController,viewModel)
             }

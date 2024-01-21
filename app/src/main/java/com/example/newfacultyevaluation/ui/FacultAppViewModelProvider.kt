@@ -35,7 +35,9 @@ object FacultyAppViewModelProvider {
         initializer {
             AdminViewModel(
                 facultyEvaluationApp().container.userRepository,
-                facultyEvaluationApp().container.adminRepository
+                facultyEvaluationApp().container.adminRepository,
+                facultyEvaluationApp().container.studentRepository,
+                facultyEvaluationApp().container.facultyRepository
             )
         }
     }

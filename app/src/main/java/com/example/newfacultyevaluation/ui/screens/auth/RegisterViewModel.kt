@@ -82,7 +82,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                 insertSuccessful = true
             }
 
-        println("Sucess : $insertSuccessful")
+        println("Success : $insertSuccessful")
         return insertSuccessful
     }
     fun checkUserID(userID: String): LiveData<User>{

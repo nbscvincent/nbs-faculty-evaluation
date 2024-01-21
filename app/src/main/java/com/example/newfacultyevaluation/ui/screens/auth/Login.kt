@@ -128,7 +128,8 @@ fun Login(
                     label = { Text(text = "User ID", letterSpacing = 2.sp) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White,
@@ -171,7 +172,8 @@ fun Login(
                     },
 
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
 
                     colors = TextFieldDefaults.textFieldColors(
@@ -183,20 +185,27 @@ fun Login(
 
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "Forgot Password?", modifier = Modifier.clickable(
-                        onClick = {
-                            navController.popBackStack()
-                            navController.navigate(Auth.FORGOTPASS.name)
-                        }
-                    ))
-                }
+            Spacer(modifier = Modifier
+                .size(20.dp)
+            )
+
+
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(50.dp),
+//                    horizontalArrangement = Arrangement.End,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(text = "Forgot Password?", modifier = Modifier.clickable(
+//                        onClick = {
+//                            navController.popBackStack()
+//                            navController.navigate(Auth.FORGOTPASS.name)
+//                        }
+//                    ))
+//                }
+
+
                 val context = LocalContext.current
                 val user by viewModel.getUser(userID).observeAsState()
                 Button(

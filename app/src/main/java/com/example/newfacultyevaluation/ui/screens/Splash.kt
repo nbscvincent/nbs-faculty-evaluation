@@ -35,7 +35,7 @@ fun Splash(
     }
 
     LaunchedEffect(key1 = appearSplash){
-        delay(5000)
+        delay(2000)
         appearSplash = true
     }
         Column(

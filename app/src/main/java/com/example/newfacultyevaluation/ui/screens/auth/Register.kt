@@ -110,7 +110,8 @@ fun Register(
         var expanded1 by rememberSaveable {
             mutableStateOf(false)
         }
-        var role = listOf("ROLE: ","Admin", "Student", "Faculty")
+        //var role = listOf("ROLE: ","Admin", "Student", "Faculty")
+        var role = listOf("ROLE: ","Student")
         var selectedRole by rememberSaveable {
             mutableStateOf(role[0])
         }

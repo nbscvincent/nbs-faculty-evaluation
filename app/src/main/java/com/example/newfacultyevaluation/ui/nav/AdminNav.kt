@@ -4,5 +4,6 @@ enum class AdminNav {
     UserList,
     AddCourse,
     EditForm,
+    AddUser,
     AddStudent
 }
