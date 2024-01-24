@@ -38,11 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newfacultyevaluation.data.model.Course
+import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
@@ -52,7 +54,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentPortal(
-    viewModel: LoginViewModel,
+    viewModel: StudentViewModel  = viewModel(factory = FacultyAppViewModelProvider.StudentFactory),
+    loginViewModel: LoginViewModel,
     navController: NavController
 ) {
     val studentNav = rememberNavController()
@@ -97,7 +100,7 @@ fun StudentPortal(
                     modifier = Modifier
                         .height(50.dp)
                         .clickable {
-                            viewModel.status = false
+                            loginViewModel.status = false
                             val preferences = context.getSharedPreferences("prefs", 0)
                             preferences
                                 .edit()
@@ -129,7 +132,8 @@ fun StudentPortal(
         Scaffold(
             topBar = {
                 NavigationBar(
-                    containerColor = Color.White
+                    containerColor = Color.Red,
+                    modifier = Modifier.height(70.dp)
                 ) {
                     Row(
                         modifier = Modifier
@@ -143,14 +147,15 @@ fun StudentPortal(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = "Settings",
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(30.dp)
                                 .clickable {
                                     scope.launch {
                                         drawerState.apply {
                                             if (isClosed) open() else close()
                                         }
                                     }
-                                }
+                                },
+                            tint = Color.White
                         )
                     }
                 }
@@ -164,14 +169,14 @@ fun StudentPortal(
                 modifier = Modifier.padding(it)
             ) {
                 composable(route = StudentNav.HOME.name) {
-//                    SFaculty(viewModel, studentNav, navController)
-                    Form(navController = studentNav)
+                    SFaculty(loginViewModel = loginViewModel, studentNav, navController, viewModel)
+//                    Form(navController = studentNav)
                 }
                 composable(StudentNav.COURSES.name) {
                     Courses(navController = studentNav)
                 }
                 composable(StudentNav.FORM.name) {
-                    Form(navController = studentNav)
+                    Form(navController = studentNav, viewModel)
                 }
 
             }

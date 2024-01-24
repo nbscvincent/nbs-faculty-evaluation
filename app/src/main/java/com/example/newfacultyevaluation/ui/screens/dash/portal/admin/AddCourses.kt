@@ -51,6 +51,7 @@ fun AddCourses(
     navController: NavController,
     adminViewModel: AdminViewModel
 ) {
+
     var courses by remember {
         mutableStateOf(mutableStateListOf(Course("", "")))
     }
@@ -77,7 +78,31 @@ fun AddCourses(
         verticalArrangement = Arrangement.Center
     ) {
         val users = adminViewModel.getAllUsers().observeAsState()
+        Row (
+            modifier = Modifier
+                .clickable {
+                    expanded = !expanded
+                },
+            horizontalArrangement = Arrangement.Center
+        ){
 
+            Text(text = selectedFaculty)
+            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(Color.White)
+            ) {
+                users.value?.forEach { user ->
+                    if(user.role == "Faculty"){
+                        DropdownMenuItem(text = { Text(text = user.fullName.toString()) }, onClick = { selectedFacultyID = user.userID;selectedFaculty = user.fullName.toString();expanded = false })
+                    }
+                }
+
+            }
+        }
         Row (
             modifier = Modifier
                 .clickable {

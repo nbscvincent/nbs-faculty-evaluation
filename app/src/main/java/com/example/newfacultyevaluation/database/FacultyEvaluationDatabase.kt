@@ -14,7 +14,9 @@ import com.example.newfacultyevaluation.dao.UserDao
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
+import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Program
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
@@ -28,7 +30,10 @@ import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
                 Program::class,
                 Course::class,
                 Admin::class,
-                CourseFaculty::class
+                CourseFaculty::class,
+                CourseStudent::class,
+                FormStudentFaculty::class,
+
                ],
     version = 1,
     exportSchema = false

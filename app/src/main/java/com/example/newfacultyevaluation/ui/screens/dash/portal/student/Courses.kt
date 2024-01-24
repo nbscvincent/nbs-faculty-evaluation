@@ -23,6 +23,7 @@ import com.example.newfacultyevaluation.data.model.Course
 fun Courses(
     navController: NavController
 ) {
+
     var completed: ArrayList<Course> = ArrayList()
     var pending: ArrayList<Course> = ArrayList()
 

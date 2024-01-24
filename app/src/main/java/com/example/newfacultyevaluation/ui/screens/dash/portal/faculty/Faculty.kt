@@ -60,6 +60,11 @@ fun FacultyPortal(
     viewModel: FacultyViewModel = viewModel(factory = FacultyAppViewModelProvider.FacultyFactory),
     navController: NavController
 ) {
+
+    /*
+        Select courses
+        Course Name, Total Students, , Rating
+     */
    Column {
        val courses = viewModel.getCourses(loginViewModel.userID).observeAsState()
        courses.value?.forEach {

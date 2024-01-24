@@ -94,7 +94,7 @@ fun FacultyApp(){
             }
             composable(route = Portal.STUDENT.name){
                 println("Student: ${preferences.all}")
-                StudentPortal(loginViewModel,navController)
+                StudentPortal(loginViewModel = loginViewModel, navController = navController)
             }
             composable(route = Portal.FACULTY.name){
                 println("faculty: ${preferences.all}")
