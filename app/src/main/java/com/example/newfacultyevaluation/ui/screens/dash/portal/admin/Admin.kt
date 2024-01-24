@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -86,7 +87,9 @@ fun AdminPortal(
                         .apply()
                     navController.popBackStack()
                     navController.navigate(Main.AUTH.name)
-                }) {
+                },
+                    shape = RoundedCornerShape(10.dp)
+                ) {
                     Text(text = "Log out")
                 }
             }
@@ -105,7 +108,7 @@ fun AdminPortal(
                     Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.UserList.name)
-                    },
+                    }.weight(1f),
                         imageVector = Icons.Rounded.PeopleAlt,
                         contentDescription = "User List"
                     )
@@ -113,7 +116,7 @@ fun AdminPortal(
                     Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.AddUser.name)
-                    },
+                    }.weight(1f),
                         imageVector = Icons.Rounded.PersonAdd,
                         contentDescription = "Add User"
                     )
@@ -122,7 +125,7 @@ fun AdminPortal(
                     Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.AddCourse.name)
-                    },
+                    }.weight(1f),
                         imageVector = Icons.Rounded.LibraryAdd,
                         contentDescription = "Add Course"
                     )
@@ -130,7 +133,7 @@ fun AdminPortal(
                     Icon(modifier = Modifier.clickable {
                         adminNavController.popBackStack()
                         adminNavController.navigate(AdminNav.EditForm.name)
-                    },
+                    }.weight(1f),
                         imageVector = Icons.Rounded.EditNote,
                         contentDescription = "Edit Form"
                     )

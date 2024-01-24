@@ -25,25 +25,23 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
     private val answeredQuestionsSet = mutableSetOf<Int>()
 
     fun updateTotalPoints(delta: Int) {
-        _totalPoints.value += delta
+        _totalPoints.intValue += delta
     }
 
     fun markQuestionAnswered(questionId: Int) {
         if (!answeredQuestionsSet.contains(questionId)) {
-            _answeredQuestions.value++
+            _answeredQuestions.intValue++
             answeredQuestionsSet.add(questionId)
         }
     }
 
     fun resetAnsweredQuestions() {
-        _answeredQuestions.value = 0
-        _totalPoints.value = 0
+        _answeredQuestions.intValue = 0
+        _totalPoints.intValue = 0
         answeredQuestionsSet.clear()
     }
 
-    fun removeAnsweredQuestion(id: Int){
-        answeredQuestionsSet.remove(id)
-    }
+
     fun upsertCourseStudent(courseStudent: CourseStudent){
         viewModelScope.launch {
             studentRepo.upsertCourseStudent(courseStudent)
@@ -68,8 +66,8 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
         return studentRepo.getAllCourses()
     }
 
-    fun getStudentFaculty(): LiveData<List<StudentFaculty>>{
-        return studentRepo.getStudentFaculty()
+    fun getStudentFaculty(id: String, selectedCourse: String): LiveData<String>{
+        return studentRepo.getStudentFaculty(id, selectedCourse)
     }
 
 }

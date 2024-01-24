@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.Course
@@ -67,8 +70,13 @@ fun SFaculty(
         mutableStateOf(false)
     }
 
+
+
     val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).observeAsState()
 
+    var selectedCourse by remember {
+        mutableStateOf("")
+    }
     BackHandler {
         studentNavController.popBackStack()
         studentNavController.navigate(StudentNav.HOME.name)
@@ -77,7 +85,7 @@ fun SFaculty(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        println("AJhsdjasdhk$courses")
+
         Row (
             modifier = Modifier
                 .padding(20.dp)
@@ -97,7 +105,9 @@ fun SFaculty(
                 Text(text = "No Courses Found", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(text = "Tap \"+\" icon to enroll your courses.")
         } else {
+
             courses.value?.forEach { course ->
+
                 Card(
                         modifier = Modifier
                             .padding(10.dp)
@@ -110,6 +120,7 @@ fun SFaculty(
                                 .fillMaxSize()
                                 .clickable {
                                     openDataPrivacy = true
+                                    selectedCourse = course.courseID
                                 }
                         ){
                             Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
@@ -120,34 +131,50 @@ fun SFaculty(
             }
         }
         if(openDataPrivacy){
-            Dialog(onDismissRequest = {}) {
+            Dialog(onDismissRequest = { openDataPrivacy = false}) {
+                var checked by remember {
+                    mutableStateOf(false)
+                }
+
                 Column(
                     modifier = Modifier
-                        .clip(shape = RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
-                        .padding(20.dp)
-                        .fillMaxSize(0.9f)
-                        .verticalScroll(rememberScrollState())
+                        .fillMaxHeight(0.85f),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Directions:\n" +
-                            "\n" +
-                            "The form uses a 4-point rating scale.\n" +
-                            "\n" +
-                            "4: Strongly Agree\n" +
-                            "3: Agree\n" +
-                            "2: Disagree\n" +
-                            "1: Strongly Disagree\n" +
-                            "\n" +
-                            "Please carefully read each statement and indicate whether you Strongly Agree, Agree, Disagree, or Strongly Disagree. Please make the response that best describe your teacher.\n" +
-                            "\n" +
-                            "This evaluation is CONFIDENTIAL. \n" +
-                            "\n" +
-                            "Confidential means that only HR and key personnel have access to information about who made the evaluation, but this information is not available to anyone outside the office. The results are kept confidential, and HR will never associate a survey respondent's identity with their evaluation response in any kind of reporting. The evaluation results are always aggregated. All evaluation results are combined together and presented as a group. Comments are never associated with a respondent's identity, however, the comments are reported verbatim, in random order."
-                    )
-                    var checked by remember {
-                        mutableStateOf(false)
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(10.dp))
+                            .height(500.dp)
+                            .verticalScroll(
+                                rememberScrollState()
+                            )
+                            .padding(10.dp)
+
+                    ) {
+                        Text(text = "Directions:\n" +
+                                "\n" +
+                                "The form uses a 4-point rating scale.\n" +
+                                "\n" +
+                                "4: Strongly Agree\n" +
+                                "3: Agree\n" +
+                                "2: Disagree\n" +
+                                "1: Strongly Disagree\n" +
+                                "\n" +
+                                "Please carefully read each statement and indicate whether you Strongly Agree, Agree, Disagree, or Strongly Disagree. Please make the response that best describe your teacher.\n" +
+                                "\n" +
+                                "This evaluation is CONFIDENTIAL. \n" +
+                                "\n" +
+                                "Confidential means that only HR and key personnel have access to information about who made the evaluation, but this information is not available to anyone outside the office. The results are kept confidential, and HR will never associate a survey respondent's identity with their evaluation response in any kind of reporting. The evaluation results are always aggregated. All evaluation results are combined together and presented as a group. Comments are never associated with a respondent's identity, however, the comments are reported verbatim, in random order."
+                        )
                     }
-                    Row(){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+
+                    ){
                         Checkbox(checked = checked, onCheckedChange = { checked = !checked })
                         Text("I have read the above statement")
                     }
@@ -155,7 +182,7 @@ fun SFaculty(
                     Button(
                         onClick = {
                             studentNavController.popBackStack()
-                            studentNavController.navigate(StudentNav.FORM.name)
+                            studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse")
                         },
                         enabled = checked
                     ){

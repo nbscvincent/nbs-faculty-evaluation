@@ -18,5 +18,5 @@ interface StudentRepo {
     suspend fun upsertCourse(course: Course)
     fun getAllCourses(): LiveData<List<Course>>
 
-    fun getStudentFaculty(): LiveData<List<StudentFaculty>>
+    fun getStudentFaculty(id: String, selectedCourse: String): LiveData<String>
 }

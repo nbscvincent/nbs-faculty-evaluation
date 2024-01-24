@@ -42,8 +42,8 @@ class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo 
         return studentDao.getAllCourses()
     }
 
-    override fun getStudentFaculty(): LiveData<List<StudentFaculty>> {
-        return studentDao.getStudentFaculty()
+    override fun getStudentFaculty(id: String, selectedCourse: String): LiveData<String> {
+        return studentDao.getStudentFaculty(id, selectedCourse)
     }
 
 //    override fun getStudentFaculty(): LiveData<List<StudentFaculty>> {

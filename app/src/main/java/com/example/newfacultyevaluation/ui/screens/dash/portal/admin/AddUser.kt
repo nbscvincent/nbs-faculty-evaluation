@@ -303,6 +303,7 @@ fun AddUser(
                                 viewModel.date = LocalDateTime.now()
                                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                                 if (viewModel.insertUser()) {
+                                    println("ajslkdakldakjl${viewModel.userID}")
                                     Toast.makeText(context, "Successfully Added", Toast.LENGTH_LONG)
                                         .show()
                                         navController.popBackStack()

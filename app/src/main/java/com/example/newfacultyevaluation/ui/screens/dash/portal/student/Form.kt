@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,16 +32,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.questions
 import com.example.newfacultyevaluation.ui.nav.StudentNav
+import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 
 @Composable
 fun Form(
     navController: NavController,
-    viewModel: StudentViewModel
+    viewModel: StudentViewModel,
+    loginViewModel: LoginViewModel,
+    selectedCourse: String
 ) {
 
 
@@ -70,7 +78,7 @@ fun Form(
             .padding(20.dp),
     ){
 
-        QuestionCard(viewModel)
+        QuestionCard(viewModel, loginViewModel, selectedCourse)
 
     }
 
@@ -80,10 +88,14 @@ fun Form(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionCard(
-    viewModel: StudentViewModel
+    viewModel: StudentViewModel,
+    loginViewModel: LoginViewModel,
+    selectedCourse: String
 ){
     val points = listOf(4,3,2,1)
+    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).observeAsState()
 
+    Text(text = "Evaluation for ${faculty.value}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 20.sp)
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
 
@@ -167,7 +179,9 @@ fun QuestionCard(
     ) {
 
         Button(
-            onClick = {},
+            onClick = {
+
+            },
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth(),

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
@@ -103,41 +104,19 @@ fun AddCourses(
 
             }
         }
-        Row (
-            modifier = Modifier
-                .clickable {
-                    expanded = !expanded
-                },
-            horizontalArrangement = Arrangement.Center
-        ){
 
-            Text(text = selectedFaculty)
-            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .background(Color.White)
-            ) {
-                users.value?.forEach { user ->
-                    if(user.role == "Faculty"){
-                        DropdownMenuItem(text = { Text(text = user.fullName.toString()) }, onClick = { selectedFacultyID = user.userID;selectedFaculty = user.fullName.toString();expanded = false })
-                    }
-                }
-
-            }
-        }
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+
                 .height(550.dp)
                 .padding(10.dp)
                 .border(1.dp, Color.Black)
+                .padding(10.dp)
         ){
             item {
                 // Additional row for entering a new course
-                Text(text = "Course 1")
+                Text(text = "Course 1".uppercase())
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -160,7 +139,7 @@ fun AddCourses(
                 }
             }
             items(courses.size - 1) { index ->
-                Text(text = "Course ${index+2}")
+                Text(text = "Course ${index+2}".uppercase())
                 OutlinedTextField(
                     value = courses[index + 1].courseID,
                     onValueChange = { newValue ->
@@ -199,7 +178,7 @@ fun AddCourses(
         }
         Row (
             modifier = Modifier
-                .border(2.dp, Color.Black)
+                .padding(horizontal = 10.dp)
                 .height(50.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
@@ -222,8 +201,10 @@ fun AddCourses(
                     Toast.makeText(context,"Please fill out all fields", Toast.LENGTH_SHORT).show()
                 }
 
-            }) {
-
+            },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(text = "Save")
             }
             Icon(
@@ -235,6 +216,7 @@ fun AddCourses(
                         courses.add(Course("", ""))
                     }
                     .size(40.dp)
+                    .weight(1f)
             )
         }
 

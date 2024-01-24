@@ -40,9 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Main
@@ -175,8 +177,14 @@ fun StudentPortal(
                 composable(StudentNav.COURSES.name) {
                     Courses(navController = studentNav)
                 }
-                composable(StudentNav.FORM.name) {
-                    Form(navController = studentNav, viewModel)
+                composable(
+                    route = StudentNav.FORM.name+"/{course}",
+                    arguments = listOf(navArgument("course"){ type = NavType.StringType})
+                ) {nbe ->
+                    nbe.arguments?.getString("course")?.let { course ->
+                        Form(navController = studentNav, viewModel, loginViewModel, course)
+                    }
+
                 }
 
             }

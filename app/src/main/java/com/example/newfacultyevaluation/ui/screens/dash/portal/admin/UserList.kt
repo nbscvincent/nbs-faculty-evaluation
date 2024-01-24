@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -54,8 +55,10 @@ fun UserList(
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
+
+                    .width(500.dp)
+                    .verticalScroll(rememberScrollState())
+                    .height(550.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
 
@@ -68,61 +71,71 @@ fun UserList(
                     Text(text = "User ID", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         users.value?.forEach {
-                            Text(text = it.userID)
+                            Text(text = it.userID, modifier = Modifier
+                                .height(50.dp)
+                                .weight(1f))
                         }
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .weight(1f)
                 ) {
 
                     Text(text = "Name", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     users.value?.forEach {
-                        Text(text = "${it.fullName}")
+                        Text(text = "${it.fullName}", modifier = Modifier
+                            .height(50.dp)
+                            .weight(1f))
                     }
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .weight(1f)
                 ) {
 
                     Text(text = "Role", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     users.value?.forEach {
-                        Text(text = it.role)
+                        Text(text = it.role, modifier = Modifier
+                            .height(50.dp)
+                            .weight(1f))
                     }
                 }
 
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .weight(1f)
                 ) {
 
                     Text(text = "", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-                    users.value?.forEach {
-                        Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                    users.value?.forEach { user ->
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .width(100.dp)
+                        ){
+                            Icon(Icons.Filled.Edit, contentDescription = "Edit",modifier = Modifier
+                                .weight(1f))
+                            Icon(Icons.Filled.Delete, contentDescription = "Delete",modifier = Modifier
+                                .weight(1f))
+                        }
 
                     }
+
                 }
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(10.dp)
-                ) {
 
-                    Text(text = "", textAlign = TextAlign.Center, modifier = Modifier
-                        .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-
-                    users.value?.forEach {
-                        Icon(Icons.Filled.Delete, contentDescription = "Delete")
-
-                    }
-                }
 
 
             }
