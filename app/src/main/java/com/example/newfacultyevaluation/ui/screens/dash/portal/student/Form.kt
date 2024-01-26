@@ -1,6 +1,7 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.Course
+import com.example.newfacultyevaluation.data.model.Form
+import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.questions
 import com.example.newfacultyevaluation.ui.nav.StudentNav
@@ -74,7 +77,7 @@ fun Form(
             .padding(20.dp),
     ){
 
-        QuestionCard(viewModel, loginViewModel, selectedCourse)
+        QuestionCard(navController,viewModel, loginViewModel, selectedCourse)
 
     }
 
@@ -84,6 +87,7 @@ fun Form(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionCard(
+    navController: NavController,
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
     selectedCourse: String
@@ -171,10 +175,13 @@ fun QuestionCard(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        val context = LocalContext.current
         Button(
             onClick = {
-
+                viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value.toString()))
+                Toast.makeText(context, "Form submitted", Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
+                navController.navigate(StudentNav.HOME.name)
             },
             modifier = Modifier
                 .height(50.dp)
@@ -182,7 +189,7 @@ fun QuestionCard(
             shape = RoundedCornerShape(10.dp),
             enabled = viewModel.answeredQuestions.value >= 18
         ){
-            Text("Submit Form")
+            Text("Submit")
         }
     }
 
