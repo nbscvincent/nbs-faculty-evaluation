@@ -64,10 +64,11 @@ abstract class FacultyEvaluationDatabase: RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 val adminid = "\'400023\'"
+                val fullName = "\'Admin\'"
                 val password = "\'admin\'"
                 val role = "\'Admin\'"
-                db.execSQL("INSERT INTO admin (adminid,  password) VALUES ($adminid, $password);")
-                db.execSQL("INSERT INTO user (userid,  password, role) VALUES ($adminid, $password, $role);")
+                db.execSQL("INSERT INTO admin (adminid, password) VALUES ($adminid, $password);")
+                db.execSQL("INSERT INTO user (userid, fullName, password, role) VALUES ($adminid, $fullName, $password, $role);")
             }
         }
     }

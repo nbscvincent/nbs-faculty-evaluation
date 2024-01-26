@@ -193,6 +193,7 @@ fun AddCourses(
                 if(validAll){
                     courses.forEach {
                         adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
+                        adminViewModel.upsertCourse(Course(it.courseID, it.courseName))
                     }
                     navController.popBackStack()
                     navController.navigate(AdminNav.AddCourse.name)

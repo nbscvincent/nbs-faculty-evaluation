@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Admin
+import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
@@ -128,6 +129,10 @@ class AdminViewModel(private val userRepository: UserRepository,
         return insertSuccessful
     }
 
-
+    fun upsertCourse(course: Course){
+        viewModelScope.launch {
+            adminRepo.upsertCourse(course)
+        }
+    }
 
 }

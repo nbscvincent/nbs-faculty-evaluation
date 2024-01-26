@@ -24,6 +24,12 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
 
     private val answeredQuestionsSet = mutableSetOf<Int>()
 
+    private val _formID = mutableIntStateOf(0)
+    val formID: State<Int> get() = _formID
+    fun updateFormID(){
+       _formID.intValue = (Math.random() * 100000).toInt()
+    }
+
     fun updateTotalPoints(delta: Int) {
         _totalPoints.intValue += delta
     }

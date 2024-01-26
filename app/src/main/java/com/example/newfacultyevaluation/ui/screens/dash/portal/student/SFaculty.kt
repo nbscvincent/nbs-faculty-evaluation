@@ -8,18 +8,22 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.LibraryAdd
@@ -98,9 +102,7 @@ fun SFaculty(
         var showCheckBox by remember {
             mutableStateOf(false)
         }
-        var selectedCourses by remember {
-            mutableStateOf(mutableStateListOf(""))
-        }
+
         Row (
             modifier = Modifier
                 .padding(20.dp)
@@ -120,46 +122,64 @@ fun SFaculty(
                 contentDescription = "Add Course",
                 modifier = Modifier.clickable {
                     openDialog = true
+                    showCheckBox = false
                 }
             )
         }
 
-        if (courses.value == null) {
+        if (courses.value?.size == 0) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
                 Text(text = "No Courses Found", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(text = "Tap \"+\" icon to enroll your courses.")
+            }
         } else {
 
             courses.value?.forEach { course ->
-
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ){
+                    if(showCheckBox){
+                        Button(onClick = {
+                            viewModel.deleteCourse(CourseStudent(course.courseID, loginViewModel.userID))
+                        }, shape = RoundedCornerShape(10.dp), modifier = Modifier.size(40.dp), contentPadding = PaddingValues(10.dp)) {
+                            Icon(imageVector = Icons.Rounded.DeleteOutline, contentDescription = "Delete")
+                        }
+                    }
                     Card(
+                        modifier = Modifier
+                            .padding(vertical = 10.dp)
+                            .height(50.dp)
+                    ) {
+
+                        Row (
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .padding(10.dp)
-                                .height(50.dp)
-                                .fillMaxWidth()
-                        ) {
-
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clickable {
-                                        openDataPrivacy = true
-                                        selectedCourse = course.courseID
-                                    }
-
-                            ){
-                                if(showCheckBox){
-                                    Button(onClick = {
-                                        viewModel.deleteCourse(CourseStudent(course.courseID, loginViewModel.userID))
-                                    }) {
-                                        Text(text = "Delete")
-                                    }
+                                .fillMaxSize()
+                                .clickable(
+                                    enabled = !showCheckBox
+                                ) {
+                                    openDataPrivacy = true
+                                    selectedCourse = course.courseID
                                 }
-                                Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                                Text(text = course.courseName, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                            }
+
+                        ){
+
+                            Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                            Text(text = course.courseName, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                        }
 
                     }
+                }
+
 
             }
         }
@@ -212,6 +232,7 @@ fun SFaculty(
 
                     Button(
                         onClick = {
+                            viewModel.updateFormID()
                             studentNavController.popBackStack()
                             studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse")
                         },

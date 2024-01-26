@@ -50,12 +50,8 @@ fun Form(
     loginViewModel: LoginViewModel,
     selectedCourse: String
 ) {
+    println("sjhdakjdsha ${viewModel.formID.value}")
 
-
-
-    val formID by remember{
-        mutableIntStateOf((Math.random() * 100000).toInt())
-    }
     var overallPoints by remember {
         mutableIntStateOf(0)
     }
@@ -69,7 +65,7 @@ fun Form(
     BackHandler {
         viewModel.resetAnsweredQuestions()
         navController.popBackStack()
-        navController.navigate(StudentNav.FORM.name)
+        navController.navigate(StudentNav.FORM.name+"/$selectedCourse")
 
     }
 
@@ -95,7 +91,7 @@ fun QuestionCard(
     val points = listOf(4,3,2,1)
     val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).observeAsState()
 
-    Text(text = "Evaluation for ${faculty.value}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+    Text(text = "Evaluation for Mr./Ms. ${faculty.value}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
 
@@ -119,8 +115,7 @@ fun QuestionCard(
                     Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
-                        Text(text = "${question.id}")
-                        Text(text = question.question)
+                        Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
                         points.forEach { point ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -153,8 +148,7 @@ fun QuestionCard(
                     Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
-                        Text(text = "${question.id}")
-                        Text(text = question.question)
+                        Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
                         OutlinedTextField(
                             value = feedback,
                             onValueChange = {
@@ -162,7 +156,7 @@ fun QuestionCard(
                                 viewModel.markQuestionAnswered(questionId = question.id)
 
                             },
-                            label = { Text(text = "Your Answer")}
+                            label = { Text(text = "Comment")}
                         )
 
                     }

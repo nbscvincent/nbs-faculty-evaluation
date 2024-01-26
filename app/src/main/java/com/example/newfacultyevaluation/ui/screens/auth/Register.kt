@@ -3,6 +3,7 @@ package com.example.newfacultyevaluation.ui.screens.auth
 
 import android.icu.text.CaseMap.Upper
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -66,6 +67,7 @@ import androidx.navigation.NavController
 import com.example.newfacultyevaluation.R
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
+import com.example.newfacultyevaluation.ui.nav.Main
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -75,6 +77,11 @@ fun Register(
     navController: NavController,
     viewModel: RegisterViewModel = viewModel(factory = FacultyAppViewModelProvider.Factory)
 ) {
+
+    BackHandler{
+        navController.popBackStack()
+        navController.navigate(Auth.REGISTER.name)
+    }
 
     var scrollState = rememberScrollState()
 

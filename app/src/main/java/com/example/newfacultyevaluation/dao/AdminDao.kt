@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.newfacultyevaluation.data.model.Admin
+import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 
 @Dao
@@ -17,4 +18,7 @@ interface AdminDao {
 
     @Upsert
     suspend fun upsertCourseFaculty(courseFaculty: CourseFaculty)
+
+    @Upsert
+    suspend fun upsertCourse(course: Course)
 }
