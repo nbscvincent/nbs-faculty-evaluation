@@ -70,4 +70,9 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
         return studentRepo.getStudentFaculty(id, selectedCourse)
     }
 
+    fun deleteCourse(courseStudent: CourseStudent){
+        viewModelScope.launch {
+            studentRepo.deleteCourse(courseStudent)
+        }
+    }
 }

@@ -15,13 +15,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.LibraryAdd
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -29,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.Course
@@ -51,6 +60,7 @@ import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
+import com.example.newfacultyevaluation.ui.theme.White
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,13 +95,26 @@ fun SFaculty(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
+        var showCheckBox by remember {
+            mutableStateOf(false)
+        }
+        var selectedCourses by remember {
+            mutableStateOf(mutableStateListOf(""))
+        }
         Row (
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ){
+
+            Icon(
+                imageVector = Icons.Rounded.Delete,
+                contentDescription = "Delete Course",
+                modifier = Modifier.clickable {
+                    showCheckBox = !showCheckBox
+                }
+            )
             Icon(
                 imageVector = Icons.Rounded.LibraryAdd,
                 contentDescription = "Add Course",
@@ -108,26 +131,36 @@ fun SFaculty(
 
             courses.value?.forEach { course ->
 
-                Card(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(50.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Row (
-                            verticalAlignment = Alignment.CenterVertically,
+                    Card(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .clickable {
-                                    openDataPrivacy = true
-                                    selectedCourse = course.courseID
-                                }
-                        ){
-                            Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                            Text(text = course.courseName, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        }
+                                .padding(10.dp)
+                                .height(50.dp)
+                                .fillMaxWidth()
+                        ) {
 
-                }
+                            Row (
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable {
+                                        openDataPrivacy = true
+                                        selectedCourse = course.courseID
+                                    }
+
+                            ){
+                                if(showCheckBox){
+                                    Button(onClick = {
+                                        viewModel.deleteCourse(CourseStudent(course.courseID, loginViewModel.userID))
+                                    }) {
+                                        Text(text = "Delete")
+                                    }
+                                }
+                                Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                                Text(text = course.courseName, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                            }
+
+                    }
+
             }
         }
         if(openDataPrivacy){
@@ -135,7 +168,7 @@ fun SFaculty(
                 var checked by remember {
                     mutableStateOf(false)
                 }
-
+                var scrollState = rememberScrollState()
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
@@ -149,9 +182,7 @@ fun SFaculty(
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
                             .clip(RoundedCornerShape(10.dp))
                             .height(500.dp)
-                            .verticalScroll(
-                                rememberScrollState()
-                            )
+                            .verticalScroll(scrollState)
                             .padding(10.dp)
 
                     ) {
@@ -175,7 +206,7 @@ fun SFaculty(
                         verticalAlignment = Alignment.CenterVertically,
 
                     ){
-                        Checkbox(checked = checked, onCheckedChange = { checked = !checked })
+                        Checkbox(checked = checked, onCheckedChange = { checked = !checked },enabled = scrollState.value == scrollState.maxValue)
                         Text("I have read the above statement")
                     }
 
@@ -194,25 +225,48 @@ fun SFaculty(
         }
         if(openDialog) {
             Dialog(onDismissRequest = { openDialog = false }) {
+                val allCourses = viewModel.getAllCourses().observeAsState()
+                var expanded by remember {
+                    mutableStateOf(false)
+                }
                 Column(
                     modifier = Modifier
                         .height(300.dp)
                         .background(Color.White)
                         .padding(20.dp)
                         .fillMaxWidth(),
-                    verticalArrangement = Arrangement.SpaceAround,
+                    verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var courseID by remember {
-                        mutableStateOf("")
-                    }
 
-                    var courseName by remember {
-                        mutableStateOf("")
+                    var selectedCourse1 by remember {
+                        mutableStateOf(Course("",""))
                     }
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)
-                    OutlinedTextField(value = courseID, onValueChange = { courseID = it }, label = { Text("Enter Course Code")} )
-                    OutlinedTextField(value = courseName, onValueChange = { courseName = it }, label = { Text("Enter Course Name")}  )
+                    Row (
+                        modifier = Modifier
+                            .clickable {
+                                expanded = !expanded
+                            }
+                            .height(50.dp)
+                            .fillMaxWidth()
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                            .padding(horizontal = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        if(selectedCourse1.courseID.isBlank() && selectedCourse1.courseName.isBlank()){
+                            Text(text = "Select your Course")
+                        }
+                        else Text(text = "${selectedCourse1.courseID} ${selectedCourse1.courseName}")
+                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false},modifier = Modifier.background(Color.White)) {
+                            allCourses.value?.forEach { course ->
+                                DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
+                            }
+
+                        }
+                        Icon(imageVector = if(expanded)Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "Selection")
+                    }
 
                     Row(
                         modifier = Modifier
@@ -221,21 +275,21 @@ fun SFaculty(
                     ){
                         val context = LocalContext.current
                         Button(onClick = {
-                            if(courseID.isNotBlank() && courseName.isNotBlank()){
-                                viewModel.upsertCourseStudent(CourseStudent(courseID = courseID, studentID = loginViewModel.userID))
-                                viewModel.upsertCourse(Course(courseID, courseName))
+                            if(selectedCourse1.courseID.isNotBlank() && selectedCourse1.courseName.isNotBlank()){
+                                viewModel.upsertCourseStudent(CourseStudent(courseID = selectedCourse1.courseID, studentID = loginViewModel.userID))
+                                viewModel.upsertCourse(selectedCourse1)
                                 openDialog = false
                             } else {
-                                Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Please select your course", Toast.LENGTH_SHORT).show()
                             }
 
-                        }) {
+                        }, modifier = Modifier, shape = RoundedCornerShape(10.dp)) {
                             Text(text = "Add Course")
                         }
 
                         Button(onClick = {
                             openDialog = false
-                        }) {
+                        }, modifier = Modifier, shape = RoundedCornerShape(10.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray, contentColor = Color.Black)) {
                             Text(text = "Cancel")
                         }
                     }

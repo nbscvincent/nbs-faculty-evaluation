@@ -19,4 +19,5 @@ interface StudentRepo {
     fun getAllCourses(): LiveData<List<Course>>
 
     fun getStudentFaculty(id: String, selectedCourse: String): LiveData<String>
+    suspend fun deleteCourse(courseStudent: CourseStudent)
 }

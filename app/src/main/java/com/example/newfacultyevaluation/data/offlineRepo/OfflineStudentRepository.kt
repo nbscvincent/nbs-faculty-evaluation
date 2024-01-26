@@ -46,6 +46,10 @@ class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo 
         return studentDao.getStudentFaculty(id, selectedCourse)
     }
 
+    override suspend fun deleteCourse(courseStudent: CourseStudent) {
+        studentDao.deleteCourse(courseStudent)
+    }
+
 //    override fun getStudentFaculty(): LiveData<List<StudentFaculty>> {
 //        TODO("Not yet implemented")
 //    }

@@ -2,6 +2,7 @@ package com.example.newfacultyevaluation.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
@@ -35,5 +36,6 @@ interface StudentDao {
             "WHERE coursestudent.studentID = :id AND coursestudent.courseID = :selectedCourse")
     fun getStudentFaculty(id: String, selectedCourse: String): LiveData<String>
 
-
+    @Delete
+    suspend fun deleteCourse(courseStudent: CourseStudent)
 }
