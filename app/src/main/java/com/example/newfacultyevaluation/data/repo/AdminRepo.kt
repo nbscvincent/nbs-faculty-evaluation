@@ -3,6 +3,7 @@ package com.example.newfacultyevaluation.data.repo
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.User
 
 interface AdminRepo {
 
@@ -10,5 +11,7 @@ interface AdminRepo {
     suspend fun deleteAdmin(admin: Admin)
     suspend fun upsertCourseFaculty(courseFaculty: CourseFaculty)
     suspend fun upsertCourse(course: Course)
+
+    suspend fun updateUser(user: User)
 
 }

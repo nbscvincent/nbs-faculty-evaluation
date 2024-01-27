@@ -3,10 +3,12 @@ package com.example.newfacultyevaluation.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.User
 
 @Dao
 interface AdminDao {
@@ -21,4 +23,7 @@ interface AdminDao {
 
     @Upsert
     suspend fun upsertCourse(course: Course)
+
+    @Update
+    suspend fun updateUser(user: User)
 }
