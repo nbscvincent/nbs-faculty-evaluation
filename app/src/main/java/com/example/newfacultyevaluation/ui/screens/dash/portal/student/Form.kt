@@ -22,6 +22,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -93,7 +94,7 @@ fun QuestionCard(
     selectedCourse: String
 ){
     val points = listOf(4,3,2,1)
-    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).observeAsState()
+    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
     val feedbacks by remember {
         mutableStateOf(mutableListOf(""))
     }

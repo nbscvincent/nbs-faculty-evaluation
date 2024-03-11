@@ -14,6 +14,7 @@ import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.StudentFaculty
 import com.example.newfacultyevaluation.data.repo.StudentRepo
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
@@ -66,15 +67,15 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
              studentRepo.upsertFormStudentFaculty(formStudentFaculty)
         }
     }
-    fun getCoursesByStudentID(id: String): LiveData<List<Course>>{
+    fun getCoursesByStudentID(id: String): Flow<List<Course>>{
         return studentRepo.getCoursesByStudentID(id)
     }
 
-    fun getAllCourses(): LiveData<List<Course>>{
+    fun getAllCourses(): Flow<List<Course>>{
         return studentRepo.getAllCourses()
     }
 
-    fun getStudentFaculty(id: String, selectedCourse: String): LiveData<Faculty>{
+    fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>{
         return studentRepo.getStudentFaculty(id, selectedCourse)
     }
 

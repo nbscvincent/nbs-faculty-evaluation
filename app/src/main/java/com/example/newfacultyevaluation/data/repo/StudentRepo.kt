@@ -9,6 +9,7 @@ import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.StudentFaculty
+import kotlinx.coroutines.flow.Flow
 
 interface StudentRepo {
 
@@ -17,11 +18,11 @@ interface StudentRepo {
     suspend fun upsertCourseStudent(courseStudent: CourseStudent)
 //    fun getFacultyCourses(): LiveData<List<CourseFaculty>>
 //    fun getStudentFaculty(): LiveData<List<StudentFaculty>>
-    fun getCoursesByStudentID(id: String): LiveData<List<Course>>
+    fun getCoursesByStudentID(id: String): Flow<List<Course>>
     suspend fun upsertCourse(course: Course)
-    fun getAllCourses(): LiveData<List<Course>>
+    fun getAllCourses(): Flow<List<Course>>
 
-    fun getStudentFaculty(id: String, selectedCourse: String): LiveData<Faculty>
+    fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>
     suspend fun deleteCourse(courseStudent: CourseStudent)
 
     suspend fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty)
