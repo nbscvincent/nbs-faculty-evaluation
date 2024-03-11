@@ -32,7 +32,8 @@ class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository 
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             setBody(login)
-        } ;return response.body()
+        }
+        return response.body()
     }
 
 
