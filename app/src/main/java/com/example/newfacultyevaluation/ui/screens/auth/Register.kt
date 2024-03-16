@@ -41,6 +41,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -255,7 +256,7 @@ fun Register(
 
             }
             val context = LocalContext.current
-            val user = viewModel.checkUserID(userID).observeAsState()
+            val user = viewModel.checkUserID(userID).collectAsState(null)
             Button(
                 onClick =
                 {

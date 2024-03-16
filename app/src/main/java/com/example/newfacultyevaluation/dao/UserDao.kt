@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.newfacultyevaluation.data.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -17,10 +18,10 @@ interface UserDao {
     suspend fun deleteUser(user: User)
 
     @Query("SELECT * FROM user WHERE userid =:id")
-    fun getUsers(id: String): LiveData<User>
+    fun getUsers(id: String): Flow<User>
 
     @Query("SELECT * FROM user")
-    fun getAllUsers(): LiveData<List<User>>
+    fun getAllUsers(): Flow<List<User>>
 
 
 }
