@@ -11,6 +11,7 @@ import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.StudentFaculty
 import com.example.newfacultyevaluation.data.repo.StudentRepo
+import kotlinx.coroutines.flow.Flow
 
 class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo {
     override suspend fun upsertStudent(student: Student) {
@@ -29,7 +30,7 @@ class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo 
 //        TODO("Not yet implemented")
 //    }
 //
-    override fun getCoursesByStudentID(id: String): LiveData<List<Course>> {
+    override fun getCoursesByStudentID(id: String): Flow<List<Course>> {
         return studentDao.getCoursesByStudentID(id)
     }
 
@@ -37,11 +38,11 @@ class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo 
         studentDao.upsertCourse(course)
     }
 
-    override fun getAllCourses(): LiveData<List<Course>> {
+    override fun getAllCourses(): Flow<List<Course>> {
         return studentDao.getAllCourses()
     }
 
-    override fun getStudentFaculty(id: String, selectedCourse: String): LiveData<Faculty> {
+    override fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty> {
         return studentDao.getStudentFaculty(id, selectedCourse)
     }
 

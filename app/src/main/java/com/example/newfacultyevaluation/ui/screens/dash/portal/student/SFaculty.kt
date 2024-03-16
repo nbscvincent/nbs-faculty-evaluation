@@ -38,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
@@ -86,7 +87,7 @@ fun SFaculty(
 
 
 
-    val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).observeAsState()
+    val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).collectAsState(null)
 
     var selectedCourse by remember {
         mutableStateOf("")
@@ -246,7 +247,7 @@ fun SFaculty(
         }
         if(openDialog) {
             Dialog(onDismissRequest = { openDialog = false }) {
-                val allCourses = viewModel.getAllCourses().observeAsState()
+                val allCourses = viewModel.getAllCourses().collectAsState(null)
                 var expanded by remember {
                     mutableStateOf(false)
                 }

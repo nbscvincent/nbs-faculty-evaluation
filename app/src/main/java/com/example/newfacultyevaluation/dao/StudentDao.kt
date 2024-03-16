@@ -15,6 +15,7 @@ import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.StudentFaculty
 import com.example.newfacultyevaluation.data.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StudentDao {
@@ -25,11 +26,11 @@ interface StudentDao {
     @Upsert
     suspend fun upsertCourse(course: Course)
     @Query("SELECT * FROM course")
-    fun getAllCourses(): LiveData<List<Course>>
+    fun getAllCourses(): Flow<List<Course>>
     @Upsert
     suspend fun upsertCourseStudent(courseStudent: CourseStudent)
     @Query("SELECT course.courseid AS courseid, course.courseName AS courseName FROM coursestudent INNER JOIN course ON coursestudent.courseID = course.courseid AND coursestudent.studentID = :id")
-    fun getCoursesByStudentID(id: String): LiveData<List<Course>>
+    fun getCoursesByStudentID(id: String): Flow<List<Course>>
     @Query("SELECT faculty.facultyid, faculty.fullName, faculty.password " +
             "FROM coursestudent " +
             "INNER JOIN coursefaculty " +
@@ -37,7 +38,7 @@ interface StudentDao {
             "INNER JOIN faculty " +
             "ON coursefaculty.facultyID = faculty.facultyid " +
             "WHERE coursestudent.studentID = :id AND coursestudent.courseID = :selectedCourse")
-    fun getStudentFaculty(id: String, selectedCourse: String): LiveData<Faculty>
+    fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>
 
     @Delete
     suspend fun deleteCourse(courseStudent: CourseStudent)

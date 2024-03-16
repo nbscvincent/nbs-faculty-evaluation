@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -69,9 +70,9 @@ fun FacultyPortal(
    Row(
 
    ) {
-       val courses by viewModel.getCourses(loginViewModel.userID).observeAsState()
-       val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID).observeAsState()
-       val rating by viewModel.getOverallPoints(loginViewModel.userID).observeAsState()
+       val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
+       val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID).collectAsState(null)
+       val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
        Column {
 
            Text(text = "Course Name")
