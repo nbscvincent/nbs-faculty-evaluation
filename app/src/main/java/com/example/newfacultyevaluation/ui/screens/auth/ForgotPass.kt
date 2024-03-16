@@ -43,7 +43,7 @@ fun ForgotPass(
             mutableStateOf(false)
         }
         val timer by viewModel.timer.collectAsState()
-        val user by viewModel.getUser(loginViewModel.userID).observeAsState()
+        val user by viewModel.getUser(loginViewModel.userID).collectAsState(null)
         val context = LocalContext.current
         Row {
 

@@ -7,6 +7,7 @@ import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class ForgotPassViewModel(private val userRepository: UserRepository) : ViewMode
         }
     }
 
-    fun getUser(id: String): LiveData<User>{
+    fun getUser(id: String): Flow<User> {
         return userRepository.getUsers(id)
     }
     fun upsertUser(user: User){

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.UserRepository
+import kotlinx.coroutines.flow.Flow
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
 
@@ -15,7 +16,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
     var userID by mutableStateOf("")
     var password by mutableStateOf("")
 
-    fun getUser(userID: String): LiveData<User>{
+    fun getUser(userID: String): Flow<User> {
         return userRepository.getUsers(userID)
     }
 

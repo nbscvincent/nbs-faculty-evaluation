@@ -14,6 +14,7 @@ import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -85,7 +86,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
         println("Success : $insertSuccessful")
         return insertSuccessful
     }
-    fun checkUserID(userID: String): LiveData<User>{
+    fun checkUserID(userID: String): Flow<User> {
         return userRepository.getUsers(userID)
     }
 }

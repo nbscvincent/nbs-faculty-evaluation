@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -72,7 +73,7 @@ fun UserList(
                 Color.Red
             )
             .padding(5.dp), textAlign = TextAlign.Center, color = Color.White)
-            val users = viewModel.getAllUsers().observeAsState()
+            val users = viewModel.getAllUsers(). collectAsState(initial = null)
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())

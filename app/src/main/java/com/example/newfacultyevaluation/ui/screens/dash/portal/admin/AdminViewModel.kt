@@ -16,6 +16,7 @@ import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AdminViewModel(private val userRepository: UserRepository,
@@ -67,7 +68,7 @@ class AdminViewModel(private val userRepository: UserRepository,
 
     private var insertSuccessful by mutableStateOf(false)
 
-    fun getAllUsers(): LiveData<List<User>>{
+    fun getAllUsers(): Flow<List<User>> {
        return userRepository.getAllUsers()
     }
 
@@ -78,7 +79,7 @@ class AdminViewModel(private val userRepository: UserRepository,
         }
     }
 
-    fun checkUserID(userID: String): LiveData<User>{
+    fun checkUserID(userID: String): Flow<User>{
         return userRepository.getUsers(userID)
     }
 
