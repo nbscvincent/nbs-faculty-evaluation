@@ -103,7 +103,6 @@ fun Login(
                 contentDescription = "Logo",
                 modifier = Modifier.graphicsLayer(
                     translationX = 15f,
-                            translationY = 200f
                 ), tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.height(20.dp))
