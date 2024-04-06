@@ -6,9 +6,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -73,55 +76,59 @@ fun Login(
     val scrollState = rememberScrollState()
     var showPassword by remember { mutableStateOf(value = false) }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
             .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround
     ) {
-        var userID by rememberSaveable {
-            mutableStateOf("")
-        }
-        var pass by rememberSaveable {
-            mutableStateOf("")
-        }
-        var checked by rememberSaveable {
-            mutableStateOf(false)
-        }
-
-
-        Icon(
-            painterResource(id = R.drawable.nbsc_logo),
-            contentDescription = "Logo",
-            modifier = Modifier.graphicsLayer(
-                translationX = 15f
-            ), tint = Color.Unspecified
-        )
-        Column(
-            modifier = Modifier.height(50.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Welcome",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W700,
-                letterSpacing = 2.sp
-            )
-            Text(
-                text = "Sign In to access your account",
-                fontWeight = FontWeight.W300,
-                letterSpacing = 1.sp
-            )
-        }
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+            var userID by rememberSaveable {
+                mutableStateOf("")
+            }
+            var pass by rememberSaveable {
+                mutableStateOf("")
+            }
+            var checked by rememberSaveable {
+                mutableStateOf(false)
+            }
+
+
+            Icon(
+                painterResource(id = R.drawable.nbsc_logo),
+                contentDescription = "Logo",
+                modifier = Modifier.graphicsLayer(
+                    translationX = 15f,
+                ), tint = Color.Unspecified
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Welcome",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.W700,
+                    letterSpacing = 1.sp
+                )
+                Text(
+                    text = "Sign In to access your account",
+                    fontWeight = FontWeight.W300,
+                    letterSpacing = 1.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
 
                 OutlinedTextField(
                     value = userID,
@@ -131,7 +138,8 @@ fun Login(
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                        .absolutePadding(left = 40.dp, right = 40.dp, bottom = 11.dp)
+                        .border(1.dp, Color.Gray, RoundedCornerShape(10.dp)),
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White,
                         textColor = Color.Black,
@@ -140,13 +148,13 @@ fun Login(
                     )
                 )
 
-            Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     value = pass,
                     onValueChange = { pass = it },
                     label = { Text(text = "Password", letterSpacing = 2.sp) },
-                    visualTransformation = if (showPassword){
+                    visualTransformation = if (showPassword) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
@@ -175,7 +183,8 @@ fun Login(
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                        .absolutePadding(left = 40.dp, right = 40.dp, bottom = 11.dp)
+                        .border(1.dp, Color.Gray, RoundedCornerShape(10.dp)),
 
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White,
@@ -184,11 +193,9 @@ fun Login(
                         unfocusedIndicatorColor = Color.Transparent
                     ),
 
-                )
+                    )
 
-            Spacer(modifier = Modifier
-                .size(20.dp)
-            )
+
 
 
 //                Row(
@@ -238,10 +245,18 @@ fun Login(
                                 .show()
                         }
                     },
-                    shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .absolutePadding(
+                            left = 40.dp,
+                            right = 40.dp,
+                            bottom = 25.dp,
+                            top = 25.dp
+                        )
                         .height(50.dp)
+                        .fillMaxWidth(),
+
+                    colors = ButtonDefaults.buttonColors(Color.Red),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(text = "Login", fontSize = 16.sp)
                 }
@@ -261,9 +276,9 @@ fun Login(
                 }
 
 
+            }
 
         }
-
     }
 
 }
