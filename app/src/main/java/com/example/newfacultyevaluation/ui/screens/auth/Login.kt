@@ -98,6 +98,8 @@ fun Login(
             }
 
 
+
+
             Icon(
                 painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "Logo",
@@ -216,11 +218,13 @@ fun Login(
 
                 val context = LocalContext.current
                 val user by viewModel.getUser(userID).collectAsState(null)
+                val onlineUser by viewModel.getUser(userID).collectAsState(null)
+
                 Button(
                     onClick =
                     {
 
-                        if (user?.password == pass) {
+                        if (user?.password == pass && onlineUser!!.password ==  pass) {
 
                             navController.popBackStack()
                             navController.navigate(Main.PORTAL.name)
@@ -236,7 +240,7 @@ fun Login(
                                 .putString("password", viewModel.password)
                                 .putString("role", viewModel.role)
                                 .apply()
-
+                            println("Online user: $onlineUser")
                             Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
                                 .show()
                             return@Button
