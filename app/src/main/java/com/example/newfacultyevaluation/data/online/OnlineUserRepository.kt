@@ -28,8 +28,23 @@ import kotlinx.coroutines.flow.flow
 
 class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository {
     override suspend fun upsertUser(user: User) = run{
-
-
+        val cl = ktorClient.request(
+            HttpRoutes.login
+        ) {
+            method = HttpMethod.Post
+            url(HttpRoutes.login)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(MultiPartFormDataContent(formData {
+                append("type", "save_user")
+                append("userID", user.userID)
+                append("password", user.password)
+                append("fullName", user.fullName.toString())
+                append("role", user.role)
+                append("selectedCourse", user.selectedCourse.toString())
+                append("dateCreated", user.dateCreated.toString())
+            }))
+        }
     }
 
 
