@@ -39,11 +39,21 @@ class OnlineAdminRepository(private val ktorClient: HttpClient) : AdminRepo {
     }
 
     override suspend fun deleteAdmin(admin: Admin) {
-        TODO("Not yet implemented")
+        val cl = ktorClient.request(
+            HttpRoutes.login
+        ) {
+            method = HttpMethod.Post
+            url(HttpRoutes.login)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(MultiPartFormDataContent(formData {
+                append("type", "save_user")
+                append("userID", admin.adminID)
+                append("userID", admin.password)
+            }))
+        }
     }
 
-
-    
     override suspend fun upsertCourseFaculty(courseFaculty: CourseFaculty) {
         val cl = ktorClient.request(
             HttpRoutes.login
