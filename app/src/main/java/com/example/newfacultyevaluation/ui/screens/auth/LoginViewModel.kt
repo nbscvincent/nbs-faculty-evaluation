@@ -19,8 +19,11 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
     var password by mutableStateOf("")
 
     fun getUser(userID: String): Flow<User> {
+
         return userRepository.getUsers(userID)
+
     }
+
 
     fun fetchUser() {
         viewModelScope.launch {

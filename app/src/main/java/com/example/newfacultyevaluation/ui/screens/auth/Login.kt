@@ -241,6 +241,7 @@ fun Login(
                                 .putString("role", viewModel.role)
                                 .apply()
                             println("Online user: $onlineUser")
+                            println("Online user: $user")
                             Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
                                 .show()
                             return@Button
