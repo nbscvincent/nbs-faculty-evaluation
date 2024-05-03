@@ -8,6 +8,7 @@ import com.example.newfacultyevaluation.data.repo.UserRepository
 import com.example.newfacultyevaluation.network.HttpRoutes
 
 import com.example.newfacultyevaluation.network.HttpRoutes.login
+import com.example.newfacultyevaluation.network.KtorClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.flow
 
 
 
-class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository {
+class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) : UserRepository {
     override suspend fun upsertUser(user: User) = run {
             val cl = ktorClient.request(
                     HttpRoutes.login

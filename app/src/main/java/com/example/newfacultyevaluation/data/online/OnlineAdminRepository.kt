@@ -9,6 +9,7 @@ import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import com.example.newfacultyevaluation.network.HttpRoutes
+import com.example.newfacultyevaluation.network.KtorClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -21,7 +22,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 
 
-class OnlineAdminRepository(private val ktorClient: HttpClient) : AdminRepo {
+class OnlineAdminRepository(private val ktorClient: HttpClient = KtorClient() ) : AdminRepo {
     override suspend fun upsertAdmin(admin: Admin) {
         val cl = ktorClient.request(
             HttpRoutes.login
