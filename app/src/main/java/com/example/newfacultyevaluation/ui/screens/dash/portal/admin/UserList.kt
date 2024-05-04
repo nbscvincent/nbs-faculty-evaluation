@@ -77,7 +77,7 @@ fun UserList(
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
-                    .width(500.dp)
+                    .width(700.dp)
                     .verticalScroll(rememberScrollState())
                     .height(550.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -164,7 +164,7 @@ fun UserList(
                         .padding(10.dp)
                 ) {
 
-                    Text(text = "", textAlign = TextAlign.Center, modifier = Modifier
+                    Text(text = "Action", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
                     var showEdit by remember {
@@ -175,8 +175,7 @@ fun UserList(
                         mutableStateOf(User("", "","","","","", ""))
                     }
 
-                    Text(text = "Action", textAlign = TextAlign.Center, modifier = Modifier
-                        .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
                     users.value?.forEach { user ->
                         Row(
                             modifier = Modifier
