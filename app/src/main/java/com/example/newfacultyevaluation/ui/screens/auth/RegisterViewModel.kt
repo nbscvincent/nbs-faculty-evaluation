@@ -25,7 +25,9 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     var fullName = ""
     var pass = ""
     var role = ""
+    var year = ""
     var date = ""
+
     private var insertSuccessful by mutableStateOf(false)
 
     private val _userID: String
@@ -39,6 +41,9 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     private val _role: String
         get() = role
 
+    private val _year: String
+        get() = year
+
     private val _date: String
         get() = date
 
@@ -47,7 +52,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
             println("FullName : $fullName")
             println("Course : $selectedProgram")
             println("Pass : $pass")
-            if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && role != "ROLE: "){
+            if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && year.isNotBlank() && role != "ROLE: "){
                 viewModelScope.launch {
                     if(role == "Student" && selectedProgram != "PROGRAM: "){
                         studentRepo.upsertStudent(Student(
@@ -56,6 +61,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             password = _pass,
                             selectedCourse = _selectedCourse,
                             role = _role,
+                            year = _year,
                             dateCreated = _date
                         ))
                     }
@@ -74,6 +80,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             userID = _userID,
                             fullName = _fullName,
                             password = _pass,
+                            year = _year,
                             selectedCourse = if(role == "Student") _selectedCourse else "",
                             role = _role,
                             dateCreated = _date

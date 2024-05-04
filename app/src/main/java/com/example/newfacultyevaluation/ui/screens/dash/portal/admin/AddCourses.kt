@@ -34,6 +34,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +55,7 @@ fun AddCourses(
     adminViewModel: AdminViewModel
 ) {
 
+
     var courses by remember {
         mutableStateOf(mutableStateListOf(Course("", "")))
     }
@@ -62,8 +64,26 @@ fun AddCourses(
         mutableStateOf(false)
     }
 
+    var expanded1 by remember {
+        mutableStateOf(false)
+    }
+
+    var expanded2 by remember {
+        mutableStateOf(false)
+    }
+
     var selectedFaculty by remember {
         mutableStateOf("Select Faculty")
+    }
+
+    val department = listOf("PROGRAM: ","BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
+    var selectedDepartment by rememberSaveable {
+        mutableStateOf(department[0])
+    }
+
+    val year = listOf("Year Level: ","1st", "2nd", "3rd", "4th")
+    var selectedYear by rememberSaveable {
+        mutableStateOf(year[0])
     }
 
     var selectedFacultyID by remember {
@@ -91,6 +111,7 @@ fun AddCourses(
             Text(text = selectedFaculty)
             Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
+
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
@@ -105,6 +126,53 @@ fun AddCourses(
 
             }
         }
+
+        Row (
+            modifier = Modifier
+                .clickable {
+                    expanded1 = !expanded1
+                },
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(text = selectedDepartment)
+            Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+            DropdownMenu(
+                expanded = expanded1,
+                onDismissRequest = { expanded1 = false },
+                modifier = Modifier
+                    .background(Color.White),
+
+                ) {
+                department.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedDepartment = c; expanded1 = false }, enabled = c != department[0]) }
+            }
+        }
+
+        Row (
+            modifier = Modifier
+                .clickable {
+                    expanded2 = !expanded2
+                },
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(text = selectedYear)
+            Icon(imageVector = if(expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+            DropdownMenu(
+                expanded = expanded2,
+                onDismissRequest = { expanded2 = false },
+                modifier = Modifier
+                    .background(Color.White),
+
+                ) {
+                year.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedYear = c; expanded2 = false }, enabled = c != department[0]) }
+            }
+        }
+
+
+
+
+
 
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,

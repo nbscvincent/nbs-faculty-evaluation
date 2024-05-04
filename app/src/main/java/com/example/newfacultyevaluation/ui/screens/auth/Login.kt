@@ -90,14 +90,18 @@ fun Login(
             var userID by rememberSaveable {
                 mutableStateOf("")
             }
+            var fullName by rememberSaveable {
+                mutableStateOf("")
+            }
             var pass by rememberSaveable {
+                mutableStateOf("")
+            }
+            var year by rememberSaveable {
                 mutableStateOf("")
             }
             var checked by rememberSaveable {
                 mutableStateOf(false)
             }
-
-
 
 
             Icon(
@@ -218,30 +222,36 @@ fun Login(
 
                 val context = LocalContext.current
                 val user by viewModel.getUser(userID).collectAsState(null)
-                val onlineUser by viewModel.getUser(userID).collectAsState(null)
 
                 Button(
                     onClick =
                     {
 
-                        if (user?.password == pass && onlineUser!!.password ==  pass) {
+                        if (user?.password == pass) {
 
                             navController.popBackStack()
                             navController.navigate(Main.PORTAL.name)
                             viewModel.status = true
                             viewModel.userID = userID
+                            viewModel.fullName = fullName
+                            viewModel.year = year
                             viewModel.password = pass
                             viewModel.role = user?.role.toString()
+
+
                             println(viewModel.role)
                             val preferences = context.getSharedPreferences("prefs", 0)
                             preferences.edit()
                                 .putBoolean("status", true)
                                 .putString("userID", viewModel.userID)
                                 .putString("password", viewModel.password)
+                                .putString("fullName", viewModel.fullName)
                                 .putString("role", viewModel.role)
+                                .putString("year", viewModel.year)
                                 .apply()
-                            println("Online user: $onlineUser")
                             println("Online user: $user")
+                            println("fullname: $fullName")
+
                             Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
                                 .show()
                             return@Button

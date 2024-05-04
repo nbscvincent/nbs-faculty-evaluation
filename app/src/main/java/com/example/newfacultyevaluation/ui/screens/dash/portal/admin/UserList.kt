@@ -83,7 +83,6 @@ fun UserList(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
 
-
                 Column (
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -97,6 +96,36 @@ fun UserList(
                             Text(text = it.userID, modifier = Modifier
                                 .height(50.dp))
                         }
+                }
+
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .weight(1f)
+                ){
+
+                    Text(text = "Year Level", textAlign = TextAlign.Center, modifier = Modifier
+                        .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    users.value?.forEach {
+                        Text(text = it.year.toString(), modifier = Modifier
+                            .height(50.dp))
+                    }
+                }
+
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .weight(1f)
+                ){
+
+                    Text(text = "Program", textAlign = TextAlign.Center, modifier = Modifier
+                        .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    users.value?.forEach {
+                        Text(text = it.selectedCourse.toString() , modifier = Modifier
+                            .height(50.dp))
+                    }
                 }
 
                 Column(
@@ -137,12 +166,17 @@ fun UserList(
 
                     Text(text = "", textAlign = TextAlign.Center, modifier = Modifier
                         .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
                     var showEdit by remember {
                         mutableStateOf(false)
                     }
+
                     var selectedUser by remember {
-                        mutableStateOf(User("", "","","","",""))
+                        mutableStateOf(User("", "","","","","", ""))
                     }
+
+                    Text(text = "Action", textAlign = TextAlign.Center, modifier = Modifier
+                        .padding(5.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     users.value?.forEach { user ->
                         Row(
                             modifier = Modifier
@@ -228,7 +262,7 @@ fun UserList(
                                                             viewModel.updateUser(user = selectedUser.copy(password = changePass))
                                                             when(selectedUser.role){
                                                                 "Faculty" -> viewModel.updateFaculty(faculty = Faculty(selectedUser.userID,selectedUser.fullName.toString(),changePass))
-                                                                "Student" -> viewModel.updateStudent(student = Student(selectedUser.userID,selectedUser.fullName.toString(),changePass,selectedUser.selectedCourse,selectedUser.role,selectedUser.dateCreated.toString()))
+                                                                "Student" -> viewModel.updateStudent(student = Student(selectedUser.userID,selectedUser.fullName.toString(),changePass,selectedUser.selectedCourse,selectedUser.role,selectedUser.dateCreated.toString(), selectedUser.year.toString()))
                                                             }
                                                             Toast.makeText(context, "Password Successfully changed!", Toast.LENGTH_SHORT).show()
                                                         }

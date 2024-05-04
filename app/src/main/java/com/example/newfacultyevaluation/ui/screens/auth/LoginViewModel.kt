@@ -16,7 +16,9 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
     var role by mutableStateOf("")
     var status by mutableStateOf(false)
     var userID by mutableStateOf("")
+    var fullName by mutableStateOf("")
     var password by mutableStateOf("")
+    var year by mutableStateOf("")
 
     fun getUser(userID: String): Flow<User> {
 
@@ -24,17 +26,10 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
 
     }
 
-
-    fun fetchUser() {
-        viewModelScope.launch {
-            getUser(userID).collect { user ->
-                role = user.role
-                status = status
-                role = user.userID
-                role = user.password
-            }
-        }
+    fun checkUserID(userID: String): Flow<User> {
+        return userRepository.getUsers(userID)
     }
+
 
 
 }

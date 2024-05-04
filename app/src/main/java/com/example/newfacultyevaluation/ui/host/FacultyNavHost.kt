@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.newfacultyevaluation.data.model.Faculty
+import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
@@ -39,8 +40,10 @@ fun FacultyApp(){
     if (preferences.getBoolean("status", false)){
         loginViewModel.status = true
         loginViewModel.userID = preferences.getString("userID", "") ?: ""
+        loginViewModel.fullName = preferences.getString("fullName", "") ?: ""
         loginViewModel.password = preferences.getString("password", "") ?: ""
         loginViewModel.role = preferences.getString("role","") ?: ""
+        loginViewModel.year = preferences.getString("year","") ?: ""
     }
 
 
