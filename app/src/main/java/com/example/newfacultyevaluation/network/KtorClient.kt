@@ -20,17 +20,18 @@ fun KtorClient(): HttpClient {
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Timber.d("HTTP call $message")
+                    Timber.d("SAMPLE - HTTP call $message")
                 }
             }
             level = LogLevel.ALL
         }
         install(ContentNegotiation) {
-            json(Json {
+            json( Json {
                 prettyPrint = true
                 isLenient = true
                 encodeDefaults = true
                 ignoreUnknownKeys = true
+                //explicitNulls = false
             })
         }
         install(HttpRedirect) {

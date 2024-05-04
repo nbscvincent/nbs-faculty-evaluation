@@ -1,13 +1,14 @@
 package com.example.newfacultyevaluation.data.online
 
 import android.system.Os.accept
-import androidx.lifecycle.LiveData
+
 import com.example.newfacultyevaluation.dao.UserDao
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import com.example.newfacultyevaluation.network.HttpRoutes
 
 import com.example.newfacultyevaluation.network.HttpRoutes.login
+import com.example.newfacultyevaluation.network.KtorClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.flow
 
 
 
-class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository {
+class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) : UserRepository {
     override suspend fun upsertUser(user: User) = run {
             val cl = ktorClient.request(
                     HttpRoutes.login
@@ -38,21 +39,10 @@ class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository 
                     url(HttpRoutes.login)
                     contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
-                    setBody(MultiPartFormDataContent(formData {
-                        append("type", "save_user")
-                        append("userID", user.userID)
-                        append("password", user.password)
-                        append("fullName", user.fullName.toString())
-                        append("role", user.role)
-                        append("selectedCourse", user.selectedCourse.toString())
-                        append("dateCreated", user.dateCreated.toString())
-                    }))
+                    setBody(user)
                 }
 
     }
-
-
-
 
     override fun getUsers(id: String): Flow<User> {
         return flow {
@@ -64,17 +54,12 @@ class OnlineUserRepository(private val ktorClient: HttpClient) : UserRepository 
                     url(HttpRoutes.login)
                     contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
-                    setBody(MultiPartFormDataContent(formData {
-                        append("type", "check_login")
-                        append("userID", id)
-                    }))
+                    setBody(id)
                 }
             }
-
             emit(cl.body())
         }
     }
-
 
     override fun getAllUsers(): Flow<List<User>> {
         return getAllUsers()

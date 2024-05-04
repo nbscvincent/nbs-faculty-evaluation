@@ -84,6 +84,10 @@ fun AddUser(
             mutableStateOf("")
         }
 
+        var year by rememberSaveable {
+            mutableStateOf("")
+        }
+
         var seePass by rememberSaveable {
             mutableStateOf(false)
         }
@@ -159,8 +163,31 @@ fun AddUser(
                     )
 
                     OutlinedTextField(
-                        value = fullName,
-                        onValueChange = { fullName = it },
+                            value = fullName,
+                    onValueChange = { fullName = it },
+                    label = { Text(text = "Full Name", letterSpacing = 2.sp) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White,
+                        textColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+
+                    OutlinedTextField(
+                        value = year,
+                        onValueChange = { year = it },
                         label = { Text(text = "Full Name", letterSpacing = 2.sp) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         singleLine = true,
@@ -299,6 +326,7 @@ fun AddUser(
                             if (user.value == null) {
                                 viewModel.userID = userID
                                 viewModel.fullName = fullName
+                                viewModel.year = year
                                 viewModel.pass = pass
                                 viewModel.selectedProgram = selectedProgram
                                 viewModel.role = selectedRole

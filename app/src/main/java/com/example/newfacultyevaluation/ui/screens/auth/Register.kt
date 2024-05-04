@@ -100,6 +100,9 @@ fun Register(
         var fullName by rememberSaveable {
             mutableStateOf("")
         }
+        var year by rememberSaveable {
+            mutableStateOf("")
+        }
         var pass by rememberSaveable {
             mutableStateOf("")
         }
@@ -171,6 +174,22 @@ fun Register(
                 value = fullName,
                 onValueChange = { fullName = it },
                 label = { Text(text = "Full Name", letterSpacing = 2.sp) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+                    .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent)
+            )
+
+            OutlinedTextField(
+                value = year,
+                onValueChange = { year = it },
+                label = { Text(text = "Year Level", letterSpacing = 2.sp) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
@@ -266,6 +285,7 @@ fun Register(
                         viewModel.pass = pass
                         viewModel.selectedProgram = selectedProgram
                         viewModel.role = selectedRole
+                        viewModel.year = year
                         viewModel.date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                         if(viewModel.insertUser()){
                             Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()

@@ -97,7 +97,8 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime-livedata:$liveDataVersion")
 
     implementation ("com.jakewharton.timber:timber:5.0.1")
-// ktor for networking
+
+    // ktor for networking
     val ktor_version = "2.2.2"
 
     implementation ("io.ktor:ktor-client-core:$ktor_version")

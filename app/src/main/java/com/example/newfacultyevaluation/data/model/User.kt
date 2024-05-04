@@ -14,5 +14,6 @@ data class User(
     val password: String,
     val selectedCourse: String?,
     val role: String,
+    val year: String?,
     val dateCreated: String?
 )

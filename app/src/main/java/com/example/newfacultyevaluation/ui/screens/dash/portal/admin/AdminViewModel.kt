@@ -37,6 +37,7 @@ class AdminViewModel(private val userRepository: UserRepository,
     var pass = ""
     var selectedProgram = ""
     var role = ""
+    var year = ""
 
 
 
@@ -65,6 +66,8 @@ class AdminViewModel(private val userRepository: UserRepository,
 
     private val _role: String
         get() = role
+    private val _year: String
+        get() = year
 
     private var insertSuccessful by mutableStateOf(false)
 
@@ -87,6 +90,7 @@ class AdminViewModel(private val userRepository: UserRepository,
         println("UserID : $userID")
         println("FullName : $fullName")
         println("Course : $selectedProgram")
+        println("Year : $year")
         println("Pass : $pass")
         if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && role != "ROLE: "){
             viewModelScope.launch {
@@ -98,6 +102,7 @@ class AdminViewModel(private val userRepository: UserRepository,
                         password = _pass,
                         selectedCourse = _selectedCourse,
                         role = _role,
+                         year = _year,
                         dateCreated = _date
                         )
                     )
@@ -119,6 +124,7 @@ class AdminViewModel(private val userRepository: UserRepository,
                         password = _pass,
                         selectedCourse = if(role == "Student") _selectedCourse else "",
                         role = _role,
+                        year = _year,
                         dateCreated = _date
                     )
                 )
@@ -150,6 +156,18 @@ class AdminViewModel(private val userRepository: UserRepository,
     fun updateStudent(student: Student){
         viewModelScope.launch {
             adminRepo.updateStudent(student)
+        }
+    }
+
+    fun deleteUser(user: User) {
+        viewModelScope.launch {
+            // Delete the user from the repository
+            userRepository.deleteUser(user)
+            // Depending on the user's role, also delete from the appropriate repository
+            when (user.role) {
+                "Faculty" -> facultyRepo.upsertFaculty(Faculty(user.userID, "", ""))
+                "Student" -> studentRepo.upsertStudent(Student(user.userID, "", "", "", "", "", ""))
+            }
         }
     }
 
