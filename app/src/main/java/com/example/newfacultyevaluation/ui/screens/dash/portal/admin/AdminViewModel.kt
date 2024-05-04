@@ -159,4 +159,16 @@ class AdminViewModel(private val userRepository: UserRepository,
         }
     }
 
+    fun deleteUser(user: User) {
+        viewModelScope.launch {
+            // Delete the user from the repository
+            userRepository.deleteUser(user)
+            // Depending on the user's role, also delete from the appropriate repository
+            when (user.role) {
+                "Faculty" -> facultyRepo.upsertFaculty(Faculty(user.userID, "", ""))
+                "Student" -> studentRepo.upsertStudent(Student(user.userID, "", "", "", "", "", ""))
+            }
+        }
+    }
+
 }
