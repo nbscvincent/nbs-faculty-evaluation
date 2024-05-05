@@ -18,8 +18,8 @@ fun Profile (
     Column {
         Text(text = viewModel.userID)
         Text(text = viewModel.fullName)
-        Text(text = viewModel.password)
-        Text(text = viewModel.year)
+        Text(text = viewModel.selectedCourse)
+        Text(text = "${viewModel.year} year")
         Text(text = viewModel.role)
     }
 

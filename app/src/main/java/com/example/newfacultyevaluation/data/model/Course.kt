@@ -10,6 +10,7 @@ data class Course(
     @ColumnInfo("courseid")
     val courseID: String,
     val courseName: String
+
 )
 
 //val courses = listOf<Course>(

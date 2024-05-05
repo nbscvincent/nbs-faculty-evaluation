@@ -42,6 +42,7 @@ fun FacultyApp(){
         loginViewModel.userID = preferences.getString("userID", "") ?: ""
         loginViewModel.fullName = preferences.getString("fullName", "") ?: ""
         loginViewModel.password = preferences.getString("password", "") ?: ""
+        loginViewModel.selectedCourse = preferences.getString("selectedCourse","") ?: ""
         loginViewModel.role = preferences.getString("role","") ?: ""
         loginViewModel.year = preferences.getString("year","") ?: ""
     }

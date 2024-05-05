@@ -74,7 +74,9 @@ fun SFaculty(
     loginViewModel: LoginViewModel,
     studentNavController: NavController,
     mainNav: NavController,
-    viewModel: StudentViewModel
+    viewModel: StudentViewModel,
+    
+
 ) {
 
     var openDialog by remember {
@@ -85,11 +87,13 @@ fun SFaculty(
         mutableStateOf(false)
     }
 
-
-
     val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).collectAsState(null)
 
     var selectedCourse by remember {
+        mutableStateOf("")
+    }
+
+    var year by remember {
         mutableStateOf("")
     }
     BackHandler {
@@ -264,6 +268,7 @@ fun SFaculty(
                     var selectedCourse1 by remember {
                         mutableStateOf(Course("",""))
                     }
+
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)
                     Row (
                         modifier = Modifier
