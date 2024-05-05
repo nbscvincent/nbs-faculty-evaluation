@@ -75,7 +75,7 @@ fun SFaculty(
     studentNavController: NavController,
     mainNav: NavController,
     viewModel: StudentViewModel,
-    
+
 
 ) {
 
