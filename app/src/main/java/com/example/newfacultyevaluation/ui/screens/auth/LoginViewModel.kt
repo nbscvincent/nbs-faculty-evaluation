@@ -26,9 +26,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
 
     }
 
-    fun checkUserID(userID: String): Flow<User> {
-        return userRepository.getUsers(userID)
-    }
+
 
 
 
