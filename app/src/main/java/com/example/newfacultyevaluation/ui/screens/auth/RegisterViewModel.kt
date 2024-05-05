@@ -25,8 +25,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     var fullName = ""
     var pass = ""
     var role = ""
-    var year = ""
     var date = ""
+    var year = ""
 
     private var insertSuccessful by mutableStateOf(false)
 
@@ -41,11 +41,11 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     private val _role: String
         get() = role
 
-    private val _year: String
-        get() = year
-
     private val _date: String
         get() = date
+
+    private val _year: String
+        get() = year
 
     fun insertUser(): Boolean{
             println("UserID : $userID")
@@ -61,8 +61,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             password = _pass,
                             selectedCourse = _selectedCourse,
                             role = _role,
+                            dateCreated = _date,
                             year = _year,
-                            dateCreated = _date
                         ))
                     }
                     else if(role == "Faculty"){
@@ -80,10 +80,10 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             userID = _userID,
                             fullName = _fullName,
                             password = _pass,
-                            year = _year,
                             selectedCourse = if(role == "Student") _selectedCourse else "",
                             role = _role,
-                            dateCreated = _date
+                            dateCreated = _date,
+                            year = _year,
                         )
                     )
                 }

@@ -250,7 +250,7 @@ fun Login(
                                 .putString("year", viewModel.year)
                                 .apply()
                             println("Online user: $user")
-                            println("fullname: $fullName")
+                            println("fullname: ${viewModel.fullName}")
 
                             Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
                                 .show()
