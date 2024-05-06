@@ -54,15 +54,17 @@ fun AddCourses(
     navController: NavController,
     adminViewModel: AdminViewModel
 ) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
 
 
     var courses by remember {
         mutableStateOf(mutableStateListOf(Course("", "", "", "")))
     }
 
-    var expanded by remember {
-        mutableStateOf(false)
-    }
+
 
     var expanded1 by remember {
         mutableStateOf(false)
@@ -72,19 +74,18 @@ fun AddCourses(
         mutableStateOf(false)
     }
 
+    var selectedYear by remember {
+        mutableStateOf("Select Year")
+    }
+
+    var selectedProgram by remember {
+        mutableStateOf("Select Program")
+    }
+
     var selectedFaculty by remember {
         mutableStateOf("Select Faculty")
     }
 
-    val department = listOf("PROGRAM: ","BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
-    var selectedDepartment by rememberSaveable {
-        mutableStateOf(department[0])
-    }
-
-    val year = listOf("Year Level: ","1st", "2nd", "3rd", "4th")
-    var selectedYear by rememberSaveable {
-        mutableStateOf(year[0])
-    }
 
     var selectedFacultyID by remember {
         mutableStateOf("")
@@ -93,7 +94,13 @@ fun AddCourses(
     var validAll by remember {
         mutableStateOf(false)
     }
-    
+
+    val yearOptions = listOf("1st", "2nd", "3rd", "4th")
+    val programOptions = listOf("BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
+
+    var checkedYears by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    var checkedPrograms by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -127,52 +134,6 @@ fun AddCourses(
             }
         }
 
-        Row (
-            modifier = Modifier
-                .clickable {
-                    expanded1 = !expanded1
-                },
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(text = selectedDepartment)
-            Icon(imageVector = if(expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-            DropdownMenu(
-                expanded = expanded1,
-                onDismissRequest = { expanded1 = false },
-                modifier = Modifier
-                    .background(Color.White),
-
-                ) {
-                department.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedDepartment = c; expanded1 = false }, enabled = c != department[0]) }
-            }
-        }
-
-        Row (
-            modifier = Modifier
-                .clickable {
-                    expanded2 = !expanded2
-                },
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(text = selectedYear)
-            Icon(imageVector = if(expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-            DropdownMenu(
-                expanded = expanded2,
-                onDismissRequest = { expanded2 = false },
-                modifier = Modifier
-                    .background(Color.White),
-
-                ) {
-                year.forEach { c -> DropdownMenuItem(text = { Text(text = c) }, onClick = { selectedYear = c; expanded2 = false }, enabled = c != department[0]) }
-            }
-        }
-
-
-
-
-
 
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -203,24 +164,62 @@ fun AddCourses(
                             courses[0] = courses[0].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
-                    OutlinedTextField(
-                        value = courses[0].year,
-                        onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(year = newValue) },
-                        label = { Text("Year Level") }
-                    )
-                    OutlinedTextField(
-                        value = courses[0].program,
-                        onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(program = newValue) },
-                        label = { Text("Program") }
-                    )
+                    // Year Dropdown
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded1 = !expanded1
+                        },
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = selectedYear)
+                        Icon(imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
+                        DropdownMenu(
+                            expanded = expanded1,
+                            onDismissRequest = { expanded1 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            yearOptions.forEach { year ->
+                                DropdownMenuItem(text = { Text(text = year) }, onClick = {
+                                    courses[0] = courses[0].copy(year = year)
+                                    selectedYear = year
+                                    expanded1 = false
+                                })
+                            }
+                        }
+                    }
+
+
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded2 = !expanded2
+                        },
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = selectedProgram)
+                        Icon(imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+                        DropdownMenu(
+                            expanded = expanded2,
+                            onDismissRequest = { expanded2 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            programOptions.forEach { program ->
+                                DropdownMenuItem(text = { Text(text = program) }, onClick = {
+                                    courses[0] = courses[0].copy(program = program)
+                                    selectedProgram = program
+                                    expanded2 = false
+                                })
+                            }
+                        }
+                    }
 
 
                 }
             }
+
             items(courses.size - 1) { index ->
+
                 Text(text = "Course ${index+2}".uppercase())
                 OutlinedTextField(
                     value = courses[index + 1].courseID,
@@ -269,7 +268,7 @@ fun AddCourses(
                 }
 
             }
-            
+
 
         }
         Row (
