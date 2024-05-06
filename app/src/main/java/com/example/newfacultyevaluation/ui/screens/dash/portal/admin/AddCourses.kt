@@ -54,15 +54,17 @@ fun AddCourses(
     navController: NavController,
     adminViewModel: AdminViewModel
 ) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
 
 
     var courses by remember {
         mutableStateOf(mutableStateListOf(Course("", "", "", "")))
     }
 
-    var expanded by remember {
-        mutableStateOf(false)
-    }
+
 
     var expanded1 by remember {
         mutableStateOf(false)
@@ -95,7 +97,10 @@ fun AddCourses(
 
     val yearOptions = listOf("1st", "2nd", "3rd", "4th")
     val programOptions = listOf("BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
-    
+
+    var checkedYears by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    var checkedPrograms by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -263,7 +268,7 @@ fun AddCourses(
                 }
 
             }
-            
+
 
         }
         Row (
