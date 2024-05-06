@@ -19,14 +19,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.PlaceholderVerticalAlign.Companion.TextCenter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -62,33 +66,64 @@ import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 fun UserList(
     viewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory),
 ) {
-    val users = viewModel.getAllUsers(). collectAsState(initial = null)
+    var searchText by remember { mutableStateOf("") }
+    val users = viewModel.getAllUsers().collectAsState(initial = null)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
-        Spacer(Modifier.height(8.dp))
-        Spacer(Modifier.height(8.dp))
-        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = searchText,
+            onValueChange = { searchText = it },
+            label = { Text("Search for name") },
+            modifier = Modifier.fillMaxWidth(),
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        searchText = ""
+                    }
+                ) {
+                    Icon(Icons.Default.Clear, contentDescription = "Clear search")
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "USER LIST",
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
             UserColumn()
             LazyColumn {
-                users.value?.forEachIndexed { index, user ->
+                val filteredUsers = users.value?.filter { user ->
+                    user.fullName!!.contains(searchText, ignoreCase = true) ||
+                            user.userID.contains(searchText, ignoreCase = true)
+                } ?: emptyList()
+                filteredUsers.forEachIndexed { index, user ->
                     item {
                         UserCard(user = user, index = index)
                     }
                 }
             }
         }
+
 
     }
 
