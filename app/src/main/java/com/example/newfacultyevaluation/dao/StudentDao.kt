@@ -29,7 +29,7 @@ interface StudentDao {
     fun getAllCourses(): Flow<List<Course>>
     @Upsert
     suspend fun upsertCourseStudent(courseStudent: CourseStudent)
-    @Query("SELECT course.courseid AS courseid, course.courseName AS courseName FROM coursestudent INNER JOIN course ON coursestudent.courseID = course.courseid AND coursestudent.studentID = :id")
+    @Query("SELECT course.courseid AS courseid, course.courseName AS courseName, course.year AS year, course.program AS program FROM coursestudent INNER JOIN course ON coursestudent.courseID = course.courseid AND coursestudent.studentID = :id")
     fun getCoursesByStudentID(id: String): Flow<List<Course>>
     @Query("SELECT faculty.facultyid, faculty.fullName, faculty.password " +
             "FROM coursestudent " +
