@@ -72,6 +72,14 @@ fun AddCourses(
         mutableStateOf(false)
     }
 
+    var selectedYear by remember {
+        mutableStateOf("Select Year")
+    }
+
+    var selectedProgram by remember {
+        mutableStateOf("Select Program")
+    }
+
     var selectedFaculty by remember {
         mutableStateOf("Select Faculty")
     }
@@ -151,25 +159,62 @@ fun AddCourses(
                             courses[0] = courses[0].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
-                    OutlinedTextField(
-                        value = courses[0].year,
-                        onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(year = newValue) },
-                        label = { Text("Year Level") }
-                    )
-                    OutlinedTextField(
-                        value = courses[0].program,
-                        onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(program = newValue) },
-                        label = { Text("Program") }
-                    )
+                    // Year Dropdown
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded1 = !expanded1
+                        },
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = selectedYear)
+                        Icon(imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
+                        DropdownMenu(
+                            expanded = expanded1,
+                            onDismissRequest = { expanded1 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            yearOptions.forEach { year ->
+                                DropdownMenuItem(text = { Text(text = year) }, onClick = {
+                                    courses[0] = courses[0].copy(year = year)
+                                    selectedYear = year
+                                    expanded1 = false
+                                })
+                            }
+                        }
+                    }
+
+
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded2 = !expanded2
+                        },
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = selectedProgram)
+                        Icon(imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+                        DropdownMenu(
+                            expanded = expanded2,
+                            onDismissRequest = { expanded2 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            programOptions.forEach { program ->
+                                DropdownMenuItem(text = { Text(text = program) }, onClick = {
+                                    courses[0] = courses[0].copy(program = program)
+                                    selectedProgram = program
+                                    expanded2 = false
+                                })
+                            }
+                        }
+                    }
 
 
                 }
             }
 
             items(courses.size - 1) { index ->
+
                 Text(text = "Course ${index+2}".uppercase())
                 OutlinedTextField(
                     value = courses[index + 1].courseID,
