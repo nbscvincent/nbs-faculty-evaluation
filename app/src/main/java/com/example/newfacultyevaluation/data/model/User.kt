@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-
+@Serialization
 @Entity(tableName = "user")
 data class User(
     @PrimaryKey

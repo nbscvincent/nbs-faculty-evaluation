@@ -41,12 +41,12 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
             accept(ContentType.Application.Json)
             setBody(MultiPartFormDataContent(formData {
                 append("type", "save_user")
-                append("username", user.userID)
-                append("age", user.fullName.toString())
-                append("id", user.selectedCourse.toString())
-                append("password", user.year.toString())
+                append("userID", user.userID)
+                append("fullName", user.fullName.toString())
+                append("selectedCourse", user.selectedCourse.toString())
+                append("year", user.year.toString())
                 append("password", user.password)
-                append("height", user.role)
+                append("role", user.role)
 
             }))
         }

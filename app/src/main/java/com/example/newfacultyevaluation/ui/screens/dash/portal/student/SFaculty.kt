@@ -32,6 +32,8 @@ import androidx.compose.material.icons.rounded.LibraryAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -96,6 +98,8 @@ fun SFaculty(
         mutableStateOf("")
     }
 
+    val scrollState = rememberScrollState()
+
     var year by remember {
         mutableStateOf("")
     }
@@ -105,7 +109,7 @@ fun SFaculty(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(color = Color.White).verticalScroll(scrollState),
     ) {
         var showCheckBox by remember {
             mutableStateOf(false)
@@ -126,7 +130,7 @@ fun SFaculty(
                 contentDescription = "Delete Course",
                 modifier = Modifier.clickable {
                     showCheckBox = !showCheckBox
-                }
+                },tint = Color.Black
             )
             Icon(
                 imageVector = Icons.Rounded.LibraryAdd,
@@ -134,9 +138,72 @@ fun SFaculty(
                 modifier = Modifier.clickable {
                     openDialog = true
                     showCheckBox = false
-                }
+                },tint = Color.Black
             )
         }
+
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row{
+                Text("Student Number:",
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+                Text(text = "${loginViewModel.userID}",
+                    modifier = Modifier.padding(start =5.dp),
+                    fontWeight = FontWeight.Light,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+            }
+
+            Row{
+
+                Text("Student Name:",
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+                Text(text = "${loginViewModel.fullName}",
+                    modifier = Modifier.padding(start =5.dp),
+                    fontWeight = FontWeight.Light,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+            }
+
+            Row{
+
+                Text("Course/Year:",
+                    modifier = Modifier.padding(2.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+                Text(text = "${loginViewModel.selectedCourse} - ${loginViewModel.year} year",
+                    modifier = Modifier.padding(start =5.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    color = Color.Black
+                )
+
+            }
+
+        }
+        Spacer(modifier = Modifier.height(5.dp))
 
         if (courses.value?.size == 0) {
             Column(
@@ -145,8 +212,8 @@ fun SFaculty(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(text = "No Courses Found", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Text(text = "Tap \"+\" icon to enroll your courses.")
+                Text(text = "No Courses Found", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                Text(text = "Tap \"+\" icon to enroll your courses.", color = Color.Black)
             }
         } else {
 
@@ -155,9 +222,9 @@ fun SFaculty(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(horizontal = 20.dp)
+                        .padding()
                         .fillMaxWidth()
-                        .height(170.dp)
+                        .height(190.dp).background(color= Color.White)
 
                 ) {
                     if (showCheckBox) {
@@ -168,15 +235,22 @@ fun SFaculty(
                         }
                     }
 
-                    Card(
+                    Card( elevation = CardDefaults.cardElevation(8.dp),
                         modifier = Modifier
 
                             .clickable() {
-                            
+
                             }
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                            .background(color = Color.White),
+                        shape = RoundedCornerShape(4.dp),
+
+
+
                     ) {
                         Column(
-                            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+                            modifier = Modifier.background(Color.White).fillMaxWidth()
                         ) {
 
                             Text(
@@ -184,15 +258,17 @@ fun SFaculty(
                                 modifier = Modifier.padding(top=20.dp, start =20.dp),
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                        fontSize = 20.sp
+                                        fontSize = 20.sp,
+                                color = Color.Black
                             )
 
                             Text(
                                 text = "Instructor",
                                 modifier = Modifier.padding(top=10.dp, start =20.dp),
-                                fontWeight = FontWeight.Thin,
+                                fontWeight = FontWeight.Light,
                                 textAlign = TextAlign.Center,
-                                fontSize = 20.sp
+                                fontSize = 20.sp,
+                                        color = Color.Black
                             )
 
                             val faculty = viewModel.getStudentFaculty(loginViewModel.userID, course.courseID).collectAsState(null)
@@ -203,7 +279,8 @@ fun SFaculty(
                                 textAlign = TextAlign.Left,
                                 modifier = Modifier.padding(top=10.dp, start =20.dp),
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp
+                                fontSize = 20.sp,
+                                        color = Color.Black
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
@@ -242,7 +319,7 @@ fun SFaculty(
                     }
 
                 }
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(1.dp))
 
             }
 
