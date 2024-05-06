@@ -17,6 +17,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
     var status by mutableStateOf(false)
     var userID by mutableStateOf("")
     var fullName by mutableStateOf("")
+    var selectedCourse by mutableStateOf("")
     var password by mutableStateOf("")
     var year by mutableStateOf("")
 
@@ -26,9 +27,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(){
 
     }
 
-    fun checkUserID(userID: String): Flow<User> {
-        return userRepository.getUsers(userID)
-    }
 
 
 

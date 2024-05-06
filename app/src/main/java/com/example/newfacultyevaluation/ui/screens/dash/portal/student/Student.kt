@@ -52,6 +52,7 @@ import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import kotlinx.coroutines.launch
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +63,11 @@ fun StudentPortal(
 ) {
     val studentNav = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+
+
     ModalNavigationDrawer(drawerState = drawerState,
         drawerContent = {
         ModalDrawerSheet(

@@ -57,7 +57,7 @@ fun AddCourses(
 
 
     var courses by remember {
-        mutableStateOf(mutableStateListOf(Course("", "")))
+        mutableStateOf(mutableStateListOf(Course("", "", "", "")))
     }
 
     var expanded by remember {
@@ -203,6 +203,19 @@ fun AddCourses(
                             courses[0] = courses[0].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
+                    OutlinedTextField(
+                        value = courses[0].year,
+                        onValueChange = { newValue ->
+                            courses[0] = courses[0].copy(year = newValue) },
+                        label = { Text("Year Level") }
+                    )
+                    OutlinedTextField(
+                        value = courses[0].program,
+                        onValueChange = { newValue ->
+                            courses[0] = courses[0].copy(program = newValue) },
+                        label = { Text("Program") }
+                    )
+
 
 
                 }
@@ -222,6 +235,20 @@ fun AddCourses(
                         courses[index + 1] = courses[index + 1].copy(courseName = newValue)
                     },
                     label = { Text("Enter Course Name") }
+                )
+                OutlinedTextField(
+                    value = courses[index + 1].year,
+                    onValueChange = { newValue ->
+                        courses[index + 1] = courses[index + 1].copy(year = newValue)
+                    },
+                    label = { Text("Year Level") }
+                )
+                OutlinedTextField(
+                    value = courses[index + 1].program,
+                    onValueChange = { newValue ->
+                        courses[index + 1] = courses[index + 1].copy(program = newValue)
+                    },
+                    label = { Text("Program") }
                 )
                 Row(
                     modifier = Modifier
@@ -262,8 +289,14 @@ fun AddCourses(
                 if(validAll){
                     courses.forEach {
                         adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
-                        adminViewModel.upsertCourse(Course(it.courseID, it.courseName))
+                        adminViewModel.upsertCourse(Course(it.courseID, it.courseName, it.year, it.program))
+                        println(it.courseID)
+                        println(it.courseName)
+                        println(it.year)
+                        println(it.program)
                     }
+
+
                     navController.popBackStack()
                     navController.navigate(AdminNav.AddCourse.name)
                     Toast.makeText(context,"Successfully Added !", Toast.LENGTH_SHORT).show()
@@ -283,7 +316,7 @@ fun AddCourses(
                 modifier = Modifier
                     .clickable {
                         // Handle adding the new course to the list
-                        courses.add(Course("", ""))
+                        courses.add(Course("", "", "", ""))
                     }
                     .size(40.dp)
                     .weight(1f)

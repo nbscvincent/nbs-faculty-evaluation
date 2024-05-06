@@ -74,7 +74,9 @@ fun SFaculty(
     loginViewModel: LoginViewModel,
     studentNavController: NavController,
     mainNav: NavController,
-    viewModel: StudentViewModel
+    viewModel: StudentViewModel,
+
+
 ) {
 
     var openDialog by remember {
@@ -85,11 +87,13 @@ fun SFaculty(
         mutableStateOf(false)
     }
 
-
-
     val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).collectAsState(null)
 
     var selectedCourse by remember {
+        mutableStateOf("")
+    }
+
+    var year by remember {
         mutableStateOf("")
     }
     BackHandler {
@@ -262,8 +266,9 @@ fun SFaculty(
                 ) {
 
                     var selectedCourse1 by remember {
-                        mutableStateOf(Course("",""))
+                        mutableStateOf(Course("","", "", ""))
                     }
+
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)
                     Row (
                         modifier = Modifier
@@ -277,15 +282,21 @@ fun SFaculty(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
-                        if(selectedCourse1.courseID.isBlank() && selectedCourse1.courseName.isBlank()){
+                        if(selectedCourse1.courseID.isBlank() && selectedCourse1.courseName.isBlank() ){
                             Text(text = "Select your Course")
-                        }
-                        else Text(text = "${selectedCourse1.courseID} ${selectedCourse1.courseName}")
-                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false},modifier = Modifier.background(Color.White)) {
-                            allCourses.value?.forEach { course ->
-                                DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
-                            }
 
+                        }
+                        else  Text(text = "${selectedCourse1.courseID} ${selectedCourse1.courseName}")
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            allCourses.value?.forEach { course ->
+                                if (course.year == loginViewModel.year && course.program == loginViewModel.selectedCourse) {
+                                    DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
+                                }
+                            }
                         }
                         Icon(imageVector = if(expanded)Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "Selection")
                     }
@@ -297,12 +308,18 @@ fun SFaculty(
                     ){
                         val context = LocalContext.current
                         Button(onClick = {
-                            if(selectedCourse1.courseID.isNotBlank() && selectedCourse1.courseName.isNotBlank()){
+                            if(selectedCourse1.courseID.isNotBlank()
+                                && selectedCourse1.courseName.isNotBlank()
+                                && selectedCourse1.year == loginViewModel.year
+                                && selectedCourse1.program == loginViewModel.selectedCourse
+
+                                ){
                                 viewModel.upsertCourseStudent(CourseStudent(courseID = selectedCourse1.courseID, studentID = loginViewModel.userID))
                                 viewModel.upsertCourse(selectedCourse1)
                                 openDialog = false
-                            } else {
-                                Toast.makeText(context, "Please select your course", Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                Toast.makeText(context, "You are not enrolled in selected course", Toast.LENGTH_SHORT,).show()
                             }
 
                         }, modifier = Modifier, shape = RoundedCornerShape(10.dp)) {

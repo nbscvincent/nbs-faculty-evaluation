@@ -9,7 +9,9 @@ data class Course(
     @PrimaryKey
     @ColumnInfo("courseid")
     val courseID: String,
-    val courseName: String
+    val courseName: String,
+    val year: String,
+    val program: String,
 )
 
 //val courses = listOf<Course>(
