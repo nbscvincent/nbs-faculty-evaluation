@@ -105,8 +105,13 @@ fun AddCourses(
     val yearOptions = listOf("1st", "2nd", "3rd", "4th")
     val programOptions = listOf("BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
 
-    var checkedYears by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
-    var checkedPrograms by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    // States for dropdown menus
+    var yearDropdownExpanded by remember { mutableStateOf(false) }
+    var programDropdownExpanded by remember { mutableStateOf(false) }
+
+    // Indexes for dropdowns
+    var yearDropdownIndex by remember { mutableStateOf(-1) }
+    var programDropdownIndex by remember { mutableStateOf(-1) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -171,42 +176,53 @@ fun AddCourses(
                             courses[0] = courses[0].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    // Year Dropdown
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded1 = !expanded1
+                        },
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "Select Year")
-                        Row {
+                        Text(text = selectedYear)
+                        Icon(imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+                        DropdownMenu(
+                            expanded = expanded1,
+                            onDismissRequest = { expanded1 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
                             yearOptions.forEach { year ->
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = checkedYears.contains(year),
-                                        onCheckedChange = {
-                                            checkedYears = if (it) checkedYears + year else checkedYears - year
-                                        }
-                                    )
-                                    Text(text = year)
-                                }
+                                DropdownMenuItem(text = { Text(text = year) }, onClick = {
+                                    courses[0] = courses[0].copy(year = year)
+                                    selectedYear = year
+                                    expanded1 = false
+                                })
                             }
                         }
                     }
 
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    Row(
+                        modifier = Modifier.clickable {
+                            expanded2 = !expanded2
+                        },
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "Select Program")
-                        Row {
+                        Text(text = selectedProgram)
+                        Icon(imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+
+                        DropdownMenu(
+                            expanded = expanded2,
+                            onDismissRequest = { expanded2 = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
                             programOptions.forEach { program ->
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = checkedPrograms.contains(program),
-                                        onCheckedChange = {
-                                            checkedPrograms = if (it) checkedPrograms + program else checkedPrograms - program
-                                        }
-                                    )
-                                    Text(text = program)
-                                }
+                                DropdownMenuItem(text = { Text(text = program) }, onClick = {
+                                    courses[0] = courses[0].copy(program = program)
+                                    selectedProgram = program
+                                    expanded2 = false
+                                })
                             }
                         }
                     }
