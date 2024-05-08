@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -144,49 +145,54 @@ fun SFaculty(
             }
         } else {
 
-            courses.value?.forEach { course ->
+            courses.value?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }?.forEach { course ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ){
-                    if(showCheckBox){
+                        .fillMaxWidth()
+                        .height(50.dp)
+                ) {
+                    if (showCheckBox) {
                         Button(onClick = {
                             viewModel.deleteCourse(CourseStudent(course.courseID, loginViewModel.userID))
                         }, shape = RoundedCornerShape(10.dp), modifier = Modifier.size(40.dp), contentPadding = PaddingValues(10.dp)) {
                             Icon(imageVector = Icons.Rounded.DeleteOutline, contentDescription = "Delete")
                         }
                     }
+
                     Card(
                         modifier = Modifier
-                            .padding(vertical = 10.dp)
-                            .height(50.dp)
+                            .weight(1f)
+                            .clickable(enabled = !showCheckBox) {
+                                openDataPrivacy = true
+                                selectedCourse = course.courseID
+                            }
                     ) {
-
-                        Row (
+                        Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(
-                                    enabled = !showCheckBox
-                                ) {
-                                    openDataPrivacy = true
-                                    selectedCourse = course.courseID
-                                }
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
 
-                        ){
-
-                            Text(text = course.courseID, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                            Text(text = course.courseName, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                            Text(
+                                text = course.courseID,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.Center
+                            )
+                            Text(
+                                text = course.courseName,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.Center
+                            )
                         }
-
                     }
-                }
 
+                }
+                Spacer(modifier = Modifier.height(20.dp))
 
             }
+
         }
         if(openDataPrivacy){
             Dialog(onDismissRequest = { openDataPrivacy = false}) {
@@ -266,7 +272,7 @@ fun SFaculty(
                 ) {
 
                     var selectedCourse1 by remember {
-                        mutableStateOf(Course("","", "", ""))
+                        mutableStateOf(Course(0,"","", "", ""))
                     }
 
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)

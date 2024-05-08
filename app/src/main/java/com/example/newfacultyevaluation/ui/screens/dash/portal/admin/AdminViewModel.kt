@@ -137,7 +137,6 @@ class AdminViewModel(private val userRepository: UserRepository,
     }
 
 
-
     fun upsertCourse(course: Course){
         viewModelScope.launch {
             adminRepo.upsertCourse(course)
