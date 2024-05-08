@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,9 +37,11 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -77,7 +80,6 @@ fun SFaculty(
     mainNav: NavController,
     viewModel: StudentViewModel,
 
-
 ) {
 
     var openDialog by remember {
@@ -108,6 +110,9 @@ fun SFaculty(
         var showCheckBox by remember {
             mutableStateOf(false)
         }
+
+
+
 
         Row (
             modifier = Modifier
@@ -146,12 +151,14 @@ fun SFaculty(
         } else {
 
             courses.value?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }?.forEach { course ->
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .fillMaxWidth()
                         .height(50.dp)
+
                 ) {
                     if (showCheckBox) {
                         Button(onClick = {
@@ -163,7 +170,7 @@ fun SFaculty(
 
                     Card(
                         modifier = Modifier
-                            .weight(1f)
+
                             .clickable(enabled = !showCheckBox) {
                                 openDataPrivacy = true
                                 selectedCourse = course.courseID
@@ -172,19 +179,22 @@ fun SFaculty(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize().background(Color.DarkGray)
                         ) {
 
-                            Text(
-                                text = course.courseID,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
-                            )
                             Text(
                                 text = course.courseName,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
+                            Text(
+                                text = course.courseID,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.Center
+                            )
+
+
+
                         }
                     }
 
@@ -203,7 +213,7 @@ fun SFaculty(
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.background)
                         .fillMaxHeight(0.85f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -258,13 +268,16 @@ fun SFaculty(
         if(openDialog) {
             Dialog(onDismissRequest = { openDialog = false }) {
                 val allCourses = viewModel.getAllCourses().collectAsState(null)
+                val isDarkTheme = isSystemInDarkTheme()
+                val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+                val bg = MaterialTheme.colorScheme.background
                 var expanded by remember {
                     mutableStateOf(false)
                 }
                 Column(
                     modifier = Modifier
                         .height(300.dp)
-                        .background(Color.White)
+                        .background(bg)
                         .padding(20.dp)
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -276,6 +289,8 @@ fun SFaculty(
                     }
 
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)
+                    val textColor = if (isDarkTheme) Color.White else Color.Black
+                    val borderColor = if (isDarkTheme) Color.White else Color.Black
                     Row (
                         modifier = Modifier
                             .clickable {
@@ -283,7 +298,7 @@ fun SFaculty(
                             }
                             .height(50.dp)
                             .fillMaxWidth()
-                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                            .border(1.dp, borderColor, RoundedCornerShape(10.dp))
                             .padding(horizontal = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -296,7 +311,7 @@ fun SFaculty(
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
-                            modifier = Modifier.background(Color.White)
+                            modifier = Modifier.background( MaterialTheme.colorScheme.background)
                         ) {
                             allCourses.value?.forEach { course ->
                                 if (course.year == loginViewModel.year && course.program == loginViewModel.selectedCourse) {
@@ -342,5 +357,7 @@ fun SFaculty(
             }
         }
     }
+
+
 
 }
