@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -66,6 +67,8 @@ fun AddCourses(
 
 
 
+
+
     var expanded1 by remember {
         mutableStateOf(false)
     }
@@ -83,7 +86,7 @@ fun AddCourses(
     }
 
     var selectedFaculty by remember {
-        mutableStateOf("Select Faculty")
+        mutableStateOf("")
     }
 
 
@@ -92,6 +95,10 @@ fun AddCourses(
     }
 
     var validAll by remember {
+        mutableStateOf(false)
+    }
+
+    var valid by remember {
         mutableStateOf(false)
     }
 
@@ -114,8 +121,8 @@ fun AddCourses(
                 },
             horizontalArrangement = Arrangement.Center
         ){
-
-            Text(text = selectedFaculty)
+            val displayText = if (selectedFaculty.isNotBlank()) selectedFaculty else "Select Faculty"
+            Text(text = displayText)
             Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
 
@@ -164,55 +171,46 @@ fun AddCourses(
                             courses[0] = courses[0].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
-                    // Year Dropdown
-                    Row(
-                        modifier = Modifier.clickable {
-                            expanded1 = !expanded1
-                        },
-                        horizontalArrangement = Arrangement.Center
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = selectedYear)
-                        Icon(imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-                        DropdownMenu(
-                            expanded = expanded1,
-                            onDismissRequest = { expanded1 = false },
-                            modifier = Modifier.background(Color.White)
-                        ) {
+                        Text(text = "Select Year")
+                        Row {
                             yearOptions.forEach { year ->
-                                DropdownMenuItem(text = { Text(text = year) }, onClick = {
-                                    courses[0] = courses[0].copy(year = year)
-                                    selectedYear = year
-                                    expanded1 = false
-                                })
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = checkedYears.contains(year),
+                                        onCheckedChange = {
+                                            checkedYears = if (it) checkedYears + year else checkedYears - year
+                                        }
+                                    )
+                                    Text(text = year)
+                                }
                             }
                         }
                     }
 
-
-                    Row(
-                        modifier = Modifier.clickable {
-                            expanded2 = !expanded2
-                        },
-                        horizontalArrangement = Arrangement.Center
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = selectedProgram)
-                        Icon(imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-                        DropdownMenu(
-                            expanded = expanded2,
-                            onDismissRequest = { expanded2 = false },
-                            modifier = Modifier.background(Color.White)
-                        ) {
+                        Text(text = "Select Program")
+                        Row {
                             programOptions.forEach { program ->
-                                DropdownMenuItem(text = { Text(text = program) }, onClick = {
-                                    courses[0] = courses[0].copy(program = program)
-                                    selectedProgram = program
-                                    expanded2 = false
-                                })
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = checkedPrograms.contains(program),
+                                        onCheckedChange = {
+                                            checkedPrograms = if (it) checkedPrograms + program else checkedPrograms - program
+                                        }
+                                    )
+                                    Text(text = program)
+                                }
                             }
                         }
                     }
+
 
 
                 }
@@ -285,10 +283,12 @@ fun AddCourses(
                 courses.forEach {
                     validAll = it.courseID.isNotBlank() && it.courseName.isNotBlank()
                 }
-                if(validAll){
+
+                if(selectedFaculty.isNotBlank() && validAll){
                     courses.forEach {
                         adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
                         adminViewModel.upsertCourse(Course(it.courseID, it.courseName, it.year, it.program))
+                        println(selectedFaculty)
                         println(it.courseID)
                         println(it.courseName)
                         println(it.year)
