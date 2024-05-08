@@ -3,6 +3,7 @@ package com.example.newfacultyevaluation.ui.screens.auth
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -52,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -79,6 +82,7 @@ fun Login(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .verticalScroll(scrollState),
     ) {
 
@@ -106,7 +110,6 @@ fun Login(
                 mutableStateOf(false)
             }
 
-
             Icon(
                 painterResource(id = R.drawable.nbsc_logo),
                 contentDescription = "Logo",
@@ -123,12 +126,14 @@ fun Login(
                     text = "Welcome",
                     fontSize = 25.sp,
                     fontWeight = FontWeight.W700,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
+                    color = Color.Black
                 )
                 Text(
                     text = "Sign In to access your account",
                     fontWeight = FontWeight.W300,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
+                    color = Color.Black
                 )
             }
 
@@ -288,14 +293,28 @@ fun Login(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = "Don't have an account?")
-                    Text(text = "Register Now!", modifier = Modifier.clickable {
-                        navController.popBackStack()
-                        navController.navigate(Auth.REGISTER.name)
-                    }, color = Red, fontWeight = FontWeight.W600)
+                    Text(
+                        text = "Don't have an account?",
+                        color = Color.Black,
+                        modifier = Modifier,
+                        textAlign = TextAlign.Center,
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text(
+                        text = "Register Now!",
+                        modifier = Modifier
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate(Auth.REGISTER.name)
+                            }
+                            .padding(),
+                        color = Red,
+                        fontWeight = FontWeight.W600,
+                        textAlign = TextAlign.Center,
+                    )
                 }
 
 

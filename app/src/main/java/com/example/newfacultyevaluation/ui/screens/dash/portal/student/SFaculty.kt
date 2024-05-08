@@ -157,7 +157,7 @@ fun SFaculty(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .fillMaxWidth()
-                        .height(50.dp)
+                        .height(170.dp)
 
                 ) {
                     if (showCheckBox) {
@@ -171,27 +171,70 @@ fun SFaculty(
                     Card(
                         modifier = Modifier
 
-                            .clickable(enabled = !showCheckBox) {
-                                openDataPrivacy = true
-                                selectedCourse = course.courseID
+                            .clickable() {
+                            
                             }
                     ) {
+                        Column(
+                            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+                        ) {
+
+                            Text(
+                                text = "${course.courseID} - ${course.courseName}",
+                                modifier = Modifier.padding(top=20.dp, start =20.dp),
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                                        fontSize = 20.sp
+                            )
+
+                            Text(
+                                text = "Instructor",
+                                modifier = Modifier.padding(top=10.dp, start =20.dp),
+                                fontWeight = FontWeight.Thin,
+                                textAlign = TextAlign.Center,
+                                fontSize = 20.sp
+                            )
+
+                            val faculty = viewModel.getStudentFaculty(loginViewModel.userID, course.courseID).collectAsState(null)
+                            // Display the faculty name if available
+                            val facultyNameText = if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
+                            Text(
+                                text = facultyNameText,
+                                textAlign = TextAlign.Left,
+                                modifier = Modifier.padding(top=10.dp, start =20.dp),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
+
+                            Spacer(modifier = Modifier.weight(1f))
+
+                            // Evaluate button positioned in the bottom right corner
+                            Button(
+                                onClick = {
+                                    if(!showCheckBox) {
+                                        openDataPrivacy = true
+                                        selectedCourse = course.courseID
+                                    }
+                                },
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .align(Alignment.End)
+                            ) {
+                                Text(text = "Evaluate")
+                            }
+
+                        }
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier.fillMaxSize().background(Color.DarkGray)
                         ) {
 
-                            Text(
-                                text = course.courseName,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
-                            )
-                            Text(
-                                text = course.courseID,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.Center
-                            )
+
+
+
+
 
 
 
