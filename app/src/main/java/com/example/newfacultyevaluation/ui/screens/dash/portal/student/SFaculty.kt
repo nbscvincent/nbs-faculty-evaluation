@@ -266,7 +266,7 @@ fun SFaculty(
                 ) {
 
                     var selectedCourse1 by remember {
-                        mutableStateOf(Course("","", "", ""))
+                        mutableStateOf(Course(0,"","", "", ""))
                     }
 
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)

@@ -62,7 +62,7 @@ fun AddCourses(
 
 
     var courses by remember {
-        mutableStateOf(mutableStateListOf(Course("", "", "", "")))
+        mutableStateOf(mutableStateListOf(Course(0,"", "", "", "")))
     }
 
 
@@ -105,13 +105,14 @@ fun AddCourses(
     val yearOptions = listOf("1st", "2nd", "3rd", "4th")
     val programOptions = listOf("BSCS", "BSEntrep", "BSA", "BSAIS", "BSTM")
 
-    // States for dropdown menus
-    var yearDropdownExpanded by remember { mutableStateOf(false) }
-    var programDropdownExpanded by remember { mutableStateOf(false) }
+    fun addNewCourse() {
+        courses.add(Course(0,"","", "", "", ))
+    }
 
-    // Indexes for dropdowns
-    var yearDropdownIndex by remember { mutableStateOf(-1) }
-    var programDropdownIndex by remember { mutableStateOf(-1) }
+    var expandedYear by remember { mutableStateOf(false) }
+    var expandedProgram by remember { mutableStateOf(false) }
+
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -150,140 +151,84 @@ fun AddCourses(
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-
                 .height(550.dp)
                 .padding(10.dp)
                 .border(1.dp, Color.Black)
                 .padding(10.dp)
         ){
-            item {
-                // Additional row for entering a new course
-                Text(text = "Course 1".uppercase())
+            items(courses.size) { index ->
+                val course = courses[index]
+                var expandedYear by remember { mutableStateOf(false) }
+                var expandedProgram by remember { mutableStateOf(false) }
+
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Text(text = "Course ${index + 1}".uppercase())
                     OutlinedTextField(
-                        value = courses[0].courseID,
+                        value = courses[index].courseID,
                         onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(courseID = newValue) },
+                            courses[index] = courses[index].copy(courseID = newValue) },
                         label = { Text("Enter Course Code") }
                     )
 
                     OutlinedTextField(
-                        value = courses[0].courseName,
+                        value = courses[index].courseName,
                         onValueChange = { newValue ->
-                            courses[0] = courses[0].copy(courseName = newValue) },
+                            courses[index] = courses[index].copy(courseName = newValue) },
                         label = { Text("Enter Course Name") }
                     )
-
                     // Year Dropdown
                     Row(
                         modifier = Modifier.clickable {
-                            expanded1 = !expanded1
+                            expandedYear = !expandedYear
                         },
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = selectedYear)
-                        Icon(imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                        val displayYear = if (course.year.isNotBlank()) course.year else "Select Year"
+                        Text(text = displayYear)
+                        Icon(imageVector = if (expandedYear) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
                         DropdownMenu(
-                            expanded = expanded1,
-                            onDismissRequest = { expanded1 = false },
+                            expanded = expandedYear,
+                            onDismissRequest = { expandedYear = false },
                             modifier = Modifier.background(Color.White)
                         ) {
                             yearOptions.forEach { year ->
                                 DropdownMenuItem(text = { Text(text = year) }, onClick = {
-                                    courses[0] = courses[0].copy(year = year)
-                                    selectedYear = year
-                                    expanded1 = false
+                                    courses[index] = course.copy(year = year)
+                                    expandedYear = false
                                 })
                             }
                         }
                     }
-
-
+                    // Program Dropdown
                     Row(
                         modifier = Modifier.clickable {
-                            expanded2 = !expanded2
+                            expandedProgram = !expandedProgram
                         },
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = selectedProgram)
-                        Icon(imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                        val displayProgram = if (course.program.isNotBlank()) course.program else "Select Program"
+                        Text(text = displayProgram)
+                        Icon(imageVector = if (expandedProgram) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
                         DropdownMenu(
-                            expanded = expanded2,
-                            onDismissRequest = { expanded2 = false },
+                            expanded = expandedProgram,
+                            onDismissRequest = { expandedProgram = false },
                             modifier = Modifier.background(Color.White)
                         ) {
                             programOptions.forEach { program ->
                                 DropdownMenuItem(text = { Text(text = program) }, onClick = {
-                                    courses[0] = courses[0].copy(program = program)
-                                    selectedProgram = program
-                                    expanded2 = false
+                                    courses[index] = course.copy(program = program)
+                                    expandedProgram = false
                                 })
                             }
                         }
                     }
-
-
-
                 }
             }
-
-            items(courses.size - 1) { index ->
-
-                Text(text = "Course ${index+2}".uppercase())
-                OutlinedTextField(
-                    value = courses[index + 1].courseID,
-                    onValueChange = { newValue ->
-                        courses[index + 1] = courses[index + 1].copy(courseID = newValue)
-                    },
-                    label = { Text("Enter Course Code") }
-                )
-                OutlinedTextField(
-                    value = courses[index + 1].courseName,
-                    onValueChange = { newValue ->
-                        courses[index + 1] = courses[index + 1].copy(courseName = newValue)
-                    },
-                    label = { Text("Enter Course Name") }
-                )
-                OutlinedTextField(
-                    value = courses[index + 1].year,
-                    onValueChange = { newValue ->
-                        courses[index + 1] = courses[index + 1].copy(year = newValue)
-                    },
-                    label = { Text("Year Level") }
-                )
-                OutlinedTextField(
-                    value = courses[index + 1].program,
-                    onValueChange = { newValue ->
-                        courses[index + 1] = courses[index + 1].copy(program = newValue)
-                    },
-                    label = { Text("Program") }
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 50.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ){
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Delete",
-                        modifier = Modifier
-                            .clickable {
-                                // Handle adding the new course to the list
-                                courses.removeAt(index + 1)
-                            }
-                            .size(30.dp)
-                    )
-                }
-
-            }
-
-
         }
         Row (
             modifier = Modifier
@@ -303,7 +248,7 @@ fun AddCourses(
                 if(selectedFaculty.isNotBlank() && validAll){
                     courses.forEach {
                         adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
-                        adminViewModel.upsertCourse(Course(it.courseID, it.courseName, it.year, it.program))
+                        adminViewModel.upsertCourse(Course(it.id,it.courseID, it.courseName, it.year, it.program))
                         println(selectedFaculty)
                         println(it.courseID)
                         println(it.courseName)
@@ -331,7 +276,7 @@ fun AddCourses(
                 modifier = Modifier
                     .clickable {
                         // Handle adding the new course to the list
-                        courses.add(Course("", "", "", ""))
+                        addNewCourse()
                     }
                     .size(40.dp)
                     .weight(1f)
