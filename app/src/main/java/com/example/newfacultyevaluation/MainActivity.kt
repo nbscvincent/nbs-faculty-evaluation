@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .statusBarsPadding(),
                     //color = MaterialTheme.colorScheme.background,
-                    color = Color.White,
+
                 ) {
                     FacultyApp()
 
