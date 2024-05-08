@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,15 +35,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
@@ -84,7 +89,8 @@ fun AddUser(
             mutableStateOf("")
         }
 
-        var year by rememberSaveable {
+        val year = listOf("Year: ", "1st", "2nd", "3rd", "4th")
+        var selectedYear by rememberSaveable {
             mutableStateOf("")
         }
 
@@ -100,6 +106,9 @@ fun AddUser(
         }
 
         var expanded1 by rememberSaveable {
+            mutableStateOf(false)
+        }
+        var expanded2 by rememberSaveable {
             mutableStateOf(false)
         }
         val role = listOf("ROLE: ", "Admin", "Student", "Faculty")
@@ -185,23 +194,6 @@ fun AddUser(
                             .size(20.dp)
                     )
 
-                    OutlinedTextField(
-                        value = year,
-                        onValueChange = { year = it },
-                        label = { Text(text = "Full Name", letterSpacing = 2.sp) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
-
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.White,
-                            textColor = Color.Black,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        )
-                    )
 
                     Spacer(
                         modifier = Modifier
@@ -307,6 +299,37 @@ fun AddUser(
                                 }
                             }
 
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        expanded2 = !expanded2
+                                    },
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(text = if (selectedYear.isEmpty()) "Year" else selectedYear)
+                                Icon(
+                                    imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                                    contentDescription = ""
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = expanded2,
+                                onDismissRequest = { expanded2 = false },
+                                modifier = Modifier
+                                    .background(Color.White),
+                                offset = DpOffset(x = 200.dp, y = 10.dp)
+                            ) {
+                                year.forEach { c ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = c) },
+                                        onClick = { selectedYear = c; expanded2 = false },
+                                        enabled = c != year[0]
+                                    )
+                                }
+                            }
+
                         }
                     }
 
@@ -326,7 +349,7 @@ fun AddUser(
                             if (user.value == null) {
                                 viewModel.userID = userID
                                 viewModel.fullName = fullName
-                                viewModel.year = year
+                                viewModel.year = selectedYear
                                 viewModel.pass = pass
                                 viewModel.selectedProgram = selectedProgram
                                 viewModel.role = selectedRole
