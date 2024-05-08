@@ -192,7 +192,7 @@ fun SFaculty(
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.Center
                             )
-                            
+
 
 
                         }
