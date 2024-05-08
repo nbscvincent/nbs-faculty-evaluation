@@ -195,6 +195,8 @@ fun Register(
 
                 )
 
+                Spacer(modifier = Modifier.height(5.dp))
+
 
 
                 OutlinedTextField(
@@ -215,10 +217,7 @@ fun Register(
                         unfocusedIndicatorColor = Color.Transparent
                     )
                 )
-
-
-
-
+                Spacer(modifier = Modifier.height(5.dp))
                     OutlinedTextField(
                         value = pass,
                         onValueChange = { pass = it },
@@ -407,12 +406,13 @@ fun Register(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
+                            .height(50.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
                     ) {
 
                         Text(text = "Already have an account?", color = Color.Black)
+                        Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "Login Now!", modifier = Modifier.clickable(
                             onClick = {
 
