@@ -1,6 +1,5 @@
 package com.example.newfacultyevaluation.data.offlineRepo
 
-import androidx.lifecycle.LiveData
 import com.example.newfacultyevaluation.dao.UserDao
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.UserRepository
@@ -11,9 +10,7 @@ class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
 
     override suspend fun deleteUser(user: User) = userDao.deleteUser(user)
 
-    override fun getUsers(id: String): Flow<User> {
-        return userDao.getUsers(id)
-    }
+    override fun getUsers(id: String, password: String): Flow<User?> = userDao.getUsers(id)
 
     override fun getAllUsers(): Flow<List<User>> {
         return userDao.getAllUsers()

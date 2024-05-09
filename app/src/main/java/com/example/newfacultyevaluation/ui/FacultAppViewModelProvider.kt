@@ -18,7 +18,8 @@ object FacultyAppViewModelProvider {
             RegisterViewModel(
                 facultyEvaluationApp().container.facultyRepository,
                 facultyEvaluationApp().container.userRepository,
-                facultyEvaluationApp().container.studentRepository
+                facultyEvaluationApp().container.studentRepository,
+                        facultyEvaluationApp().container.onlineUserRepository
 
             )
         }
@@ -27,7 +28,8 @@ object FacultyAppViewModelProvider {
     val LoginFactory = viewModelFactory {
         initializer {
             LoginViewModel(
-                facultyEvaluationApp().container.userRepository
+                facultyEvaluationApp().container.userRepository,
+                facultyEvaluationApp().container.onlineUserRepository
             )
         }
     }

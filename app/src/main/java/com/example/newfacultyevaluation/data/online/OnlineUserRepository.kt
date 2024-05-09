@@ -31,20 +31,28 @@ import kotlinx.coroutines.flow.flow
 
 
 class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) : UserRepository {
-    override suspend fun upsertUser(user: User) = run {
-            val cl = ktorClient.request(
-                    HttpRoutes.login
-                ) {
-                    method = HttpMethod.Post
-                    url(HttpRoutes.login)
-                    contentType(ContentType.Application.Json)
-                    accept(ContentType.Application.Json)
-                    setBody(user)
-                }
+    override suspend fun upsertUser(user: User) {
+        val cl = ktorClient.request(
+            HttpRoutes.login
+        ) {
+            method = HttpMethod.Post
+            url(HttpRoutes.login)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(MultiPartFormDataContent(formData {
+                append("type", "save_user")
+                append("username", user.userID)
+                append("age", user.fullName.toString())
+                append("id", user.selectedCourse.toString())
+                append("password", user.year.toString())
+                append("password", user.password)
+                append("height", user.role)
+
+            }))
+        }
 
     }
-
-    override fun getUsers(id: String): Flow<User> {
+    override fun getUsers(userID: String, password: String): Flow<User> {
         return flow {
             val cl = coroutineScope {
                 ktorClient.request(
@@ -54,7 +62,12 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     url(HttpRoutes.login)
                     contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
-                    setBody(id)
+                    setBody(MultiPartFormDataContent(formData {
+                        append("type", "login")
+                        append("username", userID)
+                        append("password", password)
+                    }))
+
                 }
             }
             emit(cl.body())

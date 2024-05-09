@@ -82,8 +82,8 @@ class AdminViewModel(private val userRepository: UserRepository,
         }
     }
 
-    fun checkUserID(userID: String): Flow<User>{
-        return userRepository.getUsers(userID)
+    fun checkUserID(userID: String, password: String): Flow<User?> {
+        return userRepository.getUsers(userID,password)
     }
 
     fun insertUser(): Boolean{
