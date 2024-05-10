@@ -115,7 +115,7 @@ fun UserList(
                 val filteredUsers = users.value?.filter { user ->
                     user.fullName!!.contains(searchText, ignoreCase = true) ||
                             user.userID.contains(searchText, ignoreCase = true)
-                } ?: emptyList()
+                }?.sortedBy { it.fullName } ?: emptyList() // Sort the filtered users by name
                 filteredUsers.forEachIndexed { index, user ->
                     item {
                         UserCard(user = user, index = index)

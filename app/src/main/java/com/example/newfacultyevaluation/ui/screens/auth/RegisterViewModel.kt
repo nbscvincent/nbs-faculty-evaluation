@@ -75,8 +75,6 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
 
                         ))
 
-
-
                     } else if (selectedProgram == "PROGRAM: "){
                         return@launch
                     }
@@ -102,8 +100,6 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             year = _year,
                         )
                     )
-
-
 
                 }
                 insertSuccessful = true

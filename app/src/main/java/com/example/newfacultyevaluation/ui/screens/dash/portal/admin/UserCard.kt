@@ -20,28 +20,36 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -152,16 +160,28 @@ fun UserCard(user: User, index: Int) {
                                 verticalArrangement = Arrangement.SpaceEvenly,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(text = "User Info", fontWeight = FontWeight.Bold, fontSize = 25.sp)
+                                Text(text = "User Info", fontWeight = FontWeight.Bold, fontSize = 25.sp, color = Color.Black)
+
                                 OutlinedTextField(
                                     value = selectedUser.userID,
                                     onValueChange = { },
-                                    enabled = false
+                                    label = { Text("UserID" , color = Color.Black) },
+                                    enabled = false,
+                                    textStyle = TextStyle(color = Color.Black),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        disabledBorderColor = Color.Black // Change the border color to black
+                                    )
                                 )
                                 OutlinedTextField(
                                     value = selectedUser.fullName.toString(),
                                     onValueChange = { },
-                                    enabled = false
+                                    label = { Text("Name:", color = Color.Black) },
+                                    enabled = false,
+                                    textStyle = TextStyle(color = Color.Black),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        disabledBorderColor = Color.Black // Change the border color to black
+                                    )
+
                                 )
                                 Row() {
                                     var clicked by remember {
@@ -171,13 +191,19 @@ fun UserCard(user: User, index: Int) {
                                     OutlinedTextField(
                                         value = selectedUser.password,
                                         onValueChange = { },
-                                        label = { Text("Password") },
+                                        label = { Text("Password", color = Color.Black) },
                                         visualTransformation = if (!clicked) PasswordVisualTransformation() else VisualTransformation.None,
+                                        enabled = false,
+                                        textStyle = TextStyle(color = Color.Black), // Change the text color to black
+                                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                                            disabledBorderColor = Color.Black // Change the border color to black
+                                        ),
                                         trailingIcon = {
                                             Icon(
                                                 imageVector = if (clicked) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                                 contentDescription = "Password",
-                                                modifier = Modifier.clickable { clicked = !clicked }
+                                                modifier = Modifier.clickable { clicked = !clicked },
+                                                tint = Color.Black
                                             )
                                         }
                                     )
@@ -193,12 +219,24 @@ fun UserCard(user: User, index: Int) {
 
                                     Text("Change Password", modifier = Modifier.clickable {
                                         showChangePass = true
-                                    })
+                                    }, color = Color.Black)
                                 }
                                 if (showChangePass) {
                                     var changePass by remember {
                                         mutableStateOf("")
                                     }
+
+                                    val yearOptions = listOf("Select Year:", "1st", "2nd", "3rd", "4th")
+                                    var changeYear by rememberSaveable {
+                                        mutableStateOf(yearOptions[0])
+                                    }
+
+                                    var expanded2 by rememberSaveable {
+                                        mutableStateOf(false)
+                                    }
+
+
+
                                     Dialog(onDismissRequest = { }) {
                                         Column(
                                             modifier = Modifier
@@ -207,11 +245,46 @@ fun UserCard(user: User, index: Int) {
                                             horizontalAlignment = Alignment.CenterHorizontally,
                                             verticalArrangement = Arrangement.SpaceAround
                                         ) {
-
                                             OutlinedTextField(
                                                 value = changePass,
                                                 onValueChange = { changePass = it },
                                                 label = { Text("Change Password") })
+                                            Spacer(modifier = Modifier.height(20.dp))
+                                            Row(
+                                                modifier = Modifier.weight(1f).clickable {
+                                                    expanded2 = !expanded2
+                                                },
+                                                horizontalArrangement = Arrangement.Center
+                                            ) {
+
+                                                Text(text = changeYear, color = Color.Black)
+                                                Icon(
+                                                    imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                                                    contentDescription = "",
+                                                    tint = Color.Black
+                                                )
+
+                                            }
+
+
+
+
+                                            DropdownMenu(
+                                                expanded = expanded2,
+                                                onDismissRequest = { expanded2 = false },
+                                                modifier = Modifier
+                                                    .background(Color.White),
+                                                offset = DpOffset(x = 100.dp, y = -100.dp)
+                                            ) {
+                                                yearOptions.forEach { r ->
+                                                    DropdownMenuItem(
+                                                        text = { Text(text = r) },
+                                                        onClick = { changeYear = r; expanded2 = false },
+                                                        enabled = r != yearOptions[0]
+                                                    )
+                                                }
+                                            }
+
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.SpaceAround,
@@ -229,27 +302,30 @@ fun UserCard(user: User, index: Int) {
                                                     } else {
                                                         viewModel.updateUser(
                                                             user = selectedUser.copy(
-                                                                password = changePass
+                                                                password = changePass,
+                                                                year = changeYear
                                                             )
                                                         )
                                                         when (selectedUser.role) {
                                                             "Faculty" -> viewModel.updateFaculty(
                                                                 faculty = Faculty(
-                                                                    selectedUser.userID,
+                                                                    selectedUser.userID.toString(),
                                                                     selectedUser.fullName.toString(),
-                                                                    changePass
+                                                                    changePass,
+
                                                                 )
                                                             )
 
                                                             "Student" -> viewModel.updateStudent(
                                                                 student = Student(
-                                                                    selectedUser.userID,
+                                                                    selectedUser.userID.toString(),
                                                                     selectedUser.fullName.toString(),
                                                                     changePass,
                                                                     selectedUser.selectedCourse,
                                                                     selectedUser.role,
+                                                                    changeYear,
                                                                     selectedUser.dateCreated.toString(),
-                                                                    selectedUser.year.toString()
+
                                                                 )
                                                             )
                                                         }
