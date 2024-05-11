@@ -31,8 +31,8 @@ class LoginViewModel(private val userRepository: UserRepository, private val onl
 
         //flow = usersRepository.getUserPasswordStream(userDetails.username, userDetails.password)
         try {
-//            flow = userRepository.getUsers(userID,password); onlineUserRepository.getUsers(userID,password)
-            flow = onlineUserRepository.getUsers(userID, password)
+            flow = userRepository.getUsers(userID,password); onlineUserRepository.getUsers(userID,password)
+
 
         } catch (e: Exception){
             Timber.i("SAMPLE $e")

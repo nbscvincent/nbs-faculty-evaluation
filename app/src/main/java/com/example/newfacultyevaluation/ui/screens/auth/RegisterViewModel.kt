@@ -113,7 +113,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
 
         //flow = usersRepository.getUserPasswordStream(userDetails.username, userDetails.password)
         try {
-            flow = onlineUserRepository.getUsers(userID, password)
+            flow = userRepository.getUsers(userID, password)
 
         } catch (e: Exception){
             Timber.i("SAMPLE $e")
