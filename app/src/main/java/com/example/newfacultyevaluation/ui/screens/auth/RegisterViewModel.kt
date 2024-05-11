@@ -54,6 +54,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
             println("FullName : $fullName")
             println("Course : $selectedProgram")
             println("Pass : $pass")
+
+
             if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && year.isNotBlank() && role != "ROLE: "){
                 viewModelScope.launch {
                     if(role == "Student" && selectedProgram != "PROGRAM: "){
@@ -72,7 +74,6 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             facultyID = _userID,
                             fullName = _fullName,
                             password = _pass,
-
                         ))
 
                     } else if (selectedProgram == "PROGRAM: "){
@@ -109,13 +110,10 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
         return insertSuccessful
     }
     fun checkUserID(userID: String, password:String): Flow<User?>? {
-        var flow : Flow<User?>? = null
-
-        //flow = usersRepository.getUserPasswordStream(userDetails.username, userDetails.password)
+        var flow: Flow<User?>? = null
         try {
-            flow = userRepository.getUsers(userID, password)
-
-        } catch (e: Exception){
+            flow = onlineUserRepository.getUsers(userID,password);userRepository.getUsers(userID,password)
+        } catch (e: Exception) {
             Timber.i("SAMPLE $e")
         }
         return flow
