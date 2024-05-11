@@ -39,20 +39,11 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
             url(HttpRoutes.login)
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
-            setBody(MultiPartFormDataContent(formData {
-                append("type", "save_user")
-                append("userID", user.userID)
-                append("fullName", user.fullName.toString())
-                append("selectedCourse", user.selectedCourse.toString())
-                append("year", user.year.toString())
-                append("password", user.password)
-                append("role", user.role)
-
-            }))
+            setBody(user)
         }
 
     }
-    override fun getUsers(userID: String, password: String): Flow<User> {
+    override fun getUsers(id: String, password: String): Flow<User> {
         return flow {
             val cl = coroutineScope {
                 ktorClient.request(
@@ -64,7 +55,7 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     accept(ContentType.Application.Json)
                     setBody(MultiPartFormDataContent(formData {
                         append("type", "login")
-                        append("username", userID)
+                        append("username", id)
                         append("password", password)
                     }))
 

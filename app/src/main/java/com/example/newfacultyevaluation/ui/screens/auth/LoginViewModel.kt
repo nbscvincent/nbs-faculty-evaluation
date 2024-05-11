@@ -26,11 +26,13 @@ class LoginViewModel(private val userRepository: UserRepository, private val onl
     fun getUser(userID: String, password: String): Flow<User?> {
 
         var flow : Flow<User?>? = null
+        Timber.i("SAMPLE")
+
 
         //flow = usersRepository.getUserPasswordStream(userDetails.username, userDetails.password)
         try {
 //            flow = userRepository.getUsers(userID,password); onlineUserRepository.getUsers(userID,password)
-            flow = onlineUserRepository.getUsers(userID,password)
+            flow = onlineUserRepository.getUsers(userID, password)
 
         } catch (e: Exception){
             Timber.i("SAMPLE $e")
