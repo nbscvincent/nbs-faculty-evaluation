@@ -98,6 +98,7 @@ fun QuestionCard(
     val feedbacks by remember {
         mutableStateOf(mutableListOf(""))
     }
+
     Text(text = "Evaluation for Mr./Ms. ${faculty.value?.fullName}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
@@ -181,6 +182,7 @@ fun QuestionCard(
         val context = LocalContext.current
         Button(
             onClick = {
+
                 viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
                 feedbacks.forEach {
                     viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))

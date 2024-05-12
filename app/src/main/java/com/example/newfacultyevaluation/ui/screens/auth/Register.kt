@@ -347,12 +347,12 @@ fun Register(
                                 }
                             }
 
-
                         }
 
                     }
                     val context = LocalContext.current
-                    val user = viewModel.checkUserID(userID).collectAsState(null)
+                    val user = viewModel.checkUserID(userID,pass)!!.collectAsState(null)
+
                     Button(
                         onClick =
                         {

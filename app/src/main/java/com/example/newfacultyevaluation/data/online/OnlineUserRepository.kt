@@ -31,22 +31,28 @@ import kotlinx.coroutines.flow.flow
 
 
 class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) : UserRepository {
-    override suspend fun upsertUser(user: User) = run {
-            val cl = ktorClient.request(
-                    HttpRoutes.login
-                ) {
-                    method = HttpMethod.Post
-                    url(HttpRoutes.login)
-                    contentType(ContentType.Application.Json)
-                    accept(ContentType.Application.Json)
-                    setBody(user)
-                }
+    override suspend fun upsertUser(user: User) {
+        val cl = ktorClient.request(
+            HttpRoutes.login
+        ) {
+            method = HttpMethod.Post
+            url(HttpRoutes.login)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(MultiPartFormDataContent(formData {
+                append("type", "save_user")
+                append("username", user.userID)
+                append("password", user.fullName.toString())
+                append("firstName", user.year.toString())
+                append("lastName", user.role)
+                append("lastName", user.selectedCourse.toString())
+            }))
+        }
 
     }
-
-    override fun getUsers(id: String): Flow<User> {
+    override fun getUsers(id: String, password: String): Flow<User> {
         return flow {
-            val cl = coroutineScope {
+            try {
                 ktorClient.request(
                     HttpRoutes.login
                 ) {
@@ -54,12 +60,22 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     url(HttpRoutes.login)
                     contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
-                    setBody(id)
+                    setBody(MultiPartFormDataContent(formData {
+                        append("type", "login")
+                        append("username", id)
+                        append("password", password)
+                    }))
+
+
                 }
+
+
+        }catch (e: Exception) {
+
             }
-            emit(cl.body())
-        }
+
     }
+        }
 
     override fun getAllUsers(): Flow<List<User>> {
         return getAllUsers()

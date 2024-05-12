@@ -335,13 +335,12 @@ fun AddUser(
 
 
                     val context = LocalContext.current
-                    val user = viewModel.checkUserID(userID).collectAsState(null)
+                    val user = viewModel.checkUserID(userID,pass).collectAsState(null)
 
                     Spacer(
                         modifier = Modifier
                             .size(50.dp)
                     )
-
 
                     Button(
                         onClick =

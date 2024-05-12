@@ -59,6 +59,7 @@ fun Courses(
             Divider(color = Color.Red, modifier = Modifier
                 .padding(vertical = 10.dp)
                 .fillMaxWidth(0.7f), thickness = 5.dp)
+
             getCourses(courseList = completed)
             Text(text = "Pending", fontSize = 30.sp, letterSpacing = 5.sp)
             Divider(color = Color.Red, modifier = Modifier

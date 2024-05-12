@@ -11,14 +11,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
+import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRepository: UserRepository, private val studentRepo: StudentRepo) : ViewModel() {
+class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRepository: UserRepository, private val studentRepo: StudentRepo,  private val onlineUserRepository: OnlineUserRepository) : ViewModel() {
 
     var userID = ""
     var selectedProgram = ""
@@ -52,6 +54,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
             println("FullName : $fullName")
             println("Course : $selectedProgram")
             println("Pass : $pass")
+
+
             if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && year.isNotBlank() && role != "ROLE: "){
                 viewModelScope.launch {
                     if(role == "Student" && selectedProgram != "PROGRAM: "){
@@ -70,8 +74,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             facultyID = _userID,
                             fullName = _fullName,
                             password = _pass,
-
                         ))
+
                     } else if (selectedProgram == "PROGRAM: "){
                         return@launch
                     }
@@ -86,6 +90,18 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             year = _year,
                         )
                     )
+                    onlineUserRepository.upsertUser(
+                        User(
+                            userID = _userID,
+                            fullName = _fullName,
+                            password = _pass,
+                            selectedCourse = if(role == "Student") _selectedCourse else "",
+                            role = _role,
+                            dateCreated = _date,
+                            year = _year,
+                        )
+                    )
+
                 }
                 insertSuccessful = true
             }
@@ -93,7 +109,13 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
         println("Success : $insertSuccessful")
         return insertSuccessful
     }
-    fun checkUserID(userID: String): Flow<User> {
-        return userRepository.getUsers(userID)
+    fun checkUserID(userID: String, password:String): Flow<User?>? {
+        var flow: Flow<User?>? = null
+        try {
+            flow = onlineUserRepository.getUsers(userID,password);userRepository.getUsers(userID,password)
+        } catch (e: Exception) {
+            Timber.i("SAMPLE $e")
+        }
+        return flow
     }
 }

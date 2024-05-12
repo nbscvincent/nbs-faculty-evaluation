@@ -28,8 +28,8 @@ class ForgotPassViewModel(private val userRepository: UserRepository) : ViewMode
         }
     }
 
-    fun getUser(id: String): Flow<User> {
-        return userRepository.getUsers(id)
+    fun getUser(id: String, password: String): Flow<User?> {
+        return userRepository.getUsers(id, password )
     }
     fun upsertUser(user: User){
         viewModelScope.launch {

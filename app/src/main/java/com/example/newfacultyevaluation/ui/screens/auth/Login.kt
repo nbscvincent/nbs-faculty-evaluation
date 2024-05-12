@@ -229,7 +229,8 @@ fun Login(
 
 
                 val context = LocalContext.current
-                val user by viewModel.getUser(userID).collectAsState(null)
+                val user by viewModel.getUser(userID, pass).collectAsState(null)
+
 
 
                 Button(
