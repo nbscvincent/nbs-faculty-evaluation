@@ -36,12 +36,13 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             accept(ContentType.Application.Json)
             setBody(MultiPartFormDataContent(formData {
                 append("type", "save_user")
-                append("studentID", student.studentID)
-                append("password", student.password)
-                append("fullName", student.fullName)
+                append("username", student.studentID)
+                append("fullName", student.fullName.toString())
+                append("password", student.password.toString())
+                append("year", student.year.toString())
+                append("course", student.selectedCourse.toString())
                 append("role", student.role)
-                append("selectedCourse", student.selectedCourse.toString())
-                append("dateCreated", student.dateCreated)
+                append("dateCreated", student.dateCreated.toString())
             }))
         }
     }

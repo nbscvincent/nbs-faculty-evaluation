@@ -7,6 +7,7 @@ import com.example.newfacultyevaluation.data.offlineRepo.OfflineFacultyRepositor
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineProgramRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineStudentRepository
 import com.example.newfacultyevaluation.data.offlineRepo.OfflineUserRepository
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
 import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.CourseRepo
@@ -24,6 +25,7 @@ interface FacultyAppContainer {
     val programRepository: ProgramRepo
     val adminRepository: AdminRepo
     val onlineUserRepository: OnlineUserRepository
+    val onlineStudentRepository: OnlineStudentRepository
 }
 
 class FacultyAppDataContainer(private val context: Context) : FacultyAppContainer {
@@ -52,5 +54,12 @@ class FacultyAppDataContainer(private val context: Context) : FacultyAppContaine
     override val onlineUserRepository: OnlineUserRepository by lazy {
         OnlineUserRepository()
     }
+
+    override val onlineStudentRepository: OnlineStudentRepository by lazy {
+        OnlineStudentRepository()
+    }
+
+
+
 
 }

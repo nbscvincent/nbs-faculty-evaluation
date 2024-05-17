@@ -19,7 +19,9 @@ object FacultyAppViewModelProvider {
                 facultyEvaluationApp().container.facultyRepository,
                 facultyEvaluationApp().container.userRepository,
                 facultyEvaluationApp().container.studentRepository,
-                        facultyEvaluationApp().container.onlineUserRepository
+                        facultyEvaluationApp().container.onlineUserRepository,
+                facultyEvaluationApp().container.onlineStudentRepository
+
 
             )
         }
