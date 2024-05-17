@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
 import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
@@ -20,7 +21,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRepository: UserRepository, private val studentRepo: StudentRepo,  private val onlineUserRepository: OnlineUserRepository) : ViewModel() {
+class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRepository: UserRepository,
+                        private val studentRepo: StudentRepo,
+                        private val onlineUserRepository: OnlineUserRepository,
+                        private val onlineStudentRepository: OnlineStudentRepository) : ViewModel() {
 
     var userID = ""
     var selectedProgram = ""
@@ -68,6 +72,8 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             dateCreated = _date,
                             year = _year,
                         ))
+
+
                     }
                     else if(role == "Faculty"){
                         facultyRepo.upsertFaculty(Faculty(
@@ -112,7 +118,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     fun checkUserID(userID: String, password:String): Flow<User?>? {
         var flow: Flow<User?>? = null
         try {
-            flow = onlineUserRepository.getUsers(userID,password);userRepository.getUsers(userID,password)
+            flow = userRepository.getUsers(userID,password)
         } catch (e: Exception) {
             Timber.i("SAMPLE $e")
         }
