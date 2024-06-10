@@ -3,6 +3,7 @@ package com.example.newfacultyevaluation.data.online
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
@@ -20,6 +21,7 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
+import kotlinx.coroutines.flow.Flow
 
 
 class OnlineAdminRepository(private val ktorClient: HttpClient = KtorClient() ) : AdminRepo {
@@ -141,6 +143,10 @@ class OnlineAdminRepository(private val ktorClient: HttpClient = KtorClient() ) 
                 append("password", student.dateCreated)
             }))
         }
+    }
+
+    override fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
+        TODO("Not yet implemented")
     }
 
 }

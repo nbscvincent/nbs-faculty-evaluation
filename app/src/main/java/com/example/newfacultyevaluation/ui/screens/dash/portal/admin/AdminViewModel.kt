@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
@@ -17,6 +18,8 @@ import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AdminViewModel(private val userRepository: UserRepository,
@@ -92,7 +95,7 @@ class AdminViewModel(private val userRepository: UserRepository,
         println("Course : $selectedProgram")
         println("Year : $year")
         println("Pass : $pass")
-        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && role != "ROLE: "){
+        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && role != "ROLE: " || selectedProgram.isNotBlank() && year.isNotBlank() ){
             viewModelScope.launch {
                 if(role == "Student" && selectedProgram != "PROGRAM: "){
                     studentRepo.upsertStudent(
@@ -130,6 +133,8 @@ class AdminViewModel(private val userRepository: UserRepository,
                 )
             }
             insertSuccessful = true
+        } else {
+            insertSuccessful = false
         }
 
         println("Success : $insertSuccessful")
@@ -175,5 +180,27 @@ class AdminViewModel(private val userRepository: UserRepository,
             userRepository.deleteUser(user)
         }
     }
+
+
+
+    private val _courseSessionStates = MutableStateFlow<Map<Long, Boolean>>(emptyMap())
+    val courseSessionStates: StateFlow<Map<Long, Boolean>> = _courseSessionStates
+
+    fun setCourseSessionState(courseId: Long, isActive: Boolean) {
+        _courseSessionStates.value = _courseSessionStates.value.toMutableMap().apply {
+            put(courseId, isActive)
+        }
+    }
+
+    fun finishCourseSession(courseId: Long) {
+        _courseSessionStates.value = _courseSessionStates.value.toMutableMap().apply {
+            put(courseId, false)
+        }
+    }
+
+    fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
+        return adminRepo.getCoursesWithFaculties()
+    }
+
 
 }

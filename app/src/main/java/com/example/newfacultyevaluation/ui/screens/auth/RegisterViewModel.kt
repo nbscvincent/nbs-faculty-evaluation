@@ -60,7 +60,7 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
             println("Pass : $pass")
 
 
-            if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && year.isNotBlank() && role != "ROLE: "){
+        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && selectedProgram.isNotBlank()&& year.isNotBlank() &&role != "ROLE: "){
                 viewModelScope.launch {
                     if(role == "Student" && selectedProgram != "PROGRAM: "){
                         studentRepo.upsertStudent(Student(
@@ -96,20 +96,22 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                             year = _year,
                         )
                     )
-                    onlineUserRepository.upsertUser(
-                        User(
-                            userID = _userID,
-                            fullName = _fullName,
-                            password = _pass,
-                            selectedCourse = if(role == "Student") _selectedCourse else "",
-                            role = _role,
-                            dateCreated = _date,
-                            year = _year,
-                        )
-                    )
+//                    onlineUserRepository.upsertUser(
+//                        User(
+//                            userID = _userID,
+//                            fullName = _fullName,
+//                            password = _pass,
+//                            selectedCourse = if(role == "Student") _selectedCourse else "",
+//                            role = _role,
+//                            dateCreated = _date,
+//                            year = _year,
+//                        )
+//                    )
 
                 }
                 insertSuccessful = true
+            } else {
+                insertSuccessful = false
             }
 
         println("Success : $insertSuccessful")

@@ -47,6 +47,7 @@ import com.example.newfacultyevaluation.data.model.questions
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Form(
     navController: NavController,
@@ -64,26 +65,19 @@ fun Form(
         mutableStateOf(false)
     }
 
-
-
     BackHandler {
         viewModel.resetAnsweredQuestions()
         navController.popBackStack()
         navController.navigate(StudentNav.FORM.name+"/$selectedCourse")
-
     }
 
     Column(
         modifier = Modifier
             .padding(20.dp),
-    ){
-
-        QuestionCard(navController,viewModel, loginViewModel, selectedCourse)
-
+    ) {
+        QuestionCard(navController, viewModel, loginViewModel, selectedCourse)
     }
-
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,7 +86,7 @@ fun QuestionCard(
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
     selectedCourse: String
-){
+) {
     val points = listOf(4,3,2,1)
     val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
     val feedbacks by remember {
@@ -103,23 +97,21 @@ fun QuestionCard(
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
 
-
     LazyColumn(
         modifier = Modifier.height(500.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        items(questions){question ->
-            if(question.id < 17) {
+    ) {
+        items(questions) { question ->
+            if (question.id < 17) {
                 var selectedPoint by rememberSaveable {
                     mutableIntStateOf(0)
                 }
                 var initial by rememberSaveable {
                     mutableIntStateOf(0)
                 }
-                Card (
+                Card(
                     modifier = Modifier.padding(vertical = 10.dp)
-                ){
-
+                ) {
                     Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
@@ -139,14 +131,9 @@ fun QuestionCard(
                                 Text("$point")
                             }
                         }
-
-
-
                     }
-
                 }
-
-            }else {
+            } else {
                 var feedback by remember {
                     mutableStateOf("")
                 }
@@ -163,17 +150,15 @@ fun QuestionCard(
                                 feedback = it
                                 viewModel.markQuestionAnswered(questionId = question.id)
                             },
-                            label = { Text(text = "Comment")}
+                            label = { Text(text = "Comment") }
                         )
-
                     }
                 }
                 feedbacks.add(feedback)
             }
-
-
         }
     }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -182,11 +167,13 @@ fun QuestionCard(
         val context = LocalContext.current
         Button(
             onClick = {
-
                 viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
                 feedbacks.forEach {
                     viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
                 }
+
+                // Mark the evaluation as completed
+                viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)
 
                 Toast.makeText(context, "Form submitted", Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
@@ -197,10 +184,9 @@ fun QuestionCard(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             enabled = viewModel.answeredQuestions.value >= 18
-        ){
+        ) {
             Text("Submit")
         }
     }
-
 }
 

@@ -1,5 +1,6 @@
 package com.example.newfacultyevaluation.data.online
 
+import com.example.newfacultyevaluation.data.model.CompletedEvaluation
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
@@ -175,5 +176,13 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
 
             }))
         }
+    }
+
+    override suspend fun insertCompletedEvaluation(completedEvaluation: CompletedEvaluation) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCompletedEvaluations(): List<CompletedEvaluation> {
+        TODO("Not yet implemented")
     }
 }

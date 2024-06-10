@@ -357,27 +357,35 @@ fun Register(
                         onClick =
                         {
                             if (user.value == null) {
-                                viewModel.userID = userID
-                                viewModel.fullName = fullName
-                                viewModel.pass = pass
-                                viewModel.selectedProgram = selectedProgram
-                                viewModel.role = selectedRole
-                                viewModel.year = selectedYear
-                                viewModel.date = LocalDateTime.now()
-                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                if (viewModel.insertUser()) {
+                                if (selectedYear != yearOptions[0] && selectedProgram != programs[0]) {
+                                    viewModel.userID = userID
+                                    viewModel.fullName = fullName
+                                    viewModel.pass = pass
+                                    viewModel.selectedProgram = selectedProgram
+                                    viewModel.role = selectedRole
+                                    viewModel.year = selectedYear
+                                    viewModel.date = LocalDateTime.now()
+                                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                    if (viewModel.insertUser()) {
+                                        Toast.makeText(
+                                            context,
+                                            "Successfully Registered",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        navController.popBackStack()
+                                        navController.navigate(Auth.LOGIN.name)
+                                    } else Toast.makeText(
+                                        context,
+                                        "Please select year and program",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
                                     Toast.makeText(
                                         context,
-                                        "Successfully Registered",
-                                        Toast.LENGTH_LONG
+                                        "Please fill out all fields",
+                                        Toast.LENGTH_SHORT
                                     ).show()
-                                    navController.popBackStack()
-                                    navController.navigate(Auth.LOGIN.name)
-                                } else Toast.makeText(
-                                    context,
-                                    "Please fill out all fields",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                }
                             } else {
                                 Toast.makeText(
                                     context,

@@ -1,9 +1,11 @@
 package com.example.newfacultyevaluation.data.repo
 
 import androidx.lifecycle.LiveData
+import com.example.newfacultyevaluation.data.model.CompletedEvaluation
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.CourseStudent
+import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
@@ -28,4 +30,10 @@ interface StudentRepo {
     suspend fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty)
 
     suspend fun upsertForm(form: Form)
+
+    suspend fun insertCompletedEvaluation(completedEvaluation: CompletedEvaluation)
+
+    suspend fun getCompletedEvaluations(): List<CompletedEvaluation>
+
+
 }
