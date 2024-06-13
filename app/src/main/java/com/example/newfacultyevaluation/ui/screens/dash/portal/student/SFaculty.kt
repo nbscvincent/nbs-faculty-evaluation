@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,10 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.LibraryAdd
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
@@ -38,10 +43,13 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -85,6 +93,8 @@ fun SFaculty(
 
 ) {
 
+    var showOptions by remember { mutableStateOf(false) }
+    var showCheckBox by remember { mutableStateOf(false) }
     var openDialog by rememberSaveable {
         mutableStateOf(false)
     }
@@ -109,42 +119,42 @@ fun SFaculty(
         studentNavController.navigate(StudentNav.HOME.name)
     }
 
+
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier.fillMaxSize().background(color = Color.White).verticalScroll(scrollState),
     ) {
         var showCheckBox by remember {
             mutableStateOf(false)
         }
+        Spacer(modifier = Modifier.height(15.dp))
+
+//        Row (
+//            modifier = Modifier
+//                .padding(20.dp)
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.End
+//        ){
+//
+//            Icon(
+//                imageVector = Icons.Rounded.Delete,
+//                contentDescription = "Delete Course",
+//                modifier = Modifier.clickable {
+//                    showCheckBox = !showCheckBox
+//                },tint = Color.Black
+//            )
+//            Icon(
+//                imageVector = Icons.Rounded.LibraryAdd,
+//                contentDescription = "Add Course",
+//                modifier = Modifier.clickable {
+//                    openDialog = true
+//                    showCheckBox = false
+//                },tint = Color.Black
+//            )
+//        }
 
 
-
-
-        Row (
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ){
-
-            Icon(
-                imageVector = Icons.Rounded.Delete,
-                contentDescription = "Delete Course",
-                modifier = Modifier.clickable {
-                    showCheckBox = !showCheckBox
-                },tint = Color.Black
-            )
-            Icon(
-                imageVector = Icons.Rounded.LibraryAdd,
-                contentDescription = "Add Course",
-                modifier = Modifier.clickable {
-                    openDialog = true
-                    showCheckBox = false
-                },tint = Color.Black
-            )
-        }
-
-
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth(),){
             Row{
                 Text("Student Number:",
                     modifier = Modifier.padding(2.dp),
@@ -204,15 +214,14 @@ fun SFaculty(
             }
 
         }
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         if (courses.value?.size == 0) {
             Column(
                 modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Text(text = "No Courses Found", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
                 Text(text = "Tap \"+\" icon to enroll your courses.", color = Color.Black)
             }
@@ -492,6 +501,44 @@ fun SFaculty(
             }
         }
     }
+
+        FloatingActionButton(
+            onClick = { showOptions = !showOptions },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            containerColor = Color.Red
+        ) {
+            Icon(Icons.Filled.LibraryAdd, contentDescription = "More options")
+        }
+
+    if (showOptions) {
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 80.dp)
+        ) {
+
+            FloatingActionButton(
+                onClick = { openDialog = true },
+                containerColor = Color.Red
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add Course")
+            }
+
+            FloatingActionButton(
+                onClick = { showCheckBox = !showCheckBox },
+                containerColor = Color.Red
+            ) {
+                Icon(Icons.Filled.Delete, contentDescription = "Delete Course")
+            }
+
+
+        }
+    }
+}
 
 
 
