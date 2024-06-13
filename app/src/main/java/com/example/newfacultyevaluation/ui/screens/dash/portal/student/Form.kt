@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -37,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -92,151 +88,114 @@ fun QuestionCard(
     loginViewModel: LoginViewModel,
     selectedCourse: String
 ) {
-    // Define categories
-    val categories = listOf("Category 1", "Category 2", "Category 3")
-    // State for selected category
-    var selectedCategory by rememberSaveable { mutableStateOf(categories.first()) }
-
-    val points = listOf(4, 3, 2, 1)
+    val points = listOf(4,3,2,1)
     val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
     val feedbacks by remember {
         mutableStateOf(mutableListOf(""))
     }
 
-    Column(
-        modifier = Modifier.padding(20.dp)
+    Text(text = "Evaluation for Mr./Ms. ${faculty.value?.fullName}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+    Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
+    Text(text = "Total Points: ${viewModel.totalPoints.value}")
+    Spacer(modifier = Modifier.height(2.dp))
+
+    Text(    "" +
+            "4: Strongly Agree " +
+            "3: Agree " +
+            "2: Disagree " +
+            "1: Strongly Disagree", fontSize = 15.sp)
+    Spacer(modifier = Modifier.height(2.dp))
+
+
+    LazyColumn(
+        modifier = Modifier.height(500.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Category dropdown
-        DropdownMenu(
-            expanded = false, // Change to true to make it initially expanded
-            onDismissRequest = { /* Handle dismiss if needed */ },
-            modifier = Modifier.pointerInput(Unit) { } // InteractionSource
-        ) {
-            categories.forEach { category ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedCategory = category
-                    }
-                ) {
-                    Text(text = category) // Provide the 'text' parameter correctly
+        items(questions) { question ->
+            if (question.id < 17) {
+                var selectedPoint by rememberSaveable {
+                    mutableIntStateOf(0)
                 }
-            }
-        }
-
-        Text(
-            text = "Evaluation for Mr./Ms. ${faculty.value?.fullName}".uppercase(),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
-        )
-        Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
-        Text(text = "Total Points: ${viewModel.totalPoints.value}")
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyColumn(
-            modifier = Modifier.height(500.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(questions.filter { it.category == selectedCategory }) { question ->
-                if (question.id < 17) {
-                    var selectedPoint by rememberSaveable {
-                        mutableIntStateOf(0)
-                    }
-                    var initial by rememberSaveable {
-                        mutableIntStateOf(0)
-                    }
-                    Card(
-                        modifier = Modifier.padding(vertical = 10.dp)
+                var initial by rememberSaveable {
+                    mutableIntStateOf(0)
+                }
+                Card(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp)
                     ) {
-                        Column(
-                            modifier = Modifier.padding(20.dp)
-                        ) {
-                            Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
-                            Spacer(modifier = Modifier.height(8.dp))
-
+                        Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
+                        points.forEach { point ->
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                points.forEach { point ->
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        RadioButton(
-                                            selected = point == selectedPoint,
-                                            onClick = {
-                                                initial = selectedPoint
-                                                selectedPoint = point
-                                                viewModel.updateTotalPoints(selectedPoint - initial)
-                                                viewModel.markQuestionAnswered(questionId = question.id)
-                                            }
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text("$point")
-                                    }
-                                }
+                                RadioButton(
+                                    selected = point == selectedPoint,
+                                    onClick = {
+                                        initial = selectedPoint
+                                        selectedPoint = point
+                                        viewModel.updateTotalPoints(selectedPoint - initial)
+                                        viewModel.markQuestionAnswered(questionId = question.id)
+                                    })
+                                Text("$point")
                             }
                         }
                     }
-                } else {
-                    var feedback by remember {
-                        mutableStateOf("")
-                    }
-                    Card(
-                        modifier = Modifier.padding(vertical = 10.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(20.dp)
-                        ) {
-                            Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            OutlinedTextField(
-                                value = feedback,
-                                onValueChange = {
-                                    feedback = it
-                                    viewModel.markQuestionAnswered(questionId = question.id)
-                                },
-                                label = { Text(text = "Comment") }
-                            )
-                        }
-                    }
-                    feedbacks.add(feedback)
                 }
-            }
-        }
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            val context = LocalContext.current
-            Button(
-                onClick = {
-                    viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
-                    feedbacks.forEach {
-                        viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
+            } else {
+                var feedback by remember {
+                    mutableStateOf("")
+                }
+                Card(
+                    modifier = Modifier.padding(vertical = 10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp)
+                    ) {
+                        Text(text = "${question.id}. ${question.question}", textAlign = TextAlign.Justify)
+                        OutlinedTextField(
+                            value = feedback,
+                            onValueChange = {
+                                feedback = it
+                                viewModel.markQuestionAnswered(questionId = question.id)
+                            },
+                            label = { Text(text = "Comment") }
+                        )
                     }
-
-                    // Mark the evaluation as completed
-                    viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)
-
-                    Toast.makeText(context, "Form submitted", Toast.LENGTH_SHORT).show()
-                    navController.popBackStack()
-                    navController.navigate(StudentNav.HOME.name)
-                },
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
-                enabled = viewModel.answeredQuestions.value >= 18
-            ) {
-                Text("Submit")
+                }
+                feedbacks.add(feedback)
             }
         }
     }
-}
 
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
+                feedbacks.forEach {
+                    viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
+                }
+
+                // Mark the evaluation as completed
+                viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)
+
+                Toast.makeText(context, "Form submitted", Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
+                navController.navigate(StudentNav.HOME.name)
+            },
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            enabled = viewModel.answeredQuestions.value >= 18
+        ) {
+            Text("Submit")
+        }
+    }
+}
