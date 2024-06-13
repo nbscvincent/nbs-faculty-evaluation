@@ -112,7 +112,10 @@ fun AddCourses(
     var expandedProgram by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.fillMaxSize().background(Color.White).padding(0.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -247,7 +250,7 @@ fun AddCourses(
                     }
 
 
-
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
