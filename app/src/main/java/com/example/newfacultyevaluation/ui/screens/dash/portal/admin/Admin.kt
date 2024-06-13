@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -110,7 +111,20 @@ fun AdminPortal(
                 drawerContentColor = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.width(230.dp)
             ) {
-                Text("Settings", fontSize = 30.sp, modifier = Modifier.padding(20.dp), color = Color.Black)
+                Text(
+                    "Menu",
+                    fontSize = 30.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(70.dp)
+                        .background(color = Color.Red)
+                        .padding()
+                        .wrapContentSize(Alignment.Center)
+                        .padding(vertical = 16.dp), // Adjust vertical padding as needed
+                    color = Color.White,
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
                 Column(
                     modifier = Modifier.fillMaxHeight(),
                     verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
