@@ -7,11 +7,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -64,10 +67,6 @@ fun AddCourses(
     var courses by remember {
         mutableStateOf(mutableStateListOf(Course(0,"", "", "", "")))
     }
-
-
-
-
 
     var expanded1 by remember {
         mutableStateOf(false)
@@ -112,10 +111,8 @@ fun AddCourses(
     var expandedYear by remember { mutableStateOf(false) }
     var expandedProgram by remember { mutableStateOf(false) }
 
-
-
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(Color.White).padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -128,10 +125,8 @@ fun AddCourses(
             horizontalArrangement = Arrangement.Center
         ){
             val displayText = if (selectedFaculty.isNotBlank()) selectedFaculty else "Select Faculty"
-            Text(text = displayText)
-            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
-
-
+            Text(text = displayText, color = Color.Black)
+            Icon(imageVector = if(expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "", tint = Color.Black)
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
@@ -140,13 +135,12 @@ fun AddCourses(
             ) {
                 users.value?.forEach { user ->
                     if(user.role == "Faculty"){
-                        DropdownMenuItem(text = { Text(text = user.fullName.toString()) }, onClick = { selectedFacultyID = user.userID;selectedFaculty = user.fullName.toString();expanded = false })
+                        DropdownMenuItem(text = { Text(text = user.fullName.toString(), color = Color.Black) }, onClick = { selectedFacultyID = user.userID;selectedFaculty = user.fullName.toString();expanded = false })
                     }
                 }
 
             }
         }
-
 
         LazyColumn (
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -165,20 +159,42 @@ fun AddCourses(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Course ${index + 1}".uppercase())
+                    Text(text = "Course ${index + 1}".uppercase(), color = Color.Black)
                     OutlinedTextField(
                         value = courses[index].courseID,
                         onValueChange = { newValue ->
                             courses[index] = courses[index].copy(courseID = newValue) },
-                        label = { Text("Enter Course Code") }
+                        label = { Text("Enter Course Code", color =Color.Black) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White,
+                            textColor = Color.Black,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
                     )
+
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     OutlinedTextField(
                         value = courses[index].courseName,
                         onValueChange = { newValue ->
                             courses[index] = courses[index].copy(courseName = newValue) },
-                        label = { Text("Enter Course Name") }
+                        label = { Text("Enter Course Name", color = Color.Black) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp)),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.White,
+                            textColor = Color.Black,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
                     )
+
+                    Spacer(modifier = Modifier.height(20.dp))
                     // Year Dropdown
                     Row(
                         modifier = Modifier.clickable {
@@ -187,8 +203,8 @@ fun AddCourses(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         val displayYear = if (course.year.isNotBlank()) course.year else "Select Year"
-                        Text(text = displayYear)
-                        Icon(imageVector = if (expandedYear) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                        Text(text = displayYear, color = Color.Black)
+                        Icon(imageVector = if (expandedYear) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "", tint = Color.Black)
 
                         DropdownMenu(
                             expanded = expandedYear,
@@ -196,37 +212,42 @@ fun AddCourses(
                             modifier = Modifier.background(Color.White)
                         ) {
                             yearOptions.forEach { year ->
-                                DropdownMenuItem(text = { Text(text = year) }, onClick = {
+                                DropdownMenuItem(text = { Text(text = year, color = Color.Black) }, onClick = {
                                     courses[index] = course.copy(year = year)
                                     expandedYear = false
                                 })
                             }
                         }
-                    }
-                    // Program Dropdown
-                    Row(
-                        modifier = Modifier.clickable {
-                            expandedProgram = !expandedProgram
-                        },
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        val displayProgram = if (course.program.isNotBlank()) course.program else "Select Program"
-                        Text(text = displayProgram)
-                        Icon(imageVector = if (expandedProgram) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "")
 
-                        DropdownMenu(
-                            expanded = expandedProgram,
-                            onDismissRequest = { expandedProgram = false },
-                            modifier = Modifier.background(Color.White)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        // Program Dropdown
+                        Row(
+                            modifier = Modifier.clickable {
+                                expandedProgram = !expandedProgram
+                            },
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            programOptions.forEach { program ->
-                                DropdownMenuItem(text = { Text(text = program) }, onClick = {
-                                    courses[index] = course.copy(program = program)
-                                    expandedProgram = false
-                                })
+                            val displayProgram = if (course.program.isNotBlank()) course.program else "Select Program"
+                            Text(text = displayProgram, color = Color.Black)
+                            Icon(imageVector = if (expandedProgram) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "", tint = Color.Black)
+
+                            DropdownMenu(
+                                expanded = expandedProgram,
+                                onDismissRequest = { expandedProgram = false },
+                                modifier = Modifier.background(Color.White)
+                            ) {
+                                programOptions.forEach { program ->
+                                    DropdownMenuItem(text = { Text(text = program, color = Color.Black) }, onClick = {
+                                        courses[index] = course.copy(program = program)
+                                        expandedProgram = false
+                                    })
+                                }
                             }
                         }
                     }
+
+
+
                 }
             }
         }
@@ -279,7 +300,8 @@ fun AddCourses(
                         addNewCourse()
                     }
                     .size(40.dp)
-                    .weight(1f)
+                    .weight(1f),
+                tint = Color.Black
             )
         }
 

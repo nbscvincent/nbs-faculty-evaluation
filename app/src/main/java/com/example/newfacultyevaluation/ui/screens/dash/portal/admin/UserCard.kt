@@ -86,25 +86,29 @@ fun UserCard(user: User, index: Int) {
                 Text(
                     user.fullName.toString(),
                     modifier = Modifier.weight(2f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
                 )
 
                 Text(
                     user.year.toString(),
                     modifier = Modifier.weight(1.5f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
                 )
 
                 Text(
                     user.selectedCourse.toString(),
                     modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
                 )
 
                 Text(
                     user.role.toString(),
                     modifier = Modifier.weight(1.3f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
                 )
 
                 val viewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory)
@@ -135,7 +139,8 @@ fun UserCard(user: User, index: Int) {
                                 .clickable {
                                     showEdit = true
                                     selectedUser = user
-                                }
+                                },
+                            tint = Color.Black
                         )
 
                         Icon(
@@ -145,7 +150,8 @@ fun UserCard(user: User, index: Int) {
                                 .clickable {
                                     showDelete = true
                                     selectedUser = user
-                                }
+                                },
+                                    tint = Color.Black
                         )
                     }
 
@@ -250,40 +256,37 @@ fun UserCard(user: User, index: Int) {
                                                 onValueChange = { changePass = it },
                                                 label = { Text("Change Password") })
                                             Spacer(modifier = Modifier.height(20.dp))
-                                            Row(
-                                                modifier = Modifier.weight(1f).clickable {
-                                                    expanded2 = !expanded2
-                                                },
-                                                horizontalArrangement = Arrangement.Center
-                                            ) {
-
-                                                Text(text = changeYear, color = Color.Black)
-                                                Icon(
-                                                    imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                                                    contentDescription = "",
-                                                    tint = Color.Black
-                                                )
-
-                                            }
-
-
-
-
-                                            DropdownMenu(
-                                                expanded = expanded2,
-                                                onDismissRequest = { expanded2 = false },
-                                                modifier = Modifier
-                                                    .background(Color.White),
-                                                offset = DpOffset(x = 100.dp, y = -100.dp)
-                                            ) {
-                                                yearOptions.forEach { r ->
-                                                    DropdownMenuItem(
-                                                        text = { Text(text = r) },
-                                                        onClick = { changeYear = r; expanded2 = false },
-                                                        enabled = r != yearOptions[0]
-                                                    )
-                                                }
-                                            }
+//                                            Row(
+//                                                modifier = Modifier.weight(1f).clickable {
+//                                                    expanded2 = !expanded2
+//                                                },
+//                                                horizontalArrangement = Arrangement.Center
+//                                            ) {
+//
+//                                                Text(text = changeYear, color = Color.Black)
+//                                                Icon(
+//                                                    imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+//                                                    contentDescription = "",
+//                                                    tint = Color.Black
+//                                                )
+//
+//                                            }
+//
+//                                            DropdownMenu(
+//                                                expanded = expanded2,
+//                                                onDismissRequest = { expanded2 = false },
+//                                                modifier = Modifier
+//                                                    .background(Color.White),
+//                                                offset = DpOffset(x = 100.dp, y = -100.dp)
+//                                            ) {
+//                                                yearOptions.forEach { r ->
+//                                                    DropdownMenuItem(
+//                                                        text = { Text(text = r) },
+//                                                        onClick = { changeYear = r; expanded2 = false },
+//                                                        enabled = r != yearOptions[0]
+//                                                    )
+//                                                }
+//                                            }
 
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
@@ -444,7 +447,7 @@ fun UserCard(user: User, index: Int) {
 fun UserColumn() {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color.Black
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -466,20 +469,21 @@ fun UserColumn() {
                 Text(
                     "Name",
                     modifier = Modifier.weight(2f),
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+
                 )
                 Text(
                     "Year",
                     modifier = Modifier.weight(1f),
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     "Program",
-                    color = Color.Black,
+                    color = Color.White,
                     modifier = Modifier.weight(1.5f),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -488,14 +492,14 @@ fun UserColumn() {
                 Text(
                     "Role",
                     modifier = Modifier.weight(1f),
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     "Action",
                     modifier = Modifier.weight(1f),
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )

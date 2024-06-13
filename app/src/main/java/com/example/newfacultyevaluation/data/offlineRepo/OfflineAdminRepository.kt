@@ -1,15 +1,18 @@
 package com.example.newfacultyevaluation.data.offlineRepo
 
 import com.example.newfacultyevaluation.dao.AdminDao
+import com.example.newfacultyevaluation.dao.CourseDao
 import com.example.newfacultyevaluation.data.model.Admin
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.AdminRepo
+import kotlinx.coroutines.flow.Flow
 
-class OfflineAdminRepository(private val adminDao: AdminDao): AdminRepo{
+class OfflineAdminRepository(private val adminDao: AdminDao, private val courseDao: CourseDao): AdminRepo{
     override suspend fun upsertAdmin(admin: Admin) {
         adminDao.upsertAdmin(admin)
     }
@@ -36,4 +39,10 @@ class OfflineAdminRepository(private val adminDao: AdminDao): AdminRepo{
     override suspend fun updateStudent(student: Student){
         adminDao.updateStudent(student)
     }
+
+    override fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
+        return courseDao.getCoursesWithFaculties()
+    }
+
+
 }

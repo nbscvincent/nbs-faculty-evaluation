@@ -2,6 +2,7 @@ package com.example.newfacultyevaluation.data.offlineRepo
 
 import androidx.lifecycle.LiveData
 import com.example.newfacultyevaluation.dao.StudentDao
+import com.example.newfacultyevaluation.data.model.CompletedEvaluation
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.CourseStudent
@@ -52,5 +53,13 @@ class OfflineStudentRepository(private val studentDao: StudentDao): StudentRepo 
 
     override suspend fun upsertForm(form: Form){
         studentDao.upsertForm(form)
+    }
+
+    override suspend fun insertCompletedEvaluation(completedEvaluation: CompletedEvaluation) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCompletedEvaluations(): List<CompletedEvaluation> {
+        TODO("Not yet implemented")
     }
 }

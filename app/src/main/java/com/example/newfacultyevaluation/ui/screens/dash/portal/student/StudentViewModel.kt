@@ -2,6 +2,7 @@ package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -89,5 +90,26 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
         viewModelScope.launch {
             studentRepo.upsertForm(form)
         }
+    }
+
+    fun markEvaluationAsCompleted(courseID: String, studentID: String) {
+        CompletedEvaluationsCache.markEvaluationAsCompleted(courseID, studentID)
+    }
+
+    // Function to check if an evaluation is completed
+    fun isEvaluationCompleted(courseID: String, studentID: String): Boolean {
+        return CompletedEvaluationsCache.isEvaluationCompleted(courseID, studentID)
+    }
+
+}
+object CompletedEvaluationsCache {
+    private val completedEvaluations = mutableSetOf<Pair<String, String>>()
+
+    fun markEvaluationAsCompleted(courseID: String, studentID: String) {
+        completedEvaluations.add(courseID to studentID)
+    }
+
+    fun isEvaluationCompleted(courseID: String, studentID: String): Boolean {
+        return completedEvaluations.contains(courseID to studentID)
     }
 }

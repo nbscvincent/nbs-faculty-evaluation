@@ -48,8 +48,10 @@ class FacultyAppDataContainer(private val context: Context) : FacultyAppContaine
         OfflineProgramRepository(FacultyEvaluationDatabase.getDatabase(context).programDao())
     }
     override val adminRepository: AdminRepo by lazy {
-        OfflineAdminRepository(FacultyEvaluationDatabase.getDatabase(context).adminDao())
+        OfflineAdminRepository(FacultyEvaluationDatabase.getDatabase(context).adminDao(), FacultyEvaluationDatabase.getDatabase(context).courseDao());
     }
+
+
 
     override val onlineUserRepository: OnlineUserRepository by lazy {
         OnlineUserRepository()
