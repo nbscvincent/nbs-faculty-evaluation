@@ -112,7 +112,6 @@ fun StudentPortal(
                                 .edit()
                                 .clear()
                                 .apply()
-
                             navController.popBackStack()
                             navController.navigate(Main.AUTH.name)
                         }

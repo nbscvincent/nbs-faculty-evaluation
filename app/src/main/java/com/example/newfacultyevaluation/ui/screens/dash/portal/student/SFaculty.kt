@@ -51,6 +51,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,11 +85,11 @@ fun SFaculty(
 
 ) {
 
-    var openDialog by remember {
+    var openDialog by rememberSaveable {
         mutableStateOf(false)
     }
 
-    var openDataPrivacy by remember {
+    var openDataPrivacy by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -218,24 +219,40 @@ fun SFaculty(
         } else {
 
             courses.value?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }?.forEach { course ->
+                val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseID, loginViewModel.userID)
 
+                if (!isEvaluationCompleted) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding()
                         .fillMaxWidth()
-                        .height(190.dp).background(color= Color.White)
+                        .height(190.dp).background(color = Color.White)
 
                 ) {
                     if (showCheckBox) {
-                        Button(onClick = {
-                            viewModel.deleteCourse(CourseStudent(course.courseID, loginViewModel.userID))
-                        }, shape = RoundedCornerShape(10.dp), modifier = Modifier.size(40.dp), contentPadding = PaddingValues(10.dp)) {
-                            Icon(imageVector = Icons.Rounded.DeleteOutline, contentDescription = "Delete")
+                        Button(
+                            onClick = {
+                                viewModel.deleteCourse(
+                                    CourseStudent(
+                                        course.courseID,
+                                        loginViewModel.userID
+                                    )
+                                )
+                            },
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.size(40.dp),
+                            contentPadding = PaddingValues(10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.DeleteOutline,
+                                contentDescription = "Delete"
+                            )
                         }
                     }
 
-                    Card( elevation = CardDefaults.cardElevation(8.dp),
+                    Card(
+                        elevation = CardDefaults.cardElevation(8.dp),
                         modifier = Modifier
 
                             .clickable() {
@@ -247,40 +264,42 @@ fun SFaculty(
                         shape = RoundedCornerShape(4.dp),
 
 
-
-                    ) {
+                        ) {
                         Column(
                             modifier = Modifier.background(Color.White).fillMaxWidth()
                         ) {
 
                             Text(
                                 text = "${course.courseID} - ${course.courseName}",
-                                modifier = Modifier.padding(top=20.dp, start =20.dp),
+                                modifier = Modifier.padding(top = 20.dp, start = 20.dp),
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                        fontSize = 20.sp,
+                                fontSize = 20.sp,
                                 color = Color.Black
                             )
 
                             Text(
                                 text = "Instructor",
-                                modifier = Modifier.padding(top=10.dp, start =20.dp),
+                                modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                 fontWeight = FontWeight.Light,
                                 textAlign = TextAlign.Center,
                                 fontSize = 20.sp,
-                                        color = Color.Black
+                                color = Color.Black
                             )
 
-                            val faculty = viewModel.getStudentFaculty(loginViewModel.userID, course.courseID).collectAsState(null)
+                            val faculty =
+                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
+                                    .collectAsState(null)
                             // Display the faculty name if available
-                            val facultyNameText = if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
+                            val facultyNameText =
+                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
                             Text(
                                 text = facultyNameText,
                                 textAlign = TextAlign.Left,
-                                modifier = Modifier.padding(top=10.dp, start =20.dp),
+                                modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp,
-                                        color = Color.Black
+                                color = Color.Black
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
@@ -288,7 +307,7 @@ fun SFaculty(
                             // Evaluate button positioned in the bottom right corner
                             Button(
                                 onClick = {
-                                    if(!showCheckBox) {
+                                    if (!showCheckBox) {
                                         openDataPrivacy = true
                                         selectedCourse = course.courseID
                                     }
@@ -309,16 +328,11 @@ fun SFaculty(
                         ) {
 
 
-
-
-
-
-
-
                         }
                     }
 
                 }
+            }
                 Spacer(modifier = Modifier.height(1.dp))
 
             }
@@ -394,6 +408,7 @@ fun SFaculty(
                 var expanded by remember {
                     mutableStateOf(false)
                 }
+
                 Column(
                     modifier = Modifier
                         .height(300.dp)
@@ -481,3 +496,4 @@ fun SFaculty(
 
 
 }
+

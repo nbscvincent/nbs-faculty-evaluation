@@ -75,7 +75,7 @@ fun AddUser(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(0.dp),
+            .padding(0.dp).background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -118,8 +118,8 @@ fun AddUser(
 
         Column(
             modifier = Modifier
-                .padding(5.dp)
-                .border(1.dp, Color.Magenta),
+                .padding(5.dp),
+//                .border(1.dp, Color.Magenta),
             horizontalAlignment = Alignment.CenterHorizontally,
 
             ) {
@@ -153,7 +153,7 @@ fun AddUser(
                     OutlinedTextField(
                         value = userID,
                         onValueChange = { userID = it },
-                        label = { Text(text = "User ID", letterSpacing = 2.sp) },
+                        label = { Text(text = "User ID", letterSpacing = 2.sp, color = Color.Black) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         modifier = Modifier
@@ -174,7 +174,7 @@ fun AddUser(
                     OutlinedTextField(
                             value = fullName,
                     onValueChange = { fullName = it },
-                    label = { Text(text = "Full Name", letterSpacing = 2.sp) },
+                    label = { Text(text = "Full Name", letterSpacing = 2.sp, color = Color.Black) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                     modifier = Modifier
@@ -195,15 +195,13 @@ fun AddUser(
                     )
 
 
-                    Spacer(
-                        modifier = Modifier
-                            .size(20.dp)
-                    )
+
+
 
                     OutlinedTextField(
                         value = pass,
                         onValueChange = { pass = it },
-                        label = { Text(text = "Password", letterSpacing = 2.sp) },
+                        label = { Text(text = "Password", letterSpacing = 2.sp, color = Color.Black) },
                         visualTransformation = if (seePass) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
@@ -244,10 +242,11 @@ fun AddUser(
                             horizontalArrangement = Arrangement.Center
                         ) {
 
-                            Text(text = selectedRole)
+                            Text(text = selectedRole , color = Color.Black)
                             Icon(
                                 imageVector = if (expanded1) Icons.Rounded.KeyboardArrowUp
-                                else Icons.Rounded.KeyboardArrowDown, contentDescription = ""
+                                else Icons.Rounded.KeyboardArrowDown, contentDescription = "",
+                                tint = Color.Black
                             )
                         }
 
@@ -260,7 +259,7 @@ fun AddUser(
                         ) {
                             role.forEach { r ->
                                 DropdownMenuItem(
-                                    text = { Text(text = r) },
+                                    text = { Text(text = r , color = Color.Black) },
                                     onClick = { selectedRole = r; expanded1 = false },
                                     enabled = r != role[0]
                                 )
@@ -276,10 +275,11 @@ fun AddUser(
                                     },
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = selectedProgram)
+                                Text(text = selectedProgram, color = Color.Black)
                                 Icon(
                                     imageVector = if (expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                                    contentDescription = ""
+                                    contentDescription = "",
+                                    tint = Color.Black
                                 )
                             }
 
@@ -292,7 +292,7 @@ fun AddUser(
                             ) {
                                 programs.forEach { c ->
                                     DropdownMenuItem(
-                                        text = { Text(text = c) },
+                                        text = { Text(text = c, color = Color.Black) },
                                         onClick = { selectedProgram = c; expanded = false },
                                         enabled = c != programs[0]
                                     )
@@ -307,10 +307,11 @@ fun AddUser(
                                     },
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = if (selectedYear.isEmpty()) "Year" else selectedYear)
+                                Text(text = if (selectedYear.isEmpty()) "Year" else selectedYear , color = Color.Black)
                                 Icon(
                                     imageVector = if (expanded2) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                                    contentDescription = ""
+                                    contentDescription = "",
+                                    tint = Color.Black
                                 )
                             }
 
@@ -323,7 +324,7 @@ fun AddUser(
                             ) {
                                 year.forEach { c ->
                                     DropdownMenuItem(
-                                        text = { Text(text = c) },
+                                        text = { Text(text = c , color = Color.Black) },
                                         onClick = { selectedYear = c; expanded2 = false },
                                         enabled = c != year[0]
                                     )
@@ -379,7 +380,7 @@ fun AddUser(
                             .width(200.dp)
                             .height(50.dp)
                     ) {
-                        Text(text = "SUBMIT", fontSize = 16.sp)
+                        Text(text = "Add User", fontSize = 16.sp)
                     }
 
 
