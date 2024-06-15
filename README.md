@@ -1,2 +1,5 @@
-# nbs-faculty-evaluation
-Joanna Cris Escanilla | Jerald Ysaac"
+
+# newfacultyevaluation
+
+Joanna Cris Escanilla | Cayce C. Evangelista | Carlos Miguel Autor
+
