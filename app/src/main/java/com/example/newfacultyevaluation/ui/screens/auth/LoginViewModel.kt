@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.online.OnlineUserRepository
+
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -25,7 +26,7 @@ class LoginViewModel(private val userRepository: UserRepository, private val onl
     var password by mutableStateOf("")
     var year by mutableStateOf("")
 
-    fun getUser(userID: String, password: String): Flow<User?> {
+    fun getUser(userID: String, password: String): Flow<User> {
 //        return flow {
 //            try {
 //                // Try to fetch user from the online repository
@@ -56,7 +57,9 @@ class LoginViewModel(private val userRepository: UserRepository, private val onl
 //            emit(null)
 //        }
 
-        return userRepository.getUsers(userID,password)
+
+
+        return onlineUserRepository.getUsers(userID,password)
     }
 
 
