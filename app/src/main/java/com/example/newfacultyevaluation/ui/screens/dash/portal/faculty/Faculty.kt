@@ -44,14 +44,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
+import com.example.newfacultyevaluation.ui.screens.dash.portal.student.Courses
+import com.example.newfacultyevaluation.ui.screens.dash.portal.student.Form
+import com.example.newfacultyevaluation.ui.screens.dash.portal.student.SFaculty
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -67,50 +72,254 @@ fun FacultyPortal(
         Select courses
         Course Name, Total Students, Rating
      */
-   Row(
 
-   ) {
-       val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
-       val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID).collectAsState(null)
-       val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
-       Column {
-
-           Text(text = "Course Name")
-           courses?.forEach {
-               Text(text = it.courseName)
-           }
-       }
-       Column {
-
-           Text(text = "Student Answered")
-           Text(text = studentAnswered.toString())
-       }
-       Column {
-           Text(text = "Ratings")
-           Text(text = rating.toString())
-       }
+    val studentNav = rememberNavController()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
 
-   }
-    Column(
-        verticalArrangement = Arrangement.Bottom
-    ) {
-       val context1 = LocalContext.current
-       Button(
-           onClick = {
-               loginViewModel.status = false
-               val prefer = context1.getSharedPreferences("prefs", 0)
-               prefer.edit()
-                   .clear()
-                   .apply()
+    ModalNavigationDrawer(drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                drawerContainerColor = MaterialTheme.colorScheme.primary,
+                drawerContentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.width(230.dp)
+            ) {
+                Text("Settings", fontSize = 30.sp, modifier = Modifier.padding(20.dp))
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+                ) {
 
-               navController.popBackStack()
-               navController.navigate(Main.AUTH.name)
-           }
-       ) {
-           Text(text = "Log out")
-       }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate(StudentNav.PROFILE.name)
+                            },
+                        horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start)
+                    ){
+                        Spacer(Modifier.width(5.dp))
+                        Icon(
+                            imageVector = Icons.Rounded.Person,
+                            contentDescription = "Profile",
+                            modifier = Modifier
+                                .size(30.dp)
+                        )
+                        Text("Profile", fontSize = 20.sp)
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .clickable {
+                                loginViewModel.status = false
+                                val preferences = context.getSharedPreferences("prefs", 0)
+                                preferences
+                                    .edit()
+                                    .clear()
+                                    .apply()
+                                navController.popBackStack()
+                                navController.navigate(Main.AUTH.name)
+                            }
+                            .fillMaxWidth()
+                        ,
+                        horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Spacer(Modifier.width(5.dp))
+                        Icon(
+                            imageVector = Icons.Rounded.Logout,
+                            contentDescription = "Log Out",
+                            modifier = Modifier
+                                .size(25.dp)
+                        )
+                        Text("Log Out", fontSize = 20.sp)
+                    }
+                }
+
+
+            }
+        }) {
+        Scaffold(
+            topBar = {
+                NavigationBar(
+                    containerColor = Color.Red,
+                    modifier = Modifier.height(70.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Text("Faculty Dashboard", fontSize = 30.sp)
+
+                        Icon(
+                            imageVector = Icons.Rounded.Settings,
+                            contentDescription = "Settings",
+                            modifier = Modifier
+                                .size(30.dp)
+                                .clickable {
+                                    scope.launch {
+                                        drawerState.apply {
+                                            if (isClosed) open() else close()
+                                        }
+                                    }
+                                },
+                            tint = Color.White
+                        )
+                    }
+                }
+            }
+        ) {
+
+            Column(modifier = Modifier
+                .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
+                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
+                        .collectAsState(null)
+                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
+
+                    Column {
+                        Spacer(modifier = Modifier.height(50.dp))
+
+                        Text(text = "Course Name")
+                        courses?.forEach {
+                            Spacer(modifier = Modifier.height(40.dp))
+                            Text(
+                                text = it.courseName,
+
+
+                                )
+                        }
+                    }
+
+                    Column {
+                        Spacer(modifier = Modifier.height(50.dp))
+
+                        Text(text = "Students Answered")
+                        Spacer(modifier = Modifier.height(40.dp))
+                        Text(text = studentAnswered.toString())
+                    }
+
+                    Column {
+                        Spacer(modifier = Modifier.height(50.dp))
+
+                        Text(text = "Ratings")
+                        Spacer(modifier = Modifier.height(40.dp))
+                        Text(text = rating.toString())
+                    }
+
+
+                }
+            }
+        }
     }
+
+
+
+
+//    Scaffold(
+//
+//        topBar = {
+//            Row(
+//                modifier = Modifier
+//                    .padding(10.dp)
+//                    .fillMaxSize(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ){
+//
+//            }
+//        },
+//
+//        bottomBar = {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalArrangement = Arrangement.Top,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                val context1 = LocalContext.current
+//                Button(
+//                    onClick = {
+//                        loginViewModel.status = false
+//                        val prefer = context1.getSharedPreferences("prefs", 0)
+//                        prefer.edit()
+//                            .clear()
+//                            .apply()
+//
+//                        navController.popBackStack()
+//                        navController.navigate(Main.AUTH.name)
+//                    }
+//                ) {
+//                    Text(text = "Log out")
+//                }
+//                Spacer(modifier = Modifier.height(50.dp))
+//            }
+//        }
+//    ) {
+//        Column(modifier = Modifier
+//            .fillMaxWidth(),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ) {
+//                val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
+//                val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
+//                    .collectAsState(null)
+//                val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
+//
+//                Column {
+//                    Spacer(modifier = Modifier.height(50.dp))
+//
+//                    Text(text = "Course Name")
+//                    courses?.forEach {
+//                        Spacer(modifier = Modifier.height(40.dp))
+//                        Text(
+//                            text = it.courseName,
+//
+//
+//                            )
+//                    }
+//                }
+//
+//                Column {
+//                    Spacer(modifier = Modifier.height(50.dp))
+//
+//                    Text(text = "Students Answered")
+//                    Spacer(modifier = Modifier.height(40.dp))
+//                    Text(text = studentAnswered.toString())
+//                }
+//
+//                Column {
+//                    Spacer(modifier = Modifier.height(50.dp))
+//
+//                    Text(text = "Ratings")
+//                    Spacer(modifier = Modifier.height(40.dp))
+//                    Text(text = rating.toString())
+//                }
+//
+//
+//            }
+//        }
+//    }
 
 
 }
