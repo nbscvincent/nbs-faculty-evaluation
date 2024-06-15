@@ -53,50 +53,39 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
     private val _year: String
         get() = year
 
-    fun insertUser(): Boolean{
-            println("UserID : $userID")
-            println("FullName : $fullName")
-            println("Course : $selectedProgram")
-            println("Pass : $pass")
-
-
-        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && selectedProgram.isNotBlank()&& year.isNotBlank() &&role != "ROLE: "){
-                viewModelScope.launch {
-                    if(role == "Student" && selectedProgram != "PROGRAM: "){
-                        studentRepo.upsertStudent(Student(
-                            studentID = _userID,
-                            fullName = _fullName,
-                            password = _pass,
-                            selectedCourse = _selectedCourse,
-                            role = _role,
-                            dateCreated = _date,
-                            year = _year,
-                        ))
-
-
-                    }
-                    else if(role == "Faculty"){
-                        facultyRepo.upsertFaculty(Faculty(
-                            facultyID = _userID,
-                            fullName = _fullName,
-                            password = _pass,
-                        ))
-
-                    } else if (selectedProgram == "PROGRAM: "){
-                        return@launch
-                    }
-                    userRepository.upsertUser(
-                        User(
-                            userID = _userID,
-                            fullName = _fullName,
-                            password = _pass,
-                            selectedCourse = if(role == "Student") _selectedCourse else "",
-                            role = _role,
-                            dateCreated = _date,
-                            year = _year,
-                        )
-                    )
-//                    onlineUserRepository.upsertUser(
+//    fun insertUser(): Boolean{
+//            println("UserID : $userID")
+//            println("FullName : $fullName")
+//            println("Course : $selectedProgram")
+//            println("Pass : $pass")
+//
+//
+//        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && selectedProgram.isNotBlank()&& year.isNotBlank() &&role != "ROLE: "){
+//                viewModelScope.launch {
+//                    if(role == "Student" && selectedProgram != "PROGRAM: "){
+//                        studentRepo.upsertStudent(Student(
+//                            studentID = _userID,
+//                            fullName = _fullName,
+//                            password = _pass,
+//                            selectedCourse = _selectedCourse,
+//                            role = _role,
+//                            dateCreated = _date,
+//                            year = _year,
+//                        ))
+//
+//
+//                    }
+//                    else if(role == "Faculty"){
+//                        facultyRepo.upsertFaculty(Faculty(
+//                            facultyID = _userID,
+//                            fullName = _fullName,
+//                            password = _pass,
+//                        ))
+//
+//                    } else if (selectedProgram == "PROGRAM: "){
+//                        return@launch
+//                    }
+//                    userRepository.upsertUser(
 //                        User(
 //                            userID = _userID,
 //                            fullName = _fullName,
@@ -107,23 +96,34 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
 //                            year = _year,
 //                        )
 //                    )
-
-                }
-                insertSuccessful = true
-            } else {
-                insertSuccessful = false
-            }
-
-        println("Success : $insertSuccessful")
-        return insertSuccessful
-    }
-    fun checkUserID(userID: String, password:String): Flow<User?>? {
-        var flow: Flow<User?>? = null
-        try {
-            flow = userRepository.getUsers(userID,password)
-        } catch (e: Exception) {
-            Timber.i("SAMPLE $e")
-        }
-        return flow
-    }
+////                    onlineUserRepository.upsertUser(
+////                        User(
+////                            userID = _userID,
+////                            fullName = _fullName,
+////                            password = _pass,
+////                            selectedCourse = if(role == "Student") _selectedCourse else "",
+////                            role = _role,
+////                            dateCreated = _date,
+////                            year = _year,
+////                        )
+////                    )
+//
+//                }
+//                insertSuccessful = true
+//            } else {
+//                insertSuccessful = false
+//            }
+//
+//        println("Success : $insertSuccessful")
+//        return insertSuccessful
+//    }
+//    fun checkUserID(userID: String, password:String): Flow<User?>? {
+//        var flow: Flow<User?>? = null
+//        try {
+//            flow = userRepository.getUsers(userID,password)
+//        } catch (e: Exception) {
+//            Timber.i("SAMPLE $e")
+//        }
+//        return flow
+//    }
 }
