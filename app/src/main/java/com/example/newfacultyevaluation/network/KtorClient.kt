@@ -21,6 +21,7 @@ fun KtorClient(): HttpClient {
             logger = object : Logger {
                 override fun log(message: String) {
                     Timber.d("SAMPLE - HTTP call $message")
+                    println("SAMPLE - HTTP call $message")
                 }
             }
             level = LogLevel.ALL

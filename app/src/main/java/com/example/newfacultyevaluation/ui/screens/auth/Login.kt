@@ -233,8 +233,7 @@ fun Login(
 
                 val context = LocalContext.current
                 val scope = rememberCoroutineScope()
-                val user  by viewModel.getUser(userID, pass).collectAsState(initial = null)
-
+                val user by viewModel.getUser(userID, pass).collectAsState(initial = null)
 
                 Button(
                     onClick =
@@ -245,7 +244,7 @@ fun Login(
 //                        scope.launch {
 //                            println("User: ${user.collect()}")
 //                        }
-
+                        
                         if(user?.userID == userID && user?.password == pass){
 
                             viewModel.role = user!!.role

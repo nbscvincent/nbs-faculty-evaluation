@@ -71,7 +71,7 @@ fun UserList(
     viewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory),
 ) {
     var searchText by remember { mutableStateOf("") }
-    val users = viewModel.getAllUsers().collectAsState(initial = null)
+    val users by viewModel.getAllUsers().collectAsState(initial = null)
 
     Column(
         modifier = Modifier
@@ -131,7 +131,7 @@ fun UserList(
             )
             UserColumn()
             LazyColumn {
-                val filteredUsers = users.value?.filter { user ->
+                val filteredUsers = users?.filter { user ->
                     user.fullName!!.contains(searchText, ignoreCase = true) ||
                             user.userID.contains(searchText, ignoreCase = true)
                 }?.sortedBy { it.fullName } ?: emptyList() // Sort the filtered users by name
@@ -140,6 +140,9 @@ fun UserList(
                         UserCard(user = user, index = index)
                     }
                 }
+//                users?.forEach {
+//
+//                }
             }
         }
 
