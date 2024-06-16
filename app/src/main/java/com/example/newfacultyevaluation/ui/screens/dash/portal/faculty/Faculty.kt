@@ -49,6 +49,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
+import com.example.newfacultyevaluation.ui.nav.FacultyNav
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
@@ -67,6 +68,7 @@ fun FacultyPortal(
         Select courses
         Course Name, Total Students, Rating
      */
+    val facultyNav = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -92,7 +94,7 @@ fun FacultyPortal(
                             .height(50.dp)
                             .clickable {
                                 navController.popBackStack()
-                                navController.navigate(StudentNav.PROFILE.name)
+                                navController.navigate(FacultyNav.PROFILE.name)
                             },
                         horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start)
                     ){

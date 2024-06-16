@@ -25,6 +25,7 @@ interface StudentRepo {
     fun getAllCourses(): Flow<List<Course>>
 
     fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>
+
     suspend fun deleteCourse(courseStudent: CourseStudent)
 
     suspend fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty)

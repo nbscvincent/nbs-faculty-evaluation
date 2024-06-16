@@ -14,6 +14,7 @@ import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
+import com.example.newfacultyevaluation.ui.nav.FacultyNav
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.Portal
 import com.example.newfacultyevaluation.ui.nav.StudentNav
@@ -24,6 +25,7 @@ import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.screens.auth.Register
 import com.example.newfacultyevaluation.ui.screens.dash.portal.admin.AdminPortal
 import com.example.newfacultyevaluation.ui.screens.dash.portal.faculty.FacultyPortal
+import com.example.newfacultyevaluation.ui.screens.dash.portal.faculty.FacultyProfile
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.Profile
 import com.example.newfacultyevaluation.ui.screens.dash.portal.student.StudentPortal
 
@@ -110,6 +112,10 @@ fun FacultyApp(){
 
             composable(StudentNav.PROFILE.name){
                 Profile(loginViewModel)
+            }
+
+            composable(FacultyNav.PROFILE.name){
+                FacultyProfile(loginViewModel)
             }
         }
 
