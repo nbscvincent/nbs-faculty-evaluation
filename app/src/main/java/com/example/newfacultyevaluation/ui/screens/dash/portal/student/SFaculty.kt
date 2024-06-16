@@ -129,31 +129,6 @@ fun SFaculty(
         }
         Spacer(modifier = Modifier.height(15.dp))
 
-//        Row (
-//            modifier = Modifier
-//                .padding(20.dp)
-//                .fillMaxWidth(),
-//            horizontalArrangement = Arrangement.End
-//        ){
-//
-//            Icon(
-//                imageVector = Icons.Rounded.Delete,
-//                contentDescription = "Delete Course",
-//                modifier = Modifier.clickable {
-//                    showCheckBox = !showCheckBox
-//                },tint = Color.Black
-//            )
-//            Icon(
-//                imageVector = Icons.Rounded.LibraryAdd,
-//                contentDescription = "Add Course",
-//                modifier = Modifier.clickable {
-//                    openDialog = true
-//                    showCheckBox = false
-//                },tint = Color.Black
-//            )
-//        }
-
-
         Column(modifier = Modifier.fillMaxWidth(),){
             Row{
                 Text("Student Number:",
