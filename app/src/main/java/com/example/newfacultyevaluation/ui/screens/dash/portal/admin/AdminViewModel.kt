@@ -13,6 +13,7 @@ import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
+import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
@@ -20,12 +21,14 @@ import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class AdminViewModel(private val userRepository: UserRepository,
                      private val adminRepo: AdminRepo,
                      private val studentRepo: StudentRepo,
-                     private val facultyRepo: FacultyRepo
+                     private val facultyRepo: FacultyRepo,
+                     private val onlineUserRepository: OnlineUserRepository
                     ): ViewModel() {
 
 
@@ -72,10 +75,10 @@ class AdminViewModel(private val userRepository: UserRepository,
     private val _year: String
         get() = year
 
-    private var insertSuccessful by mutableStateOf(false)
+    var insertSuccessful by mutableStateOf(false)
 
     fun getAllUsers(): Flow<List<User>> {
-       return userRepository.getAllUsers()
+       return onlineUserRepository.getAllUsers()
     }
 
     fun insertCourseFaculty(courseFaculty: CourseFaculty){
@@ -85,59 +88,88 @@ class AdminViewModel(private val userRepository: UserRepository,
         }
     }
 
-    fun checkUserID(userID: String, password: String): Flow<User?> {
-        return userRepository.getUsers(userID,password)
+    fun checkUserID(userID: String, password: String): Flow<User?> = flow {
+        val user = onlineUserRepository.getUsers(userID, password)
+        viewModelScope.launch {
+            user.collect { user ->
+                emit(user)
+            }
+        }
+        emit(null)
+
     }
 
-    fun insertUser(): Boolean{
-        println("UserID : $userID")
-        println("FullName : $fullName")
-        println("Course : $selectedProgram")
-        println("Year : $year")
-        println("Pass : $pass")
-        if(userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && role != "ROLE: " || selectedProgram.isNotBlank() && year.isNotBlank() ){
-            viewModelScope.launch {
-                if(role == "Student" && selectedProgram != "PROGRAM: "){
-                    studentRepo.upsertStudent(
-                        Student(
-                        studentID = _userID,
-                        fullName = _fullName,
-                        password = _pass,
-                        selectedCourse = _selectedCourse,
-                        role = _role,
-                         year = _year,
-                        dateCreated = _date
-                        )
-                    )
-                }
-                else if(role == "Faculty"){
-                    facultyRepo.upsertFaculty(Faculty(
-                        facultyID = _userID,
-                        fullName = _fullName,
-                        password = _pass,
-                        )
-                    )
-                } else if (selectedProgram == "PROGRAM: "){
-                    return@launch
-                }
-                userRepository.upsertUser(
-                    User(
+    suspend fun insertUser(): Boolean {
+//        println("UserID : $userID")
+//        println("FullName : $fullName")
+//        println("Course : $selectedProgram")
+//        println("Year : $year")
+//        println("Pass : $pass")
+
+            if(
+                userID.isNotBlank() &&
+                fullName.isNotBlank() &&
+                pass.isNotBlank() &&
+                role != "ROLE: " ||
+                selectedProgram.isNotBlank() &&
+                year.isNotBlank()
+                ){
+                    insertSuccessful = true
+                    onlineUserRepository.upsertUser(User(
                         userID = _userID,
                         fullName = _fullName,
                         password = _pass,
-                        selectedCourse = if(role == "Student") _selectedCourse else "",
-                        role = _role,
                         year = _year,
-                        dateCreated = _date
-                    )
-                )
+                        selectedCourse = _selectedCourse,
+                        dateCreated = _date,
+                        role = _role
+                    ))
+                }
+            else {
+                insertSuccessful = false
             }
-            insertSuccessful = true
-        } else {
-            insertSuccessful = false
-        }
 
-        println("Success : $insertSuccessful")
+
+
+
+//            viewModelScope.launch {
+//                if(role == "Student" && selectedProgram != "PROGRAM: "){
+//                    studentRepo.upsertStudent(
+//                        Student(
+//                        studentID = _userID,
+//                        fullName = _fullName,
+//                        password = _pass,
+//                        selectedCourse = _selectedCourse,
+//                        role = _role,
+//                         year = _year,
+//                        dateCreated = _date
+//                        )
+//                    )
+//                }
+//                else if(role == "Faculty"){
+//                    facultyRepo.upsertFaculty(Faculty(
+//                        facultyID = _userID,
+//                        fullName = _fullName,
+//                        password = _pass,
+//                        )
+//                    )
+//                } else if (selectedProgram == "PROGRAM: "){
+//                    return@launch
+//                }
+//                userRepository.upsertUser(
+//                    User(
+//                        userID = _userID,
+//                        fullName = _fullName,
+//                        password = _pass,
+//                        selectedCourse = if(role == "Student") _selectedCourse else "",
+//                        role = _role,
+//                        year = _year,
+//                        dateCreated = _date
+//                    )
+//                )
+//            }
+//
+//        println("Success : $insertSuccessful")
         return insertSuccessful
     }
 

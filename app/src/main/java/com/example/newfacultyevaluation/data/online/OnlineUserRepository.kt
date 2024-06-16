@@ -49,14 +49,14 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                 append("type", "save_user")
                 append("username", user.userID)
                 append("fullName", user.fullName.toString())
-                append("password", user.password.toString())
+                append("password", user.password)
                 append("year", user.year.toString())
                 append("course", user.selectedCourse.toString())
                 append("role", user.role)
                 append("dateCreated", user.dateCreated.toString())
             }))
         }
-        println(cl)
+        println("Save User: $cl")
 
     }
     @OptIn(InternalAPI::class)
@@ -92,8 +92,25 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
         }
     }
 
-    override fun getAllUsers(): Flow<List<User>> {
-        return getAllUsers()
+    @OptIn(InternalAPI::class)
+    override fun getAllUsers(): Flow<List<User>> = flow {
+        try {
+            val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
+                contentType(ContentType.Application.Json)
+                body = MultiPartFormDataContent(formData {
+                    append("type", "get_all_users")
+                })
+            }
+            println("Res: ${response.bodyAsText()}")
+            if (response.status == HttpStatusCode.OK) {
+                val userList = response.body<UserList>()
+                emit(userList.data)
+            } else {
+                println("No user found 1")
+            }
+        } catch (e: Exception) {
+            println("No User found 2 $e") // In case of error, emit null
+        }
     }
 
     override suspend fun deleteUser(user: User) = run{}
@@ -111,4 +128,11 @@ data class User1(
     val selectedCourse: String,
     val role: String,
     val dateCreated: String
+)
+
+@Serializable
+data class UserList(
+    val flag: Int,
+    val message: String,
+    val data: List<User>
 )
