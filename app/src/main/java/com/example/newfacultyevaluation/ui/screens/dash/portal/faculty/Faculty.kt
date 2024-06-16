@@ -181,7 +181,8 @@ fun FacultyPortal(
         ) {
 
             Column(modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
