@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,9 +56,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.AdminNav
 import com.typesafe.config.ConfigException.Null
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -75,7 +78,8 @@ fun AddUser(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(0.dp).background(Color.White),
+            .padding(0.dp)
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -337,7 +341,7 @@ fun AddUser(
 
                     val context = LocalContext.current
                     val user = viewModel.checkUserID(userID,pass).collectAsState(null)
-
+                    val scope = rememberCoroutineScope()
                     Spacer(
                         modifier = Modifier
                             .size(50.dp)
@@ -346,7 +350,9 @@ fun AddUser(
                     Button(
                         onClick =
                         {
+                            println("SAMPLE HERE 12")
                             if (user.value == null) {
+                                println("SAMPLE HERE 13")
                                 viewModel.userID = userID
                                 viewModel.fullName = fullName
                                 viewModel.year = selectedYear
@@ -355,7 +361,10 @@ fun AddUser(
                                 viewModel.role = selectedRole
                                 viewModel.date = LocalDateTime.now()
                                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                if (viewModel.insertUser()) {
+                                scope.launch {
+                                    viewModel.insertUser()
+                                }
+                                if (viewModel.insertSuccessful) {
                                     println("ajslkdakldakjl${viewModel.userID}")
                                     Toast.makeText(context, "Successfully Added", Toast.LENGTH_LONG)
                                         .show()
@@ -367,6 +376,7 @@ fun AddUser(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
+                                println("Add User: ${user.value}")
                                 Toast.makeText(
                                     context,
                                     "UserID is already taken",

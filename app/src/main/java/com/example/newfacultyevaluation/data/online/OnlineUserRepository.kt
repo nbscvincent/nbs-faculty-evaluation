@@ -21,6 +21,7 @@ import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
@@ -32,7 +33,7 @@ import io.ktor.util.reflect.TypeInfo
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-
+import kotlinx.serialization.Serializable
 
 
 class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) : UserRepository {
@@ -48,18 +49,18 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                 append("type", "save_user")
                 append("username", user.userID)
                 append("fullName", user.fullName.toString())
-                append("password", user.password.toString())
+                append("password", user.password)
                 append("year", user.year.toString())
                 append("course", user.selectedCourse.toString())
                 append("role", user.role)
                 append("dateCreated", user.dateCreated.toString())
             }))
         }
-        println(cl)
+        println("Save User: $cl")
 
     }
     @OptIn(InternalAPI::class)
-    override fun getUsers(id: String, password: String): Flow<User?> = flow {
+    override fun getUsers(id: String, password: String): Flow<User> = flow {
         try {
             val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
                 contentType(ContentType.Application.Json)
@@ -69,21 +70,69 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     append("password", password)
                 })
             }
+            println("Res: ${response.bodyAsText()}")
             if (response.status == HttpStatusCode.OK) {
-                val user = response.body<User>()
-                emit(user)
+                val user = response.body<User1>()
+                emit(
+                    User(
+                        userID = user.username,
+                        fullName = user.fullName,
+                        password = user.password,
+                        year = user.year,
+                        selectedCourse = user.selectedCourse,
+                        role = user.role,
+                        dateCreated = user.dateCreated
+                    )
+                )
             } else {
-                emit(null)
+                println("No user found 1")
             }
         } catch (e: Exception) {
-            emit(null) // In case of error, emit null
+            println("No User found 2 $e") // In case of error, emit null
         }
     }
 
-    override fun getAllUsers(): Flow<List<User>> {
-        return getAllUsers()
+    @OptIn(InternalAPI::class)
+    override fun getAllUsers(): Flow<List<User>> = flow {
+        try {
+            val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
+                contentType(ContentType.Application.Json)
+                body = MultiPartFormDataContent(formData {
+                    append("type", "get_all_users")
+                })
+            }
+            println("Res: ${response.bodyAsText()}")
+            if (response.status == HttpStatusCode.OK) {
+                val userList = response.body<UserList>()
+                emit(userList.data)
+            } else {
+                println("No user found 1")
+            }
+        } catch (e: Exception) {
+            println("No User found 2 $e") // In case of error, emit null
+        }
     }
 
     override suspend fun deleteUser(user: User) = run{}
 
 }
+
+@Serializable
+data class User1(
+    val flag: Int,
+    val message: String,
+    val username: String,
+    val password: String,
+    val fullName: String,
+    val year: String,
+    val selectedCourse: String,
+    val role: String,
+    val dateCreated: String
+)
+
+@Serializable
+data class UserList(
+    val flag: Int,
+    val message: String,
+    val data: List<User>
+)

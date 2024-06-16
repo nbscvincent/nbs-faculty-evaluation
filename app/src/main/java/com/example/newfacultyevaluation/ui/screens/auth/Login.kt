@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,6 +63,8 @@ import com.example.newfacultyevaluation.R
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
 import com.example.newfacultyevaluation.ui.nav.Portal
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -229,30 +232,25 @@ fun Login(
 
 
                 val context = LocalContext.current
-                val user by viewModel.getUser(userID, pass).collectAsState(null)
-
-
+                val scope = rememberCoroutineScope()
+                val user by viewModel.getUser(userID, pass).collectAsState(initial = null)
 
                 Button(
                     onClick =
                     {
-
-                        if (user?.password == pass) {
-                            println("User Full Name: ${user?.fullName}")
-                            println("User Year: ${user?.year}")
-                            println("Program: ${user?.selectedCourse}")
-                            navController.popBackStack()
-                            navController.navigate(Main.PORTAL.name)
-                            viewModel.status = true
-                            viewModel.userID = userID
-                            viewModel.fullName = user?.fullName.toString()
-                            viewModel.year = user?.year.toString()
-                            viewModel.selectedCourse = user?.selectedCourse.toString()
-                            viewModel.password = pass
-                            viewModel.role = user?.role.toString()
+                        println("SAMPLE - HERE1")
 
 
-                            println(viewModel.role)
+//                        scope.launch {
+//                            println("User: ${user.collect()}")
+//                        }
+                        
+                        if(user?.userID == userID && user?.password == pass){
+
+                            viewModel.role = user!!.role
+
+                            Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
+
                             val preferences = context.getSharedPreferences("prefs", 0)
                             preferences.edit()
                                 .putBoolean("status", true)
@@ -263,13 +261,45 @@ fun Login(
                                 .putString("role", viewModel.role)
                                 .putString("year", viewModel.year)
                                 .apply()
-                            println("Online user: $user")
-                            println("fullname: ${viewModel.fullName}")
 
-                            Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
-                                .show()
+                            navController.popBackStack()
+                            navController.navigate(Main.PORTAL.name)
                             return@Button
-                        } else {
+                        }
+//                        if ( == pass) {
+//                            println("SAMPLE - HERE2")
+//                            println("User Full Name: ${user?.fullName}")
+//                            println("User Year: ${user?.year}")
+//                            println("Program: ${user?.selectedCourse}")
+//                            navController.popBackStack()
+//                            navController.navigate(Main.PORTAL.name)
+//                            viewModel.status = true
+//                            viewModel.userID = userID
+//                            viewModel.fullName = user?.fullName.toString()
+//                            viewModel.year = user?.year.toString()
+//                            viewModel.selectedCourse = user?.selectedCourse.toString()
+//                            viewModel.password = pass
+//                            viewModel.role = user?.role.toString()
+//
+//
+//                            println(viewModel.role)
+//                            val preferences = context.getSharedPreferences("prefs", 0)
+//                            preferences.edit()
+//                                .putBoolean("status", true)
+//                                .putString("userID", viewModel.userID)
+//                                .putString("password", viewModel.password)
+//                                .putString("fullName", viewModel.fullName)
+//                                .putString("selectedCourse", viewModel.selectedCourse)
+//                                .putString("role", viewModel.role)
+//                                .putString("year", viewModel.year)
+//                                .apply()
+//                            println("Online user: $user")
+//                            println("fullname: ${viewModel.fullName}")
+//
+//                            Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
+//                                .show()
+//                            return@Button
+                        else {
                             Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT)
                                 .show()
                         }

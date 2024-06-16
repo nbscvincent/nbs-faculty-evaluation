@@ -14,5 +14,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "New Faculty Evaluation"
+
 include(":app")
  
