@@ -214,23 +214,6 @@ fun Login(
 
 
 
-
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(50.dp),
-//                    horizontalArrangement = Arrangement.End,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Text(text = "Forgot Password?", modifier = Modifier.clickable(
-//                        onClick = {
-//                            navController.popBackStack()
-//                            navController.navigate(Auth.FORGOTPASS.name)
-//                        }
-//                    ))
-//                }
-
-
                 val context = LocalContext.current
                 val scope = rememberCoroutineScope()
                 val user by viewModel.getUser(userID, pass).collectAsState(initial = null)
@@ -244,10 +227,14 @@ fun Login(
 //                        scope.launch {
 //                            println("User: ${user.collect()}")
 //                        }
-                        
-                        if(user?.userID == userID && user?.password == pass){
 
+                        if (user?.userID == userID && user?.password == pass) {
+                            viewModel.userID = user!!.userID
+                            viewModel.fullName = user!!.fullName.toString()
+                            viewModel.selectedCourse = user!!.selectedCourse.toString()
+                            viewModel.year = user!!.year.toString()
                             viewModel.role = user!!.role
+                            // Update other properties as needed
 
                             Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
 
@@ -264,42 +251,7 @@ fun Login(
 
                             navController.popBackStack()
                             navController.navigate(Main.PORTAL.name)
-                            return@Button
-                        }
-//                        if ( == pass) {
-//                            println("SAMPLE - HERE2")
-//                            println("User Full Name: ${user?.fullName}")
-//                            println("User Year: ${user?.year}")
-//                            println("Program: ${user?.selectedCourse}")
-//                            navController.popBackStack()
-//                            navController.navigate(Main.PORTAL.name)
-//                            viewModel.status = true
-//                            viewModel.userID = userID
-//                            viewModel.fullName = user?.fullName.toString()
-//                            viewModel.year = user?.year.toString()
-//                            viewModel.selectedCourse = user?.selectedCourse.toString()
-//                            viewModel.password = pass
-//                            viewModel.role = user?.role.toString()
-//
-//
-//                            println(viewModel.role)
-//                            val preferences = context.getSharedPreferences("prefs", 0)
-//                            preferences.edit()
-//                                .putBoolean("status", true)
-//                                .putString("userID", viewModel.userID)
-//                                .putString("password", viewModel.password)
-//                                .putString("fullName", viewModel.fullName)
-//                                .putString("selectedCourse", viewModel.selectedCourse)
-//                                .putString("role", viewModel.role)
-//                                .putString("year", viewModel.year)
-//                                .apply()
-//                            println("Online user: $user")
-//                            println("fullname: ${viewModel.fullName}")
-//
-//                            Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT)
-//                                .show()
-//                            return@Button
-                        else {
+                        } else {
                             Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT)
                                 .show()
                         }

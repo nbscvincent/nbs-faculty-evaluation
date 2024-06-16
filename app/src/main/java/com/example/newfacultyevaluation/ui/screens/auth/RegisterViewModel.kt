@@ -85,17 +85,17 @@ class RegisterViewModel(private val facultyRepo: FacultyRepo,private val userRep
                     } else if (selectedProgram == "PROGRAM: "){
                         return@launch
                     }
-                    userRepository.upsertUser(
-                        User(
-                            userID = _userID,
-                            fullName = _fullName,
-                            password = _pass,
-                            selectedCourse = if(role == "Student") _selectedCourse else "",
-                            role = _role,
-                            dateCreated = _date,
-                            year = _year,
-                        )
-                    )
+//                    userRepository.upsertUser(
+//                        User(
+//                            userID = _userID,
+//                            fullName = _fullName,
+//                            password = _pass,
+//                            selectedCourse = if(role == "Student") _selectedCourse else "",
+//                            role = _role,
+//                            dateCreated = _date,
+//                            year = _year,
+//                        )
+//                    )
                     onlineUserRepository.upsertUser(
                         User(
                             userID = _userID,

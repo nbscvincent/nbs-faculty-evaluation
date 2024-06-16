@@ -130,8 +130,9 @@ fun SFaculty(
         Spacer(modifier = Modifier.height(15.dp))
 
         Column(modifier = Modifier.fillMaxWidth(),){
-            Row{
-                Text("Student Number:",
+            Row {
+                Text(
+                    "Student Number:",
                     modifier = Modifier.padding(2.dp),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -139,8 +140,9 @@ fun SFaculty(
                     color = Color.Black
                 )
 
-                Text(text = "${loginViewModel.userID}",
-                    modifier = Modifier.padding(start =5.dp),
+                Text(
+                    text = loginViewModel.userID,
+                    modifier = Modifier.padding(start = 5.dp),
                     fontWeight = FontWeight.Light,
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
@@ -148,9 +150,9 @@ fun SFaculty(
                 )
             }
 
-            Row{
-
-                Text("Student Name:",
+            Row {
+                Text(
+                    "Student Name:",
                     modifier = Modifier.padding(2.dp),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -158,8 +160,9 @@ fun SFaculty(
                     color = Color.Black
                 )
 
-                Text(text = "${loginViewModel.fullName}",
-                    modifier = Modifier.padding(start =5.dp),
+                Text(
+                    text = loginViewModel.fullName,
+                    modifier = Modifier.padding(start = 5.dp),
                     fontWeight = FontWeight.Light,
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
@@ -168,9 +171,9 @@ fun SFaculty(
 
             }
 
-            Row{
-
-                Text("Course/Year:",
+            Row {
+                Text(
+                    "Course/Year:",
                     modifier = Modifier.padding(2.dp),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -178,8 +181,9 @@ fun SFaculty(
                     color = Color.Black
                 )
 
-                Text(text = "${loginViewModel.selectedCourse} - ${loginViewModel.year} year",
-                    modifier = Modifier.padding(start =5.dp),
+                Text(
+                    text = "${loginViewModel.selectedCourse} - ${loginViewModel.year} year",
+                    modifier = Modifier.padding(start = 5.dp),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
