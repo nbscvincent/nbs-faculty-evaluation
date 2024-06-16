@@ -30,13 +30,5 @@ class LoginViewModel(private val userRepository: UserRepository, private val onl
         return onlineUserRepository.getUsers(userID,password)
     }
 
-    fun setUserDetails(user: User) {
-        role = user.role
-        this.userID = user.userID
-        fullName = user.fullName.toString()
-        selectedCourse = user.selectedCourse.toString()
-        password = user.password
-        year = user.year.toString()
-    }
 }
 
