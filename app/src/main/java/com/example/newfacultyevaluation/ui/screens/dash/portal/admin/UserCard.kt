@@ -303,40 +303,40 @@ fun UserCard(user: User, index: Int) {
                                                             Toast.LENGTH_SHORT
                                                         ).show()
                                                     } else {
-                                                        viewModel.updateUser(
-                                                            user = selectedUser.copy(
-                                                                password = changePass,
-                                                                year = changeYear
-                                                            )
-                                                        )
-                                                        when (selectedUser.role) {
-                                                            "Faculty" -> viewModel.updateFaculty(
-                                                                faculty = Faculty(
-                                                                    selectedUser.userID.toString(),
-                                                                    selectedUser.fullName.toString(),
-                                                                    changePass,
-
-                                                                )
-                                                            )
-
-                                                            "Student" -> viewModel.updateStudent(
-                                                                student = Student(
-                                                                    selectedUser.userID.toString(),
-                                                                    selectedUser.fullName.toString(),
-                                                                    changePass,
-                                                                    selectedUser.selectedCourse,
-                                                                    selectedUser.role,
-                                                                    changeYear,
-                                                                    selectedUser.dateCreated.toString(),
-
-                                                                )
-                                                            )
-                                                        }
-                                                        Toast.makeText(
-                                                            context,
-                                                            "Password Successfully changed!",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
+//                                                        viewModel.updateUser(
+//                                                            user = selectedUser.copy(
+//                                                                password = changePass,
+//                                                                year = changeYear
+//                                                            )
+//                                                        )
+//                                                        when (selectedUser.role) {
+//                                                            "Faculty" -> viewModel.updateFaculty(
+//                                                                faculty = Faculty(
+//                                                                    selectedUser.userID.toString(),
+//                                                                    selectedUser.fullName.toString(),
+//                                                                    changePass,
+//
+//                                                                )
+//                                                            )
+//
+//                                                            "Student" -> viewModel.updateStudent(
+//                                                                student = Student(
+//                                                                    selectedUser.userID.toString(),
+//                                                                    selectedUser.fullName.toString(),
+//                                                                    changePass,
+//                                                                    selectedUser.selectedCourse,
+//                                                                    selectedUser.role,
+//                                                                    changeYear,
+//                                                                    selectedUser.dateCreated.toString(),
+//
+//                                                                )
+//                                                            )
+//                                                        }
+//                                                        Toast.makeText(
+//                                                            context,
+//                                                            "Password Successfully changed!",
+//                                                            Toast.LENGTH_SHORT
+//                                                        ).show()
                                                     }
                                                 }) {
                                                     Text(text = "Change")
@@ -403,7 +403,7 @@ fun UserCard(user: User, index: Int) {
                                     Button(
                                         onClick = {
 
-                                            viewModel.deleteUser(selectedUser)
+//                                            viewModel.deleteUser(selectedUser)
 
                                             Toast.makeText(
                                                 context,

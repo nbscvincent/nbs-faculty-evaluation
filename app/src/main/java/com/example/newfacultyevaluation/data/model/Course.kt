@@ -3,7 +3,9 @@ package com.example.newfacultyevaluation.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(tableName = "course")
 data class Course(
     @PrimaryKey(autoGenerate = true)

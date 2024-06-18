@@ -13,12 +13,15 @@ import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
+import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.StudentFaculty
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
+import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
+class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : ViewModel() {
 
     private val _totalPoints = mutableIntStateOf(0)
     val totalPoints: State<Int> get() = _totalPoints
@@ -52,45 +55,51 @@ class StudentViewModel(private val studentRepo: StudentRepo) : ViewModel() {
     }
 
 
-    fun upsertCourseStudent(courseStudent: CourseStudent){
-        viewModelScope.launch {
-            studentRepo.upsertCourseStudent(courseStudent)
-        }
-    }
 
-    fun upsertCourse(course: Course){
-        viewModelScope.launch {
-           studentRepo.upsertCourse(course)
-        }
-    }
-    fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty){
-        viewModelScope.launch {
-             studentRepo.upsertFormStudentFaculty(formStudentFaculty)
-        }
-    }
-    fun getCoursesByStudentID(id: String): Flow<List<Course>>{
-        return studentRepo.getCoursesByStudentID(id)
-    }
-
+//    fun upsertCourseStudent(courseStudent: CourseStudent){
+//        viewModelScope.launch {
+//            studentRepo.upsertCourseStudent(courseStudent)
+//        }
+//    }
+//
+//    fun upsertCourse(course: Course){
+//        viewModelScope.launch {
+//           studentRepo.upsertCourse(course)
+//        }
+//    }
+//    fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty){
+//        viewModelScope.launch {
+//             studentRepo.upsertFormStudentFaculty(formStudentFaculty)
+//        }
+//    }
     fun getAllCourses(): Flow<List<Course>>{
-        return studentRepo.getAllCourses()
+        return onlineRepository.getAllCourses()
+//        return studentRepo.getCoursesByStudentID(id)
     }
 
-    fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>{
-        return studentRepo.getStudentFaculty(id, selectedCourse)
+    fun getAllQuestions(): Flow<List<Question>>{
+        return onlineRepository.getAllQuestions()
     }
-
-    fun deleteCourse(courseStudent: CourseStudent){
-        viewModelScope.launch {
-            studentRepo.deleteCourse(courseStudent)
-        }
-    }
-
-    fun upsertForm(form: Form){
-        viewModelScope.launch {
-            studentRepo.upsertForm(form)
-        }
-    }
+//
+//    fun getAllCourses(): Flow<List<Course>>{
+//        return studentRepo.getAllCourses()
+//    }
+//
+//    fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>{
+//        return studentRepo.getStudentFaculty(id, selectedCourse)
+//    }
+//
+//    fun deleteCourse(courseStudent: CourseStudent){
+//        viewModelScope.launch {
+//            studentRepo.deleteCourse(courseStudent)
+//        }
+//    }
+//
+//    fun upsertForm(form: Form){
+//        viewModelScope.launch {
+//            studentRepo.upsertForm(form)
+//        }
+//    }
 
     fun markEvaluationAsCompleted(courseID: String, studentID: String) {
         CompletedEvaluationsCache.markEvaluationAsCompleted(courseID, studentID)

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class LoginViewModel(private val userRepository: UserRepository, private val onlineUserRepository: OnlineUserRepository) : ViewModel(){
+class LoginViewModel(private val onlineUserRepository: OnlineUserRepository) : ViewModel(){
 
     var role by mutableStateOf("")
     var status by mutableStateOf(false)

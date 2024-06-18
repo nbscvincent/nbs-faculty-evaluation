@@ -340,7 +340,6 @@ fun AddUser(
 
 
                     val context = LocalContext.current
-                    val user = viewModel.checkUserID(userID,pass).collectAsState(null)
                     val scope = rememberCoroutineScope()
                     Spacer(
                         modifier = Modifier
@@ -351,38 +350,49 @@ fun AddUser(
                         onClick =
                         {
                             println("SAMPLE HERE 12")
-                            if (user.value == null) {
-                                println("SAMPLE HERE 13")
-                                viewModel.userID = userID
-                                viewModel.fullName = fullName
-                                viewModel.year = selectedYear
-                                viewModel.pass = pass
-                                viewModel.selectedProgram = selectedProgram
-                                viewModel.role = selectedRole
-                                viewModel.date = LocalDateTime.now()
-                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                scope.launch {
-                                    viewModel.insertUser()
-                                }
-                                if (viewModel.insertSuccessful) {
-                                    println("ajslkdakldakjl${viewModel.userID}")
-                                    Toast.makeText(context, "Successfully Added", Toast.LENGTH_LONG)
-                                        .show()
-                                        navController.popBackStack()
-                                        navController.navigate(AdminNav.UserList.name)
-                                } else Toast.makeText(
-                                    context,
-                                    "Please fill out all fields",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                println("Add User: ${user.value}")
-                                Toast.makeText(
-                                    context,
-                                    "UserID is already taken",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            scope.launch {
+//                                viewModel.checkUserID(userID, pass).collect{ user ->
+//                                    if (user == null) {
+//                                    println("SAMPLE HERE 13")
+//                                    viewModel.userID = userID
+//                                    viewModel.fullName = fullName
+//                                    viewModel.year = selectedYear
+//                                    viewModel.pass = pass
+//                                    viewModel.selectedProgram = selectedProgram
+//                                    viewModel.role = selectedRole
+//                                    viewModel.date = LocalDateTime.now()
+//                                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+//                                    scope.launch {
+//                                        viewModel.insertUser()
+//                                    }
+//                                    if (viewModel.insertSuccessful) {
+//                                        Toast.makeText(context, "Successfully Added", Toast.LENGTH_LONG)
+//                                            .show()
+//                                        navController.popBackStack()
+//                                        navController.navigate(AdminNav.UserList.name)
+//                                    } else {
+//                                        println("User: $user")
+//                                        Toast.makeText(
+//                                            context,
+//                                            "Please fill out all fields",
+//                                            Toast.LENGTH_SHORT
+//                                        ).show()
+//                                    }
+//                                } else {
+//                                    println("Add User: $user")
+//                                    Toast.makeText(
+//                                        context,
+//                                        "UserID is already taken",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
+//                                }
+//
                             }
+                            scope.launch {
+                                viewModel.insertUser()
+                            }
+
 
                         },
                         shape = RoundedCornerShape(10.dp),

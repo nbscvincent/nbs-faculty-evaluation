@@ -3,6 +3,7 @@ package com.example.newfacultyevaluation.data.online
 import android.system.Os.accept
 
 import com.example.newfacultyevaluation.dao.UserDao
+import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import com.example.newfacultyevaluation.network.HttpRoutes
@@ -113,6 +114,26 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
         }
     }
 
+    @OptIn(InternalAPI::class)
+    override fun getAllQuestions(): Flow<List<Question>> = flow {
+        try {
+            val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
+                contentType(ContentType.Application.Json)
+                body = MultiPartFormDataContent(formData {
+                    append("type", "get_all_questions")
+                })
+            }
+            println("Res: ${response.bodyAsText()}")
+            if (response.status == HttpStatusCode.OK) {
+                val questions = response.body<QuestionList>()
+                emit(questions.data)
+            } else {
+                println("No user found 1")
+            }
+        } catch (e: Exception) {
+            println("No User found 2 $e") // In case of error, emit null
+        }
+    }
     override suspend fun deleteUser(user: User) = run{}
 
 }
@@ -135,4 +156,10 @@ data class UserList(
     val flag: Int,
     val message: String,
     val data: List<User>
+)
+@Serializable
+data class QuestionList(
+    val flag: Int,
+    val message: String,
+    val data: List<Question>
 )

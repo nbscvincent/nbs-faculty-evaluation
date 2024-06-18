@@ -103,7 +103,8 @@ fun SFaculty(
         mutableStateOf(false)
     }
 
-    val courses = viewModel.getCoursesByStudentID(loginViewModel.userID).collectAsState(null)
+    val courses by
+        viewModel.getAllCourses().collectAsState(null)
 
     var selectedCourse by remember {
         mutableStateOf("")
@@ -195,7 +196,7 @@ fun SFaculty(
         }
         Spacer(modifier = Modifier.height(20.dp))
 
-        if (courses.value?.size == 0) {
+        if (courses?.isEmpty() == true) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -206,7 +207,8 @@ fun SFaculty(
             }
         } else {
 
-            courses.value?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }?.forEach { course ->
+            courses?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }
+                ?.forEach { course ->
                 val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseID, loginViewModel.userID)
 
                 if (!isEvaluationCompleted) {
@@ -221,12 +223,12 @@ fun SFaculty(
                     if (showCheckBox) {
                         Button(
                             onClick = {
-                                viewModel.deleteCourse(
-                                    CourseStudent(
-                                        course.courseID,
-                                        loginViewModel.userID
-                                    )
-                                )
+//                                viewModel.deleteCourse(
+//                                    CourseStudent(
+//                                        course.courseID,
+//                                        loginViewModel.userID
+//                                    )
+//                                )
                             },
                             shape = RoundedCornerShape(10.dp),
                             modifier = Modifier.size(40.dp),
@@ -275,14 +277,14 @@ fun SFaculty(
                                 color = Color.Black
                             )
 
-                            val faculty =
-                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
-                                    .collectAsState(null)
+//                            val faculty =
+//                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
+//                                    .collectAsState(null)
                             // Display the faculty name if available
-                            val facultyNameText =
-                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
+//                            val facultyNameText =
+//                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
                             Text(
-                                text = facultyNameText,
+                                text = "facultyNameText",
                                 textAlign = TextAlign.Left,
                                 modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                 fontWeight = FontWeight.Bold,
@@ -389,7 +391,7 @@ fun SFaculty(
         }
         if(openDialog) {
             Dialog(onDismissRequest = { openDialog = false }) {
-                val allCourses = viewModel.getAllCourses().collectAsState(null)
+//                val allCourses = viewModel.getAllCourses().collectAsState(null)
                 val isDarkTheme = isSystemInDarkTheme()
                 val backgroundColor = if (isDarkTheme) Color.Black else Color.White
                 val bg = MaterialTheme.colorScheme.background
@@ -436,11 +438,11 @@ fun SFaculty(
                             onDismissRequest = { expanded = false },
                             modifier = Modifier.background( MaterialTheme.colorScheme.background)
                         ) {
-                            allCourses.value?.forEach { course ->
-                                if (course.year == loginViewModel.year && course.program == loginViewModel.selectedCourse) {
-                                    DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
-                                }
-                            }
+//                            allCourses.value?.forEach { course ->
+//                                if (course.year == loginViewModel.year && course.program == loginViewModel.selectedCourse) {
+//                                    DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
+//                                }
+//                            }
                         }
                         Icon(imageVector = if(expanded)Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "Selection")
                     }
@@ -458,8 +460,8 @@ fun SFaculty(
                                 && selectedCourse1.program == loginViewModel.selectedCourse
 
                                 ){
-                                viewModel.upsertCourseStudent(CourseStudent(courseID = selectedCourse1.courseID, studentID = loginViewModel.userID))
-                                viewModel.upsertCourse(selectedCourse1)
+//                                viewModel.upsertCourseStudent(CourseStudent(courseID = selectedCourse1.courseID, studentID = loginViewModel.userID))
+//                                viewModel.upsertCourse(selectedCourse1)
                                 openDialog = false
                             }
                             else {

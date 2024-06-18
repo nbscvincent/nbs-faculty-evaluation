@@ -271,8 +271,8 @@ fun AddCourses(
 
                 if(selectedFaculty.isNotBlank() && validAll){
                     courses.forEach {
-                        adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
-                        adminViewModel.upsertCourse(Course(it.id,it.courseID, it.courseName, it.year, it.program))
+//                        adminViewModel.insertCourseFaculty(CourseFaculty(it.courseID, selectedFacultyID))
+//                        adminViewModel.upsertCourse(Course(it.id,it.courseID, it.courseName, it.year, it.program))
                         println(selectedFaculty)
                         println(it.courseID)
                         println(it.courseName)

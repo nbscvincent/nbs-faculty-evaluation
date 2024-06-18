@@ -79,19 +79,19 @@ import com.example.newfacultyevaluation.ui.theme.White
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionScreen() {
-    val adminViewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory)
-    val coursesWithFaculties by adminViewModel.getCoursesWithFaculties().collectAsState(initial = emptyList())
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(coursesWithFaculties) { courseWithFaculty ->
-            CourseCard(courseWithFaculty)
-        }
-    }
+//    val adminViewModel: AdminViewModel = viewModel(factory = FacultyAppViewModelProvider.AdminFactory)
+////    val coursesWithFaculties by adminViewModel.getCoursesWithFaculties().collectAsState(initial = emptyList())
+//
+//    LazyColumn(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp),
+//        verticalArrangement = Arrangement.spacedBy(8.dp)
+//    ) {
+//        items(coursesWithFaculties) { courseWithFaculty ->
+//            CourseCard(courseWithFaculty)
+//        }
+//    }
 }
 
 @Composable

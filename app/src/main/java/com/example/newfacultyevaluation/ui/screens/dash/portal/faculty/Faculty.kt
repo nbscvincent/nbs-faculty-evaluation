@@ -183,23 +183,23 @@ fun FacultyPortal(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
-                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
-                        .collectAsState(null)
-                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
+//                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
+//                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
+//                        .collectAsState(null)
+//                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
 
                     Column {
                         Spacer(modifier = Modifier.height(50.dp))
 
                         Text(text = "Course Name", color = Color.White)
-                        courses?.forEach {
-                            Spacer(modifier = Modifier.height(40.dp))
-                            Text(
-                                text = it.courseName,
-
-
-                                )
-                        }
+//                        courses?.forEach {
+//                            Spacer(modifier = Modifier.height(40.dp))
+//                            Text(
+//                                text = it.courseName,
+//
+//
+//                                )
+//                        }
                     }
 
                     Column {
@@ -207,7 +207,7 @@ fun FacultyPortal(
 
                         Text(text = "Students Answered")
                         Spacer(modifier = Modifier.height(40.dp))
-                        Text(text = studentAnswered.toString())
+//                        Text(text = studentAnswered.toString())
                     }
 
                     Column {
@@ -215,7 +215,7 @@ fun FacultyPortal(
 
                         Text(text = "Ratings")
                         Spacer(modifier = Modifier.height(40.dp))
-                        Text(text = rating.toString())
+//                        Text(text = rating.toString())
                     }
 
 

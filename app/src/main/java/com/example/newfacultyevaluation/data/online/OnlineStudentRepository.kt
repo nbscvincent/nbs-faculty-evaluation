@@ -6,6 +6,7 @@ import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
+import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
@@ -16,12 +17,17 @@ import io.ktor.client.call.body
 import io.ktor.client.request.accept
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.post
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.util.InternalAPI
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -63,10 +69,14 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             }))
         }
     }
-
-    override fun getCoursesByStudentID(id: String): Flow<List<Course>> {
-        return flow {
-            val cl = coroutineScope {
+    data class CourseList(
+        val flag: Int,
+        val message: String,
+        val data: List<Course>
+    )
+    override fun getAllCourses(): Flow<List<Course>> = flow {
+        try{
+            val response = coroutineScope {
                 ktorClient.request(
                     HttpRoutes.login
                 ) {
@@ -76,12 +86,39 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
                     accept(ContentType.Application.Json)
                     setBody(MultiPartFormDataContent(formData {
                         append("type", "check_course")
-                        append("courseID", id)
                     }))
                 }
             }
+            println("Res: ${response.bodyAsText()}")
+            if (response.status == HttpStatusCode.OK) {
+                val courses = response.body<CourseList>()
+                emit(courses.data)
+            } else {
+                println("No course found 1")
+            }
+        } catch (e: Exception) {
+            println("No Curse found 2 $e") // In case of error, emit null
+        }
 
-            emit(cl.body())
+    }
+    @OptIn(InternalAPI::class)
+    override fun getAllQuestions(): Flow<List<Question>> = flow {
+        try {
+            val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
+                contentType(ContentType.Application.Json)
+                body = MultiPartFormDataContent(formData {
+                    append("type", "get_all_questions")
+                })
+            }
+            println("Res: ${response.bodyAsText()}")
+            if (response.status == HttpStatusCode.OK) {
+                val questions = response.body<QuestionList>()
+                emit(questions.data)
+            } else {
+                println("No user found 1")
+            }
+        } catch (e: Exception) {
+            println("No User found 2 $e") // In case of error, emit null
         }
     }
 
@@ -101,9 +138,7 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
         }
     }
 
-    override fun getAllCourses(): Flow<List<Course>> {
-        return getAllCourses()
-    }
+
 
     override fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty> {
         return flow {

@@ -1,5 +1,6 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.admin
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,15 +22,13 @@ import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.builtins.serializer
 
-class AdminViewModel(private val userRepository: UserRepository,
-                     private val adminRepo: AdminRepo,
-                     private val studentRepo: StudentRepo,
-                     private val facultyRepo: FacultyRepo,
-                     private val onlineUserRepository: OnlineUserRepository
-                    ): ViewModel() {
+class AdminViewModel(private val onlineUserRepository: OnlineUserRepository): ViewModel() {
 
 
     var fullName = ""
@@ -81,22 +80,27 @@ class AdminViewModel(private val userRepository: UserRepository,
        return onlineUserRepository.getAllUsers()
     }
 
-    fun insertCourseFaculty(courseFaculty: CourseFaculty){
-        viewModelScope.launch {
-            adminRepo.upsertCourseFaculty(courseFaculty)
+//    fun insertCourseFaculty(courseFaculty: CourseFaculty){
+//        viewModelScope.launch {
+//            adminRepo.upsertCourseFaculty(courseFaculty)
+//
+//        }
+//    }
 
-        }
-    }
+    @SuppressLint("SuspiciousIndentation")
+    private fun checkUserID(): Flow<User?> = flow {
 
-    fun checkUserID(userID: String, password: String): Flow<User?> = flow {
-        val user = onlineUserRepository.getUsers(userID, password)
-        viewModelScope.launch {
-            user.collect { user ->
-                emit(user)
+        val user = onlineUserRepository.getUsers(_userID, _password)
+            user.collect { value ->
+                if(_userID.isNotEmpty()){
+                    println("User 1: $user")
+                    emit(value)
+                }
+                else{
+                    emit(null)
+                }
+
             }
-        }
-        emit(null)
-
     }
 
     suspend fun insertUser(): Boolean {
@@ -106,28 +110,29 @@ class AdminViewModel(private val userRepository: UserRepository,
 //        println("Year : $year")
 //        println("Pass : $pass")
 
-            if(
-                userID.isNotBlank() &&
-                fullName.isNotBlank() &&
-                pass.isNotBlank() &&
-                role != "ROLE: " ||
-                selectedProgram.isNotBlank() &&
-                year.isNotBlank()
-                ){
-                    insertSuccessful = true
-                    onlineUserRepository.upsertUser(User(
-                        userID = _userID,
-                        fullName = _fullName,
-                        password = _pass,
-                        year = _year,
-                        selectedCourse = _selectedCourse,
-                        dateCreated = _date,
-                        role = _role
-                    ))
-                }
-            else {
-                insertSuccessful = false
-            }
+        onlineUserRepository.upsertUser(
+            User(
+            userID = _userID,
+            fullName = _fullName,
+            password = _pass,
+            year = _year,
+            selectedCourse = _selectedCourse,
+            dateCreated = _date,
+            role = _role
+        ))
+//            if(
+//                userID.isNotBlank() &&
+//                fullName.isNotBlank() &&
+//                pass.isNotBlank() &&
+//                role != "ROLE:" ||
+//                year.isNotBlank()
+//                ){
+//                    insertSuccessful = true
+//
+//                }
+//            else {
+//                insertSuccessful = false
+//            }
 
 
 
@@ -173,45 +178,52 @@ class AdminViewModel(private val userRepository: UserRepository,
         return insertSuccessful
     }
 
+    fun checkRole(role: String): String{
+        if(role == "Student"){
 
-    fun upsertCourse(course: Course){
-        viewModelScope.launch {
-            adminRepo.upsertCourse(course)
         }
+        return role
     }
 
-    fun updateUser(user: User){
-        viewModelScope.launch {
-            adminRepo.updateUser(user)
-        }
-    }
 
-    fun updateFaculty(faculty: Faculty){
-        viewModelScope.launch {
-            adminRepo.updateFaculty(faculty)
-        }
-    }
-    fun updateStudent(student: Student){
-        viewModelScope.launch {
-            adminRepo.updateStudent(student)
-        }
-    }
-
-    fun deleteUser(user: User) {
-        viewModelScope.launch {
-            // Delete the user from the repository
-
-            when (user.role) {
-
-                "Faculty" -> facultyRepo.upsertFaculty(Faculty(user.userID, "", "",))
-                "Student" -> studentRepo.upsertStudent(Student(user.userID, "", "", "", "", "", ""))
-
-            }
-
-            // Now delete the user from the main user repository
-            userRepository.deleteUser(user)
-        }
-    }
+//    fun upsertCourse(course: Course){
+//        viewModelScope.launch {
+//            adminRepo.upsertCourse(course)
+//        }
+//    }
+//
+//    fun updateUser(user: User){
+//        viewModelScope.launch {
+//            adminRepo.updateUser(user)
+//        }
+//    }
+//
+//    fun updateFaculty(faculty: Faculty){
+//        viewModelScope.launch {
+//            adminRepo.updateFaculty(faculty)
+//        }
+//    }
+//    fun updateStudent(student: Student){
+//        viewModelScope.launch {
+//            adminRepo.updateStudent(student)
+//        }
+//    }
+//
+//    fun deleteUser(user: User) {
+//        viewModelScope.launch {
+//            // Delete the user from the repository
+//
+//            when (user.role) {
+//
+//                "Faculty" -> facultyRepo.upsertFaculty(Faculty(user.userID, "", "",))
+//                "Student" -> studentRepo.upsertStudent(Student(user.userID, "", "", "", "", "", ""))
+//
+//            }
+//
+//            // Now delete the user from the main user repository
+//            userRepository.deleteUser(user)
+//        }
+//    }
 
 
 
@@ -230,9 +242,9 @@ class AdminViewModel(private val userRepository: UserRepository,
         }
     }
 
-    fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
-        return adminRepo.getCoursesWithFaculties()
-    }
+//    fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
+//        return adminRepo.getCoursesWithFaculties()
+//    }
 
 
 }

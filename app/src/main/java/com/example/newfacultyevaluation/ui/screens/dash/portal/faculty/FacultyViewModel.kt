@@ -7,18 +7,20 @@ import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import kotlinx.coroutines.flow.Flow
 
-class FacultyViewModel(private val facultyRepo: FacultyRepo): ViewModel() {
+class FacultyViewModel(
+//    private val facultyRepo: FacultyRepo
+): ViewModel() {
 
-    fun getCourses(id: String): Flow<List<Course>> {
-        return facultyRepo.getCourses(id)
-    }
-
-    fun getStudentCountAnswered(id: String): Flow<Int>{
-        return facultyRepo.getStudentCount(id)
-    }
-
-    fun getOverallPoints(id: String): Flow<Int>{
-        return facultyRepo.getOverallPoints(id)
-    }
+//    fun getCourses(id: String): Flow<List<Course>> {
+//        return facultyRepo.getCourses(id)
+//    }
+//
+//    fun getStudentCountAnswered(id: String): Flow<Int>{
+//        return facultyRepo.getStudentCount(id)
+//    }
+//
+//    fun getOverallPoints(id: String): Flow<Int>{
+//        return facultyRepo.getOverallPoints(id)
+//    }
 
 }
