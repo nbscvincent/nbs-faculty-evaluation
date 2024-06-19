@@ -61,7 +61,7 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
 
     }
     @OptIn(InternalAPI::class)
-    override fun getUsers(id: String, password: String): Flow<User> = flow {
+    override fun getUsers(id: String, password: String): Flow<User?> = flow {
         try {
             val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
                 contentType(ContentType.Application.Json)
@@ -86,9 +86,11 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     )
                 )
             } else {
+                emit(null)
                 println("No user found 1")
             }
         } catch (e: Exception) {
+            emit(null)
             println("No User found 2 $e") // In case of error, emit null
         }
     }

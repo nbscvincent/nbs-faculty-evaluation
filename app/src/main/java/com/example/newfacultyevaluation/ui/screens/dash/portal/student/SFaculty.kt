@@ -207,120 +207,124 @@ fun SFaculty(
             }
         } else {
 
-            courses.value!!.filter { it.yearLevel == loginViewModel.year && it.courseName == loginViewModel.selectedCourse }
-                .forEach { course ->
-                    val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
+//            courses.value!!.filter { it.yearLevel == loginViewModel.year && it.courseName == loginViewModel.selectedCourse }
 
-                    if (!isEvaluationCompleted) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding()
-                                .fillMaxWidth()
-                                .height(190.dp).background(color = Color.White)
+            courses.value!!.forEach { course ->
+                    if(course.program == loginViewModel.selectedCourse){
 
-                        ) {
-                            if (showCheckBox) {
-                                Button(
-                                    onClick = {
-        //                                viewModel.deleteCourse(
-        //                                    CourseStudent(
-        //                                        course.courseID,
-        //                                        loginViewModel.userID
-        //                                    )
-        //                                )
-                                    },
-                                    shape = RoundedCornerShape(10.dp),
-                                    modifier = Modifier.size(40.dp),
-                                    contentPadding = PaddingValues(10.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.DeleteOutline,
-                                        contentDescription = "Delete"
-                                    )
-                                }
-                            }
+                        val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
 
-                            Card(
-                                elevation = CardDefaults.cardElevation(8.dp),
+                        if (!isEvaluationCompleted) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-
-                                    .clickable() {
-
-                                    }
-                                    .padding(5.dp)
+                                    .padding()
                                     .fillMaxWidth()
-                                    .background(color = Color.White),
-                                shape = RoundedCornerShape(4.dp),
+                                    .height(190.dp).background(color = Color.White)
 
-
-                                ) {
-                                Column(
-                                    modifier = Modifier.background(Color.White).fillMaxWidth()
-                                ) {
-
-                                    Text(
-                                        text = "${course.courseCode} - ${course.courseName}",
-                                        modifier = Modifier.padding(top = 20.dp, start = 20.dp),
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 20.sp,
-                                        color = Color.Black
-                                    )
-
-                                    Text(
-                                        text = "Instructor",
-                                        modifier = Modifier.padding(top = 10.dp, start = 20.dp),
-                                        fontWeight = FontWeight.Light,
-                                        textAlign = TextAlign.Center,
-                                        fontSize = 20.sp,
-                                        color = Color.Black
-                                    )
-
-        //                            val faculty =
-        //                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
-        //                                    .collectAsState(null)
-                                    // Display the faculty name if available
-        //                            val facultyNameText =
-        //                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
-                                    Text(
-                                        text = "facultyNameText",
-                                        textAlign = TextAlign.Left,
-                                        modifier = Modifier.padding(top = 10.dp, start = 20.dp),
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 20.sp,
-                                        color = Color.Black
-                                    )
-
-                                    Spacer(modifier = Modifier.weight(1f))
-
-                                    // Evaluate button positioned in the bottom right corner
+                            ) {
+                                if (showCheckBox) {
                                     Button(
                                         onClick = {
-                                            if (!showCheckBox) {
-                                                openDataPrivacy = true
-                                                selectedCourse = course.courseCode
-                                            }
+            //                                viewModel.deleteCourse(
+            //                                    CourseStudent(
+            //                                        course.courseID,
+            //                                        loginViewModel.userID
+            //                                    )
+            //                                )
                                         },
-                                        modifier = Modifier
-                                            .padding(16.dp)
-                                            .align(Alignment.End)
+                                        shape = RoundedCornerShape(10.dp),
+                                        modifier = Modifier.size(40.dp),
+                                        contentPadding = PaddingValues(10.dp)
                                     ) {
-                                        Text(text = "Evaluate")
+                                        Icon(
+                                            imageVector = Icons.Rounded.DeleteOutline,
+                                            contentDescription = "Delete"
+                                        )
+                                    }
+                                }
+
+                                Card(
+                                    elevation = CardDefaults.cardElevation(8.dp),
+                                    modifier = Modifier
+
+                                        .clickable() {
+
+                                        }
+                                        .padding(5.dp)
+                                        .fillMaxWidth()
+                                        .background(color = Color.White),
+                                    shape = RoundedCornerShape(4.dp),
+
+
+                                    ) {
+                                    Column(
+                                        modifier = Modifier.background(Color.White).fillMaxWidth()
+                                    ) {
+
+                                        Text(
+                                            text = "${course.courseCode} - ${course.courseName}",
+                                            modifier = Modifier.padding(top = 20.dp, start = 20.dp),
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 20.sp,
+                                            color = Color.Black
+                                        )
+
+                                        Text(
+                                            text = "Instructor",
+                                            modifier = Modifier.padding(top = 10.dp, start = 20.dp),
+                                            fontWeight = FontWeight.Light,
+                                            textAlign = TextAlign.Center,
+                                            fontSize = 20.sp,
+                                            color = Color.Black
+                                        )
+
+            //                            val faculty =
+            //                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
+            //                                    .collectAsState(null)
+                                        // Display the faculty name if available
+            //                            val facultyNameText =
+            //                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
+                                        Text(
+                                            text = "facultyNameText",
+                                            textAlign = TextAlign.Left,
+                                            modifier = Modifier.padding(top = 10.dp, start = 20.dp),
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 20.sp,
+                                            color = Color.Black
+                                        )
+
+                                        Spacer(modifier = Modifier.weight(1f))
+
+                                        // Evaluate button positioned in the bottom right corner
+                                        Button(
+                                            onClick = {
+                                                if (!showCheckBox) {
+                                                    openDataPrivacy = true
+                                                    selectedCourse = course.courseCode
+                                                }
+                                            },
+                                            modifier = Modifier
+                                                .padding(16.dp)
+                                                .align(Alignment.End)
+                                        ) {
+                                            Text(text = "Evaluate")
+                                        }
+
                                     }
 
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center,
+                                        modifier = Modifier.fillMaxSize().background(Color.DarkGray)
+                                    ) {
+
+
+                                    }
                                 }
 
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center,
-                                    modifier = Modifier.fillMaxSize().background(Color.DarkGray)
-                                ) {
-
-
-                                }
                             }
-
                         }
                     }
                     Spacer(modifier = Modifier.height(1.dp))
@@ -410,7 +414,7 @@ fun SFaculty(
                 ) {
 
                     var selectedCourse1 by remember {
-                        mutableStateOf(Course("","","", ""))
+                        mutableStateOf(Course("","","", "", ""))
                     }
 
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)

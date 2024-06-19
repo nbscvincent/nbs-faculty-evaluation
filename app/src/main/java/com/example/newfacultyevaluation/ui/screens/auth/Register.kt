@@ -48,6 +48,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,6 +73,8 @@ import com.example.newfacultyevaluation.R
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.Auth
 import com.example.newfacultyevaluation.ui.nav.Main
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -253,9 +256,11 @@ fun Register(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         Row(
-                            modifier = Modifier.weight(1f).clickable {
-                                expanded1 = !expanded1
-                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable {
+                                    expanded1 = !expanded1
+                                },
                             horizontalArrangement = Arrangement.Center
                         ) {
 
@@ -286,9 +291,11 @@ fun Register(
 
                         if (selectedRole == "Student") {
                             Row(
-                                modifier = Modifier.weight(1f).clickable {
-                                    expanded = !expanded
-                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        expanded = !expanded
+                                    },
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Text(text = selectedProgram, color = Color.Black)
@@ -316,9 +323,11 @@ fun Register(
                             }
 
                             Row(
-                                modifier = Modifier.weight(1f).clickable {
-                                    expanded2 = !expanded2
-                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        expanded2 = !expanded2
+                                    },
                                 horizontalArrangement = Arrangement.Center
                             ) {
 
@@ -351,12 +360,10 @@ fun Register(
 
                     }
                     val context = LocalContext.current
-                    val user = viewModel.checkUserID(userID,pass)!!.collectAsState(null)
-
+                    val scope = rememberCoroutineScope()
                     Button(
                         onClick =
                         {
-                            if (user.value == null) {
                                 if (selectedYear != yearOptions[0] && selectedProgram != programs[0]) {
                                     viewModel.userID = userID
                                     viewModel.fullName = fullName
@@ -366,19 +373,22 @@ fun Register(
                                     viewModel.year = selectedYear
                                     viewModel.date = LocalDateTime.now()
                                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-                                    if (viewModel.insertUser()) {
-                                        Toast.makeText(
+                                    scope.launch {
+                                        if (viewModel.insertUser()) {
+                                            Toast.makeText(
+                                                context,
+                                                "Successfully Registered",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            navController.popBackStack()
+                                            navController.navigate(Auth.LOGIN.name)
+                                        } else Toast.makeText(
                                             context,
-                                            "Successfully Registered",
-                                            Toast.LENGTH_LONG
+                                            "UserID already taken",
+                                            Toast.LENGTH_SHORT
                                         ).show()
-                                        navController.popBackStack()
-                                        navController.navigate(Auth.LOGIN.name)
-                                    } else Toast.makeText(
-                                        context,
-                                        "Please select year and program",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    }
+
                                 } else {
                                     Toast.makeText(
                                         context,
@@ -386,13 +396,7 @@ fun Register(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "UserID is already taken",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+
 
                         },
                         modifier = Modifier

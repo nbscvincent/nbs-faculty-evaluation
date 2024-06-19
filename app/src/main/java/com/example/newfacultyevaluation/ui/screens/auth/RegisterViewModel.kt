@@ -17,6 +17,7 @@ import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import com.example.newfacultyevaluation.data.repo.StudentRepo
 import com.example.newfacultyevaluation.data.repo.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -24,32 +25,15 @@ import kotlin.coroutines.CoroutineContext
 class RegisterViewModel(private val onlineUserRepository: OnlineUserRepository,
                         private val onlineStudentRepository: OnlineStudentRepository) : ViewModel() {
 
-    var userID = ""
-    var selectedProgram = ""
-    var fullName = ""
-    var pass = ""
-    var role = ""
-    var date = ""
-    var year = ""
+    var userID by mutableStateOf("")
+    var selectedProgram by mutableStateOf("")
+    var fullName by mutableStateOf("")
+    var pass by mutableStateOf("")
+    var role by mutableStateOf("")
+    var date by mutableStateOf("")
+    var year by mutableStateOf("")
 
     private var insertSuccessful by mutableStateOf(false)
-
-//    private val _userID: String
-//        get() = userID
-//    private val _selectedCourse: String
-//        get() = selectedProgram
-//    private val _fullName: String
-//        get() = fullName
-//    private val _pass: String
-//        get() = pass
-//    private val _role: String
-//        get() = role
-//
-//    private val _date: String
-//        get() = date
-//
-//    private val _year: String
-//        get() = year
 
     fun insertUser(): Boolean{
 //            println("UserID : $userID")
@@ -113,15 +97,34 @@ class RegisterViewModel(private val onlineUserRepository: OnlineUserRepository,
 //            }
 //
 //        println("Success : $insertSuccessful")
-        return insertSuccessful
-    }
-    fun checkUserID(userID: String, password:String): Flow<User?>? {
-        var flow: Flow<User?>? = null
-        try {
-            flow = onlineUserRepository.getUsers(userID,password)
-        } catch (e: Exception) {
-            Timber.i("SAMPLE $e")
+        viewModelScope.launch {
+            if(checkUserID().equals(null)){
+                insertSuccessful = true
+                onlineUserRepository.upsertUser(User(
+                    userID = userID,
+                    fullName = fullName,
+                    password = pass,
+                    selectedCourse = if(role == "Student") selectedProgram else "",
+                    role = role,
+                    dateCreated = date,
+                    year = year,
+                ))
+            }
         }
-        return flow
+        return insertSuccessful
+
+    }
+    private fun checkUserID(): Flow<User?> {
+//        var flow: Flow<User?>? = null
+//        try {
+//            flow = onlineUserRepository.getUsers(userID,password)
+//        } catch (e: Exception) {
+//            Timber.i("SAMPLE $e")
+//        }
+//        return flow
+        println("GET USERS: ${onlineUserRepository.getUsers(userID, pass)}")
+        return onlineUserRepository.getUsers(userID, pass)
+
+
     }
 }

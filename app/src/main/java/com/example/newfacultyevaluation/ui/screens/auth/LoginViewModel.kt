@@ -26,7 +26,7 @@ class LoginViewModel(private val onlineUserRepository: OnlineUserRepository) : V
     var password by mutableStateOf("")
     var year by mutableStateOf("")
 
-    fun getUser(userID: String, password: String): Flow<User> {
+    fun getUser(userID: String, password: String): Flow<User?> {
         return onlineUserRepository.getUsers(userID,password)
     }
 

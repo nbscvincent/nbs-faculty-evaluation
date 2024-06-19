@@ -13,6 +13,7 @@ data class Course(
     val courseName: String,
     val yearLevel: String,
     val facultyName: String,
+    val program: String
 )
 
 //val courses = listOf<Course>(

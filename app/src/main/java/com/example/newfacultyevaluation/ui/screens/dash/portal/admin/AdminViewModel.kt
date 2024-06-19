@@ -90,17 +90,17 @@ class AdminViewModel(private val onlineUserRepository: OnlineUserRepository): Vi
     @SuppressLint("SuspiciousIndentation")
     private fun checkUserID(): Flow<User?> = flow {
 
-        val user = onlineUserRepository.getUsers(_userID, _password)
-            user.collect { value ->
-                if(_userID.isNotEmpty()){
-                    println("User 1: $user")
-                    emit(value)
-                }
-                else{
-                    emit(null)
-                }
-
-            }
+//        val user = onlineUserRepository.getUsers(_userID, _password)
+//            user.collect { value ->
+//                if(_userID.isNotEmpty()){
+//                    println("User 1: $user")
+//                    emit(value)
+//                }
+//                else{
+//                    emit(null)
+//                }
+//
+//            }
     }
 
     suspend fun insertUser(): Boolean {
