@@ -167,7 +167,6 @@ fun StudentPortal(
             }
         ) {
 
-
             NavHost(
                 navController = studentNav,
                 startDestination = StudentNav.HOME.name,
