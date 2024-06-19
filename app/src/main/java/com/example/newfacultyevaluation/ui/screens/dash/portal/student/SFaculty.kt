@@ -103,9 +103,9 @@ fun SFaculty(
         mutableStateOf(false)
     }
 
-    val courses by
+    val courses =
         viewModel.getAllCourses().collectAsState(null)
-
+    println("Course List: ${courses.value}")
     var selectedCourse by remember {
         mutableStateOf("")
     }
@@ -196,7 +196,7 @@ fun SFaculty(
         }
         Spacer(modifier = Modifier.height(20.dp))
 
-        if (courses?.isEmpty() == true) {
+        if (courses.value == null) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -207,125 +207,125 @@ fun SFaculty(
             }
         } else {
 
-            courses?.filter { it.year == loginViewModel.year && it.program == loginViewModel.selectedCourse }
-                ?.forEach { course ->
-                val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseID, loginViewModel.userID)
+            courses.value!!.filter { it.yearLevel == loginViewModel.year && it.courseName == loginViewModel.selectedCourse }
+                .forEach { course ->
+                    val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
 
-                if (!isEvaluationCompleted) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding()
-                        .fillMaxWidth()
-                        .height(190.dp).background(color = Color.White)
-
-                ) {
-                    if (showCheckBox) {
-                        Button(
-                            onClick = {
-//                                viewModel.deleteCourse(
-//                                    CourseStudent(
-//                                        course.courseID,
-//                                        loginViewModel.userID
-//                                    )
-//                                )
-                            },
-                            shape = RoundedCornerShape(10.dp),
-                            modifier = Modifier.size(40.dp),
-                            contentPadding = PaddingValues(10.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.DeleteOutline,
-                                contentDescription = "Delete"
-                            )
-                        }
-                    }
-
-                    Card(
-                        elevation = CardDefaults.cardElevation(8.dp),
-                        modifier = Modifier
-
-                            .clickable() {
-
-                            }
-                            .padding(5.dp)
-                            .fillMaxWidth()
-                            .background(color = Color.White),
-                        shape = RoundedCornerShape(4.dp),
-
-
-                        ) {
-                        Column(
-                            modifier = Modifier.background(Color.White).fillMaxWidth()
-                        ) {
-
-                            Text(
-                                text = "${course.courseID} - ${course.courseName}",
-                                modifier = Modifier.padding(top = 20.dp, start = 20.dp),
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center,
-                                fontSize = 20.sp,
-                                color = Color.Black
-                            )
-
-                            Text(
-                                text = "Instructor",
-                                modifier = Modifier.padding(top = 10.dp, start = 20.dp),
-                                fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Center,
-                                fontSize = 20.sp,
-                                color = Color.Black
-                            )
-
-//                            val faculty =
-//                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
-//                                    .collectAsState(null)
-                            // Display the faculty name if available
-//                            val facultyNameText =
-//                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
-                            Text(
-                                text = "facultyNameText",
-                                textAlign = TextAlign.Left,
-                                modifier = Modifier.padding(top = 10.dp, start = 20.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                color = Color.Black
-                            )
-
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            // Evaluate button positioned in the bottom right corner
-                            Button(
-                                onClick = {
-                                    if (!showCheckBox) {
-                                        openDataPrivacy = true
-                                        selectedCourse = course.courseID
-                                    }
-                                },
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .align(Alignment.End)
-                            ) {
-                                Text(text = "Evaluate")
-                            }
-
-                        }
-
+                    if (!isEvaluationCompleted) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize().background(Color.DarkGray)
-                        ) {
+                            modifier = Modifier
+                                .padding()
+                                .fillMaxWidth()
+                                .height(190.dp).background(color = Color.White)
 
+                        ) {
+                            if (showCheckBox) {
+                                Button(
+                                    onClick = {
+        //                                viewModel.deleteCourse(
+        //                                    CourseStudent(
+        //                                        course.courseID,
+        //                                        loginViewModel.userID
+        //                                    )
+        //                                )
+                                    },
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier.size(40.dp),
+                                    contentPadding = PaddingValues(10.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.DeleteOutline,
+                                        contentDescription = "Delete"
+                                    )
+                                }
+                            }
+
+                            Card(
+                                elevation = CardDefaults.cardElevation(8.dp),
+                                modifier = Modifier
+
+                                    .clickable() {
+
+                                    }
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .background(color = Color.White),
+                                shape = RoundedCornerShape(4.dp),
+
+
+                                ) {
+                                Column(
+                                    modifier = Modifier.background(Color.White).fillMaxWidth()
+                                ) {
+
+                                    Text(
+                                        text = "${course.courseCode} - ${course.courseName}",
+                                        modifier = Modifier.padding(top = 20.dp, start = 20.dp),
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center,
+                                        fontSize = 20.sp,
+                                        color = Color.Black
+                                    )
+
+                                    Text(
+                                        text = "Instructor",
+                                        modifier = Modifier.padding(top = 10.dp, start = 20.dp),
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Center,
+                                        fontSize = 20.sp,
+                                        color = Color.Black
+                                    )
+
+        //                            val faculty =
+        //                                viewModel.getStudentFaculty(loginViewModel.userID, course.courseID)
+        //                                    .collectAsState(null)
+                                    // Display the faculty name if available
+        //                            val facultyNameText =
+        //                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
+                                    Text(
+                                        text = "facultyNameText",
+                                        textAlign = TextAlign.Left,
+                                        modifier = Modifier.padding(top = 10.dp, start = 20.dp),
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp,
+                                        color = Color.Black
+                                    )
+
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    // Evaluate button positioned in the bottom right corner
+                                    Button(
+                                        onClick = {
+                                            if (!showCheckBox) {
+                                                openDataPrivacy = true
+                                                selectedCourse = course.courseCode
+                                            }
+                                        },
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .align(Alignment.End)
+                                    ) {
+                                        Text(text = "Evaluate")
+                                    }
+
+                                }
+
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                    modifier = Modifier.fillMaxSize().background(Color.DarkGray)
+                                ) {
+
+
+                                }
+                            }
 
                         }
                     }
+                    Spacer(modifier = Modifier.height(1.dp))
 
                 }
-            }
-                Spacer(modifier = Modifier.height(1.dp))
-
-            }
 
         }
         if(openDataPrivacy){
@@ -410,7 +410,7 @@ fun SFaculty(
                 ) {
 
                     var selectedCourse1 by remember {
-                        mutableStateOf(Course(0,"","", "", ""))
+                        mutableStateOf(Course("","","", ""))
                     }
 
                     Text("Add Your Course".uppercase(), fontWeight = FontWeight.Bold)
@@ -428,11 +428,11 @@ fun SFaculty(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
-                        if(selectedCourse1.courseID.isBlank() && selectedCourse1.courseName.isBlank() ){
+                        if(selectedCourse1.courseCode.isBlank() && selectedCourse1.courseName.isBlank() ){
                             Text(text = "Select your Course")
 
                         }
-                        else  Text(text = "${selectedCourse1.courseID} ${selectedCourse1.courseName}")
+                        else  Text(text = "${selectedCourse1.courseCode} ${selectedCourse1.courseName}")
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
@@ -443,6 +443,10 @@ fun SFaculty(
 //                                    DropdownMenuItem(text = { Text(text = "${course.courseID} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
 //                                }
 //                            }
+                            courses.value?.forEach { course ->
+                                DropdownMenuItem(text = { Text(text = "${course.courseCode} ${course.courseName}") }, onClick = { selectedCourse1 = course; expanded = false})
+
+                            }
                         }
                         Icon(imageVector = if(expanded)Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown, contentDescription = "Selection")
                     }
@@ -454,10 +458,10 @@ fun SFaculty(
                     ){
                         val context = LocalContext.current
                         Button(onClick = {
-                            if(selectedCourse1.courseID.isNotBlank()
+                            if(selectedCourse1.courseCode.isNotBlank()
                                 && selectedCourse1.courseName.isNotBlank()
-                                && selectedCourse1.year == loginViewModel.year
-                                && selectedCourse1.program == loginViewModel.selectedCourse
+                                && selectedCourse1.yearLevel == loginViewModel.year
+                                && selectedCourse1.courseName == loginViewModel.selectedCourse
 
                                 ){
 //                                viewModel.upsertCourseStudent(CourseStudent(courseID = selectedCourse1.courseID, studentID = loginViewModel.userID))

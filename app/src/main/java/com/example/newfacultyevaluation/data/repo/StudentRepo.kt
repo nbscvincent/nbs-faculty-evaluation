@@ -1,17 +1,15 @@
 package com.example.newfacultyevaluation.data.repo
 
-import androidx.lifecycle.LiveData
 import com.example.newfacultyevaluation.data.model.CompletedEvaluation
 import com.example.newfacultyevaluation.data.model.Course
-import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.CourseStudent
-import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
-import com.example.newfacultyevaluation.data.model.StudentFaculty
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository.CourseList
 import kotlinx.coroutines.flow.Flow
 
 interface StudentRepo {
@@ -23,7 +21,7 @@ interface StudentRepo {
 //    fun getStudentFaculty(): LiveData<List<StudentFaculty>>
 //    fun getCoursesByStudentID(id: String): Flow<List<Course>>
     suspend fun upsertCourse(course: Course)
-    fun getAllCourses(): Flow<List<Course>>
+    fun getAllCourses(): Flow<List<Course>?>
     fun getAllQuestions() : Flow<List<Question>>
 
     fun getStudentFaculty(id: String, selectedCourse: String): Flow<Faculty>

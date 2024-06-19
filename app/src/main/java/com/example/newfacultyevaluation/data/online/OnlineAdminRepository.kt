@@ -73,21 +73,21 @@ class OnlineAdminRepository(private val ktorClient: HttpClient = KtorClient() ) 
         }
     }
 
-    override suspend fun upsertCourse(course: Course) {
-        val cl = ktorClient.request(
-            HttpRoutes.login
-        ) {
-            method = HttpMethod.Post
-            url(HttpRoutes.login)
-            contentType(ContentType.Application.Json)
-            accept(ContentType.Application.Json)
-            setBody(MultiPartFormDataContent(formData {
-                append("type", "save_user")
-                append("userID", course.courseID)
-                append("password", course.courseName)
-            }))
-        }
-    }
+//    override suspend fun upsertCourse(course: Course) {
+//        val cl = ktorClient.request(
+//            HttpRoutes.login
+//        ) {
+//            method = HttpMethod.Post
+//            url(HttpRoutes.login)
+//            contentType(ContentType.Application.Json)
+//            accept(ContentType.Application.Json)
+//            setBody(MultiPartFormDataContent(formData {
+//                append("type", "save_user")
+//                append("userID", course.courseID)
+//                append("password", course.courseName)
+//            }))
+//        }
+//    }
 
     override suspend fun updateUser(user: User) {
         val cl = ktorClient.request(

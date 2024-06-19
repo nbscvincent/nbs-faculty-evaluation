@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.Flow
 interface CourseDao {
     @Upsert
     suspend fun upsertCourse(course: Course)
-
-    @Query("""
-        SELECT course.*, user.fullName AS facultyName
-        FROM course
-        JOIN CourseFaculty ON course.courseID = CourseFaculty.courseCode
-        JOIN User AS user ON CourseFaculty.facultyID = user.userID
-    """)
-    fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>>
+//
+//    @Query("""
+//        SELECT course.*, user.fullName AS facultyName
+//        FROM course
+//        JOIN CourseFaculty ON course.courseID = CourseFaculty.courseCode
+//        JOIN User AS user ON CourseFaculty.facultyID = user.userID
+//    """)
+//    fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>>
 }

@@ -6,15 +6,13 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Entity(tableName = "course")
+@Entity
 data class Course(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    @ColumnInfo("courseid")
-    val courseID: String,
+    @PrimaryKey
+    val courseCode: String,
     val courseName: String,
-    val year: String,
-    val program: String,
+    val yearLevel: String,
+    val facultyName: String,
 )
 
 //val courses = listOf<Course>(

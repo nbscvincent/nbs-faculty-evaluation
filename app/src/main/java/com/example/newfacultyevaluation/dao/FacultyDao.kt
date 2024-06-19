@@ -16,8 +16,8 @@ interface FacultyDao {
 
     @Upsert
     suspend fun upsertFaculty(faculty: Faculty)
-    @Query("SELECT course.id, course.courseid, course.courseName, course.year, course.program FROM coursefaculty INNER JOIN course ON coursefaculty.courseCode = course.courseid WHERE facultyID=:id")
-    fun getCourses(id: String): Flow<List<Course>>
+//    @Query("SELECT course.id, course.courseid, course.courseName, course.year, course.program FROM coursefaculty INNER JOIN course ON coursefaculty.courseCode = course.courseid WHERE facultyID=:id")
+//    fun getCourses(id: String): Flow<List<Course>>
 
     @Query("SELECT COUNT(*) FROM formstudentfaculty WHERE formstudentfaculty.facultyID = :id")
     fun getStudentCount(id: String): Flow<Int>

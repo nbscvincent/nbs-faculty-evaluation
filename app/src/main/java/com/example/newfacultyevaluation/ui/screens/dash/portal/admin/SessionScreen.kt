@@ -112,7 +112,7 @@ fun CourseCard(courseWithFaculty: CourseWithFaculty) {
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text = "Course Code: ${courseWithFaculty.course.courseID}",
+                text = "Course Code: ${courseWithFaculty.course.courseCode}",
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(

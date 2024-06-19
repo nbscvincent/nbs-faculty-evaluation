@@ -31,6 +31,7 @@ import io.ktor.util.InternalAPI
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.Serializable
 
 class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() ) : StudentRepo {
     override suspend fun upsertStudent(student: Student) {
@@ -69,12 +70,13 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             }))
         }
     }
+    @Serializable
     data class CourseList(
         val flag: Int,
         val message: String,
-        val data: List<Course>
+        val courses: List<Course>
     )
-    override fun getAllCourses(): Flow<List<Course>> = flow {
+    override fun getAllCourses(): Flow<List<Course>?> = flow {
         try{
             val response = coroutineScope {
                 ktorClient.request(
@@ -89,14 +91,15 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
                     }))
                 }
             }
-            println("Res: ${response.bodyAsText()}")
+            println("Status: ${response.status} Res: ${response.bodyAsText()}")
             if (response.status == HttpStatusCode.OK) {
                 val courses = response.body<CourseList>()
-                emit(courses.data)
+                emit(courses.courses)
             } else {
                 println("No course found 1")
             }
         } catch (e: Exception) {
+            emit(null)
             println("No Curse found 2 $e") // In case of error, emit null
         }
 
@@ -132,7 +135,7 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             accept(ContentType.Application.Json)
             setBody(MultiPartFormDataContent(formData {
                 append("type", "save_user")
-                append("courseID", course.courseID)
+                append("courseID", course.courseCode)
                 append("courseName", course.courseName)
             }))
         }

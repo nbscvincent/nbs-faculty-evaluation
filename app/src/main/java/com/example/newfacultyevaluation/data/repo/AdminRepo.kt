@@ -14,7 +14,7 @@ interface AdminRepo {
     suspend fun upsertAdmin(admin: Admin)
     suspend fun deleteAdmin(admin: Admin)
     suspend fun upsertCourseFaculty(courseFaculty: CourseFaculty)
-    suspend fun upsertCourse(course: Course)
+//    suspend fun upsertCourse(course: Course)
 
     suspend fun updateUser(user: User)
     suspend fun updateFaculty(faculty: Faculty)

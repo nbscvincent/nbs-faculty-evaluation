@@ -2,24 +2,12 @@ package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Course
-import com.example.newfacultyevaluation.data.model.CourseFaculty
-import com.example.newfacultyevaluation.data.model.CourseStudent
-import com.example.newfacultyevaluation.data.model.Faculty
-import com.example.newfacultyevaluation.data.model.Form
-import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
-import com.example.newfacultyevaluation.data.model.StudentFaculty
 import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
-import com.example.newfacultyevaluation.data.online.OnlineUserRepository
-import com.example.newfacultyevaluation.data.repo.StudentRepo
+import com.example.newfacultyevaluation.data.online.OnlineStudentRepository.CourseList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : ViewModel() {
 
@@ -72,7 +60,7 @@ class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : 
 //             studentRepo.upsertFormStudentFaculty(formStudentFaculty)
 //        }
 //    }
-    fun getAllCourses(): Flow<List<Course>>{
+    fun getAllCourses(): Flow<List<Course>?>{
         return onlineRepository.getAllCourses()
 //        return studentRepo.getCoursesByStudentID(id)
     }
