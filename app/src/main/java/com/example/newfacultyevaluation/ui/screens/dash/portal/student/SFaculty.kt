@@ -183,7 +183,7 @@ fun SFaculty(
                 )
 
                 Text(
-                    text = "${loginViewModel.selectedCourse} - ${loginViewModel.year} year",
+                    text = "${loginViewModel.selectedCourse}${loginViewModel.year}",
                     modifier = Modifier.padding(start = 5.dp),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -207,14 +207,13 @@ fun SFaculty(
             }
         } else {
 
-//            courses.value!!.filter { it.yearLevel == loginViewModel.year && it.courseName == loginViewModel.selectedCourse }
+            val filteredCourses = courses.value!!.filter {
+                it.yearLevel == loginViewModel.year && it.program == loginViewModel.selectedCourse
+            }
+            filteredCourses.forEach { course ->
+                val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
 
-            courses.value!!.forEach { course ->
-                    if(course.program == loginViewModel.selectedCourse){
-
-                        val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
-
-                        if (!isEvaluationCompleted) {
+                if (!isEvaluationCompleted) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -255,8 +254,6 @@ fun SFaculty(
                                         .fillMaxWidth()
                                         .background(color = Color.White),
                                     shape = RoundedCornerShape(4.dp),
-
-
                                     ) {
                                     Column(
                                         modifier = Modifier.background(Color.White).fillMaxWidth()
@@ -287,7 +284,7 @@ fun SFaculty(
             //                            val facultyNameText =
             //                                if (faculty.value != null) "Mr./Ms. ${faculty.value?.fullName}".uppercase() else "Faculty Name Not Available"
                                         Text(
-                                            text = "facultyNameText",
+                                            text = "${course.facultyName}",
                                             textAlign = TextAlign.Left,
                                             modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                             fontWeight = FontWeight.Bold,
@@ -306,7 +303,7 @@ fun SFaculty(
                                                 }
                                             },
                                             modifier = Modifier
-                                                .padding(16.dp)
+                                                .padding(end = 10.dp, bottom = 5.dp)
                                                 .align(Alignment.End)
                                         ) {
                                             Text(text = "Evaluate")
@@ -331,7 +328,7 @@ fun SFaculty(
 
                 }
 
-        }
+
         if(openDataPrivacy){
             Dialog(onDismissRequest = { openDataPrivacy = false}) {
                 var checked by remember {

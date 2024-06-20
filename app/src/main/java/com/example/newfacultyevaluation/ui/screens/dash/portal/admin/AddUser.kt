@@ -93,7 +93,7 @@ fun AddUser(
             mutableStateOf("")
         }
 
-        val year = listOf("Year: ", "1st", "2nd", "3rd", "4th")
+        val year = listOf("Year: ", "1", "2", "3", "4")
         var selectedYear by rememberSaveable {
             mutableStateOf("")
         }
