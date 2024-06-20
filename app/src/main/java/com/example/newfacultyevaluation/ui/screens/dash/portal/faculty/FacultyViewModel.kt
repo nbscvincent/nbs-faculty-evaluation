@@ -21,4 +21,8 @@ class FacultyViewModel(private val facultyRepo: FacultyRepo): ViewModel() {
         return facultyRepo.getOverallPoints(id)
     }
 
+    fun getOverallAverage(userid: String): Flow<Double> {
+        return facultyRepo.getOverallAverage(userid)
+    }
+
 }

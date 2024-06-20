@@ -182,20 +182,23 @@ fun FacultyPortal(
             ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth().padding(end = 20.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
                     val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
                         .collectAsState(null)
                     val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
+                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
 
+                    Spacer(modifier = Modifier.weight(1f))
                     Column {
                         Spacer(modifier = Modifier.height(50.dp))
 
                         Text(text = "Course Name", color = Color.White)
+                        Spacer(modifier = Modifier.height(40.dp))
                         courses?.forEach {
-                            Spacer(modifier = Modifier.height(40.dp))
+
                             Text(
                                 text = it.courseName,
 
@@ -203,6 +206,8 @@ fun FacultyPortal(
                                 )
                         }
                     }
+
+                    Spacer(modifier = Modifier.weight(1f))
 
                     Column {
                         Spacer(modifier = Modifier.height(50.dp))
@@ -212,12 +217,20 @@ fun FacultyPortal(
                         Text(text = studentAnswered.toString())
                     }
 
+                    Spacer(modifier = Modifier.weight(1f))
                     Column {
                         Spacer(modifier = Modifier.height(50.dp))
 
-                        Text(text = "Ratings")
+//                        Text(text = "Ratings")
+//                        Spacer(modifier = Modifier.height(40.dp))
+//                        Text(text = rating.toString())
+//
+//                        Text(text = "Overall Average: %.2f".format(overallAverage))
+
+                        Text(text = "Overall Average")
                         Spacer(modifier = Modifier.height(40.dp))
-                        Text(text = rating.toString())
+                        Text(text = "%.2f".format(overallAverage))
+
                     }
 
 
