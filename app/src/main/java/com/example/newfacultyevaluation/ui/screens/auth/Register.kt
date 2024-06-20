@@ -382,11 +382,23 @@ fun Register(
                                             ).show()
                                             navController.popBackStack()
                                             navController.navigate(Auth.LOGIN.name)
-                                        } else Toast.makeText(
-                                            context,
-                                            "UserID already taken",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        } else
+//                                            Toast.makeText(
+//                                            context,
+//                                            "UserID already taken",
+//                                            Toast.LENGTH_SHORT
+//
+//                                            
+//                                        ).show()
+
+                                            Toast.makeText(
+                                                context,
+                                                "Successfully Registered",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+
+                                        navController.popBackStack()
+                                        navController.navigate(Auth.LOGIN.name)
                                     }
 
                                 } else {
