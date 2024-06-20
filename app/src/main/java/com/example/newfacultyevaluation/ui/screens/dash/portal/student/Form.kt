@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -87,6 +88,7 @@ fun QuestionCard(
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
     selectedCourse: String
+
 ) {
     val points = listOf(4,3,2,1)
 //    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
@@ -140,6 +142,18 @@ fun QuestionCard(
                                         viewModel.markQuestionAnswered(questionId = question.id.toInt())
                                     })
                                 Text("$point")
+                                Spacer(modifier = Modifier.width(8.dp)) // Adjust spacing as needed
+                                Text(
+                                    text = when (point) {
+                                        4 -> "-  Strongly Agree"
+                                        3 -> "-  Agree"
+                                        2 -> "-  Disagree"
+                                        1 -> "-  Strongly Disagree"
+                                        else -> ""
+                                    },
+                                    modifier = Modifier.weight(1f),
+                                    textAlign = TextAlign.Start
+                                )
                             }
                         }
                     }
