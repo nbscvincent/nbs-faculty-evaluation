@@ -141,7 +141,7 @@ fun Register(
                 mutableStateOf(role[0])
             }
 
-            val yearOptions = listOf("Select Year:", "1st", "2nd", "3rd", "4th")
+            val yearOptions = listOf("Select Year:", "1", "2", "3", "4")
             var selectedYear by rememberSaveable {
                 mutableStateOf(yearOptions[0])
             }
