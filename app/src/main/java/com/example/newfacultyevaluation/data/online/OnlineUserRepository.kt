@@ -93,6 +93,40 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
             println("No User found 2 $e") // In case of error, emit null
         }
     }
+//    @OptIn(InternalAPI::class)
+//     override fun getProfiles(id: String, fullName: String,selectedCourse: String, year: String  ): Flow<User> = flow {
+//        try {
+//            val response: HttpResponse = ktorClient.post(HttpRoutes.profile) {
+//                contentType(ContentType.Application.Json)
+//                body = MultiPartFormDataContent(formData {
+//                    append("type", "profile")
+//                    append("username", id)
+//                    append("name", fullName)
+//                    append("year", year)
+//                    append("selectedCourse", selectedCourse)
+//                })
+//            }
+//            println("Res: ${response.bodyAsText()}")
+//            if (response.status == HttpStatusCode.OK) {
+//                val user = response.body<User1>()
+//                emit(
+//                    User(
+//                        userID = user.username,
+//                        fullName = user.fullName,
+//                        password = user.password,
+//                        year = user.year,
+//                        selectedCourse = user.selectedCourse,
+//                        role = user.role,
+//                        dateCreated = user.dateCreated
+//                    )
+//                )
+//            } else {
+//                println("No user found 1")
+//            }
+//        } catch (e: Exception) {
+//            println("No User found 2 $e") // In case of error, emit null
+//        }
+//    }
 
     @OptIn(InternalAPI::class)
     override fun getAllUsers(): Flow<List<User>> = flow {

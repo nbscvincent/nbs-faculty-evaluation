@@ -13,4 +13,6 @@ interface FacultyRepo {
     fun getStudentCount(id: String): Flow<Int>
 
     fun getOverallPoints(id: String): Flow<Int>
+
+    fun getOverallAverage(id: String): Flow<Double>
 }

@@ -23,4 +23,8 @@ class FacultyViewModel(
 //        return facultyRepo.getOverallPoints(id)
 //    }
 
+    fun getOverallAverage(userid: String): Flow<Double> {
+        return facultyRepo.getOverallAverage(userid)
+    }
+
 }
