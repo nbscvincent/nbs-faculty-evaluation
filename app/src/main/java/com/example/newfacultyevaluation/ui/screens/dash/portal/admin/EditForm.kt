@@ -3,18 +3,23 @@ package com.example.newfacultyevaluation.ui.screens.dash.portal.admin
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -31,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -57,13 +63,29 @@ fun EditForm(
     Column (
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Edit Form",
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+
         questions.forEach { question ->
 
             EditFormCard(question = question, viewModel, navController)
+            Spacer(modifier = Modifier.height(20.dp))
 
         }
     }
@@ -80,20 +102,29 @@ private fun EditFormCard(question: Question, viewModel: AdminViewModel, navContr
     var text by remember {
         mutableStateOf(question.question)
     }
+
     Card(
+        elevation = CardDefaults.cardElevation(8.dp),
         modifier = Modifier
+
+            .clickable() {
+            }
+            .padding(start = 8.dp, end = 8.dp)
             .fillMaxWidth()
-            .padding(10.dp)
-    ){
+            .background(color = Color.White),
+        shape = RoundedCornerShape(4.dp),
+    ) {
         Column(
             modifier = Modifier
-                .padding(10.dp)
+
+                .background(Color.White)
         ) {
-            Text(text = question.question)
+            Text(text = "${question.id}. ${question.question}", modifier = Modifier.padding(top = 10.dp, start = 10.dp, end = 10.dp), color = Color.Black)
             Row (
                 Modifier
                     .fillMaxWidth()
                     .padding(5.dp),
+
                 horizontalArrangement = Arrangement.End
             ){
 
@@ -115,15 +146,17 @@ private fun EditFormCard(question: Question, viewModel: AdminViewModel, navContr
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Edit Question", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
+                Text(text = "Edit Question", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp), color = Color.Black)
                 TextField(
                     value = text,
                     onValueChange = { text = it },
                     colors = TextFieldDefaults.textFieldColors(
                         unfocusedIndicatorColor = Color.Unspecified,
-                        containerColor = Color.White
+                        containerColor = Color.White,
+                        textColor = Color.Black
                     )
                 )
+
                 Row (
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End)
@@ -136,7 +169,6 @@ private fun EditFormCard(question: Question, viewModel: AdminViewModel, navContr
                             navController.popBackStack()
                             navController.navigate(AdminNav.EditForm.name)
                             Toast.makeText(context, "Question Updated", Toast.LENGTH_SHORT).show()
-
                         }
                     ) {
                         Text(text = "Save")

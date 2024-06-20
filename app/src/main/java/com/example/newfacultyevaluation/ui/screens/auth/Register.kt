@@ -388,7 +388,7 @@ fun Register(
 //                                            "UserID already taken",
 //                                            Toast.LENGTH_SHORT
 //
-//                                            
+//
 //                                        ).show()
 
                                             Toast.makeText(
