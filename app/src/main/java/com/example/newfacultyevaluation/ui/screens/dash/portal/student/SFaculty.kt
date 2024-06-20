@@ -261,9 +261,9 @@ fun SFaculty(
 
                                         Text(
                                             text = "${course.courseCode} - ${course.courseName}",
-                                            modifier = Modifier.padding(top = 20.dp, start = 20.dp),
+                                            modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 10.dp),
                                             fontWeight = FontWeight.Bold,
-                                            textAlign = TextAlign.Center,
+                                            textAlign = TextAlign.Left,
                                             fontSize = 20.sp,
                                             color = Color.Black
                                         )
