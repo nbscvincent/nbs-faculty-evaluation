@@ -124,10 +124,10 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
                     append("type", "get_all_questions")
                 })
             }
-            println("Res: ${response.bodyAsText()}")
+            println("Questions Res: ${response.bodyAsText()}")
             if (response.status == HttpStatusCode.OK) {
                 val questions = response.body<QuestionList>()
-                emit(questions.data)
+                emit(questions.questionsData)
             } else {
                 println("No user found 1")
             }
@@ -136,6 +136,7 @@ class OnlineUserRepository(private val ktorClient: HttpClient = KtorClient() ) :
         }
     }
     override suspend fun deleteUser(user: User) = run{}
+
 
 }
 
@@ -162,5 +163,5 @@ data class UserList(
 data class QuestionList(
     val flag: Int,
     val message: String,
-    val data: List<Question>
+    val questionsData: List<Question>
 )

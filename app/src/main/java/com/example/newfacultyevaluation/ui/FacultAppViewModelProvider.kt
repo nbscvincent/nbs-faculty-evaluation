@@ -35,7 +35,8 @@ object FacultyAppViewModelProvider {
     val AdminFactory = viewModelFactory {
         initializer {
             AdminViewModel(
-                facultyEvaluationApp().container.onlineUserRepository
+                facultyEvaluationApp().container.onlineUserRepository,
+                facultyEvaluationApp().container.onlineAdminRepository
             )
         }
     }

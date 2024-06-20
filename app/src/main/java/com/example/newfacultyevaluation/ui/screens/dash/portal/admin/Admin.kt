@@ -311,7 +311,7 @@ fun AdminPortal(
                     AddCourses(adminNavController,viewModel)
                 }
                 composable(route = AdminNav.EditForm.name){
-                    SessionScreen()
+                    EditForm(adminNavController)
                 }
             }
 

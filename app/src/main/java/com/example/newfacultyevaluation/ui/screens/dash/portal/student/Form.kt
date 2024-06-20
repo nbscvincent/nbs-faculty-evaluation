@@ -113,7 +113,7 @@ fun QuestionCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(questions.orEmpty()) { question ->
-            if (question.id < 17) {
+            if (question.id.toInt() < 17) {
                 var selectedPoint by rememberSaveable {
                     mutableIntStateOf(0)
                 }
@@ -137,7 +137,7 @@ fun QuestionCard(
                                         initial = selectedPoint
                                         selectedPoint = point
                                         viewModel.updateTotalPoints(selectedPoint - initial)
-                                        viewModel.markQuestionAnswered(questionId = question.id)
+                                        viewModel.markQuestionAnswered(questionId = question.id.toInt())
                                     })
                                 Text("$point")
                             }
@@ -159,7 +159,7 @@ fun QuestionCard(
                             value = feedback,
                             onValueChange = {
                                 feedback = it
-                                viewModel.markQuestionAnswered(questionId = question.id)
+                                viewModel.markQuestionAnswered(questionId = question.id.toInt())
                             },
                             label = { Text(text = "Comment") }
                         )

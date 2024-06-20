@@ -116,7 +116,7 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             println("Res: ${response.bodyAsText()}")
             if (response.status == HttpStatusCode.OK) {
                 val questions = response.body<QuestionList>()
-                emit(questions.data)
+                emit(questions.questionsData)
             } else {
                 println("No user found 1")
             }

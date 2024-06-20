@@ -5,6 +5,7 @@ import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
+import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.repo.AdminRepo
@@ -148,5 +149,22 @@ class OnlineAdminRepository(private val ktorClient: HttpClient = KtorClient() ) 
     override fun getCoursesWithFaculties(): Flow<List<CourseWithFaculty>> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateQuestion(question: Question) {
+        ktorClient.request(
+            HttpRoutes.login
+        ){
+            method = HttpMethod.Post
+            url(HttpRoutes.login)
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(MultiPartFormDataContent(formData {
+                append("type", "update_question")
+                append("id", question.id)
+                append("question", question.question)
+        }))
+        }
+    }
+
 
 }

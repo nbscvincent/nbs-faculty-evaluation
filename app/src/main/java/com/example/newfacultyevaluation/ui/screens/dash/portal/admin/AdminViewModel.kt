@@ -12,8 +12,10 @@ import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
 import com.example.newfacultyevaluation.data.model.CourseWithFaculty
 import com.example.newfacultyevaluation.data.model.Faculty
+import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
 import com.example.newfacultyevaluation.data.model.User
+import com.example.newfacultyevaluation.data.online.OnlineAdminRepository
 import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import com.example.newfacultyevaluation.data.repo.AdminRepo
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
@@ -28,7 +30,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.builtins.serializer
 
-class AdminViewModel(private val onlineUserRepository: OnlineUserRepository): ViewModel() {
+class AdminViewModel(private val onlineUserRepository: OnlineUserRepository, private val onlineAdminRepository: OnlineAdminRepository): ViewModel() {
 
 
     var fullName = ""
@@ -225,6 +227,14 @@ class AdminViewModel(private val onlineUserRepository: OnlineUserRepository): Vi
 //        }
 //    }
 
+    fun getAllQuestions() : Flow<List<Question>>{
+        return onlineUserRepository.getAllQuestions()
+    }
+    fun updateQuestion(question: Question){
+        viewModelScope.launch {
+            onlineAdminRepository.updateQuestion(question)
+        }
+    }
 
 
     private val _courseSessionStates = MutableStateFlow<Map<Long, Boolean>>(emptyMap())
