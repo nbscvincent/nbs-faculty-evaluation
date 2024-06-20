@@ -26,9 +26,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.builtins.serializer
+import timber.log.Timber
 
 class AdminViewModel(private val onlineUserRepository: OnlineUserRepository, private val onlineAdminRepository: OnlineAdminRepository): ViewModel() {
 
@@ -89,96 +91,135 @@ class AdminViewModel(private val onlineUserRepository: OnlineUserRepository, pri
 //        }
 //    }
 
-    @SuppressLint("SuspiciousIndentation")
-    private fun checkUserID(): Flow<User?> = flow {
-
-//        val user = onlineUserRepository.getUsers(_userID, _password)
-//            user.collect { value ->
-//                if(_userID.isNotEmpty()){
-//                    println("User 1: $user")
-//                    emit(value)
-//                }
-//                else{
-//                    emit(null)
-//                }
+//    @SuppressLint("SuspiciousIndentation")
+//    private fun checkUserID(): Flow<User?> = flow {
 //
-//            }
-    }
-
-    suspend fun insertUser(): Boolean {
-//        println("UserID : $userID")
-//        println("FullName : $fullName")
-//        println("Course : $selectedProgram")
-//        println("Year : $year")
-//        println("Pass : $pass")
-
-        onlineUserRepository.upsertUser(
-            User(
-            userID = _userID,
-            fullName = _fullName,
-            password = _pass,
-            year = _year,
-            selectedCourse = _selectedCourse,
-            dateCreated = _date,
-            role = _role
-        ))
-//            if(
-//                userID.isNotBlank() &&
-//                fullName.isNotBlank() &&
-//                pass.isNotBlank() &&
-//                role != "ROLE:" ||
-//                year.isNotBlank()
-//                ){
-//                    insertSuccessful = true
-//
-//                }
-//            else {
-//                insertSuccessful = false
-//            }
+////        val user = onlineUserRepository.getUsers(_userID, _password)
+////            user.collect { value ->
+////                if(_userID.isNotEmpty()){
+////                    println("User 1: $user")
+////                    emit(value)
+////                }
+////                else{
+////                    emit(null)
+////                }
+////
+////            }
+//    }
 
 
+    fun insertUser(): Boolean {
+        viewModelScope.launch {
+            val existingUser = checkUserID().firstOrNull()
+            if (existingUser == null) {
+                onlineUserRepository.upsertUser(
+                    User(
+                        userID = userID,
+                        fullName = fullName,
+                        password = pass,
+                        selectedCourse = if (role == "Student") selectedProgram else "",
+                        role = role,
+                        dateCreated = date,
+                        year = year
+                    )
+                )
+                insertSuccessful = true
+            } else {
+                // Handle case where userID is already taken
+                Timber.d("User ID already taken")
+                insertSuccessful = false
 
-
-//            viewModelScope.launch {
-//                if(role == "Student" && selectedProgram != "PROGRAM: "){
-//                    studentRepo.upsertStudent(
-//                        Student(
-//                        studentID = _userID,
-//                        fullName = _fullName,
-//                        password = _pass,
-//                        selectedCourse = _selectedCourse,
-//                        role = _role,
-//                         year = _year,
-//                        dateCreated = _date
-//                        )
-//                    )
-//                }
-//                else if(role == "Faculty"){
-//                    facultyRepo.upsertFaculty(Faculty(
-//                        facultyID = _userID,
-//                        fullName = _fullName,
-//                        password = _pass,
-//                        )
-//                    )
-//                } else if (selectedProgram == "PROGRAM: "){
-//                    return@launch
-//                }
-//                userRepository.upsertUser(
-//                    User(
-//                        userID = _userID,
-//                        fullName = _fullName,
-//                        password = _pass,
-//                        selectedCourse = if(role == "Student") _selectedCourse else "",
-//                        role = _role,
-//                        year = _year,
-//                        dateCreated = _date
-//                    )
-//                )
-//            }
-//
-//        println("Success : $insertSuccessful")
+            }
+        }
         return insertSuccessful
     }
+
+    private fun checkUserID(): Flow<User?> {
+        return flow {
+            try {
+                emit(onlineUserRepository.getUsers(userID, pass).firstOrNull())
+            } catch (e: Exception) {
+                // Handle exceptions appropriately, or rethrow if needed
+                Timber.e(e, "Error fetching user")
+                emit(null) // Emit null or handle the error case
+            }
+        }
+    }
+
+//    suspend fun insertUser(): Boolean {
+////        println("UserID : $userID")
+////        println("FullName : $fullName")
+////        println("Course : $selectedProgram")
+////        println("Year : $year")
+////        println("Pass : $pass")
+//
+//        onlineUserRepository.upsertUser(
+//            User(
+//            userID = _userID,
+//            fullName = _fullName,
+//            password = _pass,
+//            year = _year,
+//            selectedCourse = _selectedCourse,
+//            dateCreated = _date,
+//            role = _role
+//        ))
+////            if(
+////                userID.isNotBlank() &&
+////                fullName.isNotBlank() &&
+////                pass.isNotBlank() &&
+////                role != "ROLE:" ||
+////                year.isNotBlank()
+////                ){
+////                    insertSuccessful = true
+////
+////                }
+////            else {
+////                insertSuccessful = false
+////            }
+//
+//
+//
+//
+////            viewModelScope.launch {
+////                if(role == "Student" && selectedProgram != "PROGRAM: "){
+////                    studentRepo.upsertStudent(
+////                        Student(
+////                        studentID = _userID,
+////                        fullName = _fullName,
+////                        password = _pass,
+////                        selectedCourse = _selectedCourse,
+////                        role = _role,
+////                         year = _year,
+////                        dateCreated = _date
+////                        )
+////                    )
+////                }
+////                else if(role == "Faculty"){
+////                    facultyRepo.upsertFaculty(Faculty(
+////                        facultyID = _userID,
+////                        fullName = _fullName,
+////                        password = _pass,
+////                        )
+////                    )
+////                } else if (selectedProgram == "PROGRAM: "){
+////                    return@launch
+////                }
+////                userRepository.upsertUser(
+////                    User(
+////                        userID = _userID,
+////                        fullName = _fullName,
+////                        password = _pass,
+////                        selectedCourse = if(role == "Student") _selectedCourse else "",
+////                        role = _role,
+////                        year = _year,
+////                        dateCreated = _date
+////                    )
+////                )
+////            }
+////
+////        println("Success : $insertSuccessful")
+//        return insertSuccessful
+//    }
 
     fun checkRole(role: String): String{
         if(role == "Student"){

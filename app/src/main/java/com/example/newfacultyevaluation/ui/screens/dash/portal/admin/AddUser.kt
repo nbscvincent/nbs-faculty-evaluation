@@ -59,6 +59,7 @@ import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.AdminNav
+import com.example.newfacultyevaluation.ui.nav.Auth
 import com.typesafe.config.ConfigException.Null
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -350,49 +351,44 @@ fun AddUser(
                         onClick =
                         {
                             println("SAMPLE HERE 12")
-                            scope.launch {
-//                                viewModel.checkUserID(userID, pass).collect{ user ->
-//                                    if (user == null) {
-//                                    println("SAMPLE HERE 13")
-//                                    viewModel.userID = userID
-//                                    viewModel.fullName = fullName
-//                                    viewModel.year = selectedYear
-//                                    viewModel.pass = pass
-//                                    viewModel.selectedProgram = selectedProgram
-//                                    viewModel.role = selectedRole
-//                                    viewModel.date = LocalDateTime.now()
-//                                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-//                                    scope.launch {
-//                                        viewModel.insertUser()
-//                                    }
-//                                    if (viewModel.insertSuccessful) {
-//                                        Toast.makeText(context, "Successfully Added", Toast.LENGTH_LONG)
-//                                            .show()
-//                                        navController.popBackStack()
-//                                        navController.navigate(AdminNav.UserList.name)
-//                                    } else {
-//                                        println("User: $user")
-//                                        Toast.makeText(
-//                                            context,
-//                                            "Please fill out all fields",
-//                                            Toast.LENGTH_SHORT
-//                                        ).show()
-//                                    }
-//                                } else {
-//                                    println("Add User: $user")
-//                                    Toast.makeText(
-//                                        context,
-//                                        "UserID is already taken",
-//                                        Toast.LENGTH_SHORT
-//                                    ).show()
-//                                }
-//                                }
-//
-                            }
-                            scope.launch {
-                                viewModel.insertUser()
-                            }
 
+                            if (userID.isNotBlank() && fullName.isNotBlank() && pass.isNotBlank() && selectedRole != "ROLE: ") {
+                                viewModel.userID = userID
+                                viewModel.fullName = fullName
+                                viewModel.pass = pass
+                                viewModel.selectedProgram = selectedProgram
+                                viewModel.role = selectedRole
+                                viewModel.year = selectedYear
+                                viewModel.date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                                scope.launch {
+                                    if (viewModel.insertUser()) {
+                                        Toast.makeText(
+                                            context,
+                                            "Successfully Registered",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        navController.popBackStack()
+                                        navController.navigate(AdminNav.UserList.name)
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Successfully Registered",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        navController.popBackStack()
+                                        navController.navigate(AdminNav.UserList.name)
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Please fill out all required fields",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                if (selectedRole == "ROLE: ") {
+                                    expanded1 = true // Expand the role dropdown if role is not selected
+                                }
+                            }
 
                         },
                         shape = RoundedCornerShape(10.dp),

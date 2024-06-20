@@ -488,42 +488,42 @@ fun SFaculty(
         }
     }
 
-        FloatingActionButton(
-            onClick = { showOptions = !showOptions },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            containerColor = Color.Red
-        ) {
-            Icon(Icons.Filled.LibraryAdd, contentDescription = "More options")
-        }
-
-    if (showOptions) {
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 80.dp)
-        ) {
-
-            FloatingActionButton(
-                onClick = { openDialog = true },
-                containerColor = Color.Red
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Course")
-            }
-
-            FloatingActionButton(
-                onClick = { showCheckBox = !showCheckBox },
-                containerColor = Color.Red
-            ) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete Course")
-            }
-
-
-        }
-    }
+//        FloatingActionButton(
+//            onClick = { showOptions = !showOptions },
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//                .padding(16.dp),
+//            containerColor = Color.Red
+//        ) {
+//            Icon(Icons.Filled.LibraryAdd, contentDescription = "More options")
+//        }
+//
+//    if (showOptions) {
+//        Column(
+//            horizontalAlignment = Alignment.End,
+//            verticalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//                .padding(end = 16.dp, bottom = 80.dp)
+//        ) {
+//
+//            FloatingActionButton(
+//                onClick = { openDialog = true },
+//                containerColor = Color.Red
+//            ) {
+//                Icon(Icons.Filled.Add, contentDescription = "Add Course")
+//            }
+//
+//            FloatingActionButton(
+//                onClick = { showCheckBox = !showCheckBox },
+//                containerColor = Color.Red
+//            ) {
+//                Icon(Icons.Filled.Delete, contentDescription = "Delete Course")
+//            }
+//
+//
+//        }
+//    }
 }
 
 
