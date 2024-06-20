@@ -1,8 +1,11 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +17,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,100 +75,121 @@ fun StudentPortal(
     val context = LocalContext.current
 
 
-    ModalNavigationDrawer(drawerState = drawerState,
-        drawerContent = {
-        ModalDrawerSheet(
-            drawerContainerColor = MaterialTheme.colorScheme.primary,
-            drawerContentColor = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.width(230.dp)
-        ) {
-            Text("Settings", fontSize = 30.sp, modifier = Modifier.padding(20.dp))
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
-            ) {
-
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .clickable {
-                            navController.popBackStack()
-                            navController.navigate(StudentNav.PROFILE.name)
-                        },
-                    horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start)
-                ){
-                    Spacer(Modifier.width(5.dp))
-                    Icon(
-                        imageVector = Icons.Rounded.Person,
-                        contentDescription = "Profile",
-                        modifier = Modifier
-                            .size(30.dp)
-                    )
-                    Text("Profile", fontSize = 20.sp)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .height(50.dp)
-                        .clickable {
-                            loginViewModel.status = false
-                            val preferences = context.getSharedPreferences("prefs", 0)
-                            preferences
-                                .edit()
-                                .clear()
-                                .apply()
-                            navController.popBackStack()
-                            navController.navigate(Main.AUTH.name)
-                        }
-                        .fillMaxWidth()
-                    ,
-                    horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Spacer(Modifier.width(5.dp))
-                    Icon(
-                        imageVector = Icons.Rounded.Logout,
-                        contentDescription = "Log Out",
-                        modifier = Modifier
-                            .size(25.dp)
-                    )
-                    Text("Log Out", fontSize = 20.sp)
-                }
-            }
-
-
-        }
-    }) {
+//    ModalNavigationDrawer(drawerState = drawerState,
+//        drawerContent = {
+//        ModalDrawerSheet(
+//            drawerContainerColor = MaterialTheme.colorScheme.primary,
+//            drawerContentColor = MaterialTheme.colorScheme.onPrimary,
+//            modifier = Modifier.width(230.dp)
+//        ) {
+//            Text("Settings", fontSize = 30.sp, modifier = Modifier.padding(20.dp))
+//            Column(
+//                modifier = Modifier.fillMaxHeight(),
+//                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
+//            ) {
+//
+//
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(50.dp)
+//                        .clickable {
+//                            navController.popBackStack()
+//                            navController.navigate(StudentNav.PROFILE.name)
+//                        },
+//                    horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start)
+//                ){
+//                    Spacer(Modifier.width(5.dp))
+//                    Icon(
+//                        imageVector = Icons.Rounded.Person,
+//                        contentDescription = "Profile",
+//                        modifier = Modifier
+//                            .size(30.dp)
+//                    )
+//                    Text("Profile", fontSize = 20.sp)
+//                }
+//
+//                Row(
+//                    modifier = Modifier
+//                        .height(50.dp)
+//                        .clickable {
+//                            loginViewModel.status = false
+//                            val preferences = context.getSharedPreferences("prefs", 0)
+//                            preferences
+//                                .edit()
+//                                .clear()
+//                                .apply()
+//                            navController.popBackStack()
+//                            navController.navigate(Main.AUTH.name)
+//                        }
+//                        .fillMaxWidth()
+//                    ,
+//                    horizontalArrangement = Arrangement.spacedBy(40.dp ,Alignment.Start),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ){
+//                    Spacer(Modifier.width(5.dp))
+//                    Icon(
+//                        imageVector = Icons.Rounded.Logout,
+//                        contentDescription = "Log Out",
+//                        modifier = Modifier
+//                            .size(25.dp)
+//                    )
+//                    Text("Log Out", fontSize = 20.sp)
+//                }
+//            }
+//
+//
+//        }
+//    }) {
         Scaffold(
             topBar = {
                 NavigationBar(
                     containerColor = Color.Red,
-                    modifier = Modifier.height(70.dp)
+                    modifier = Modifier.height(60.dp)
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(20.dp)
+
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        Icon(
-                            imageVector = Icons.Rounded.Settings,
-                            contentDescription = "Settings",
+                        Box(
                             modifier = Modifier
-                                .size(30.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp)
+                                )
+                        ) {
+
+                        Button(
+                            onClick = {
+                                loginViewModel.status = false
+                                val preferences = context.getSharedPreferences("prefs", 0)
+                                preferences
+                                    .edit()
+                                    .clear()
+                                    .apply()
+                                navController.popBackStack()
+                                navController.navigate(Main.AUTH.name)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                            modifier = Modifier
+                                .height(500.dp)
                                 .clickable {
-                                    scope.launch {
-                                        drawerState.apply {
-                                            if (isClosed) open() else close()
-                                        }
-                                    }
+
                                 },
-                            tint = Color.White
-                        )
+
+                        ) {
+                            Text(
+                                text = "Logout",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+                    }
                     }
                 }
             }
@@ -193,7 +221,7 @@ fun StudentPortal(
 
         }
     }
-}
+//}
 
 @Composable
 fun getCourses(courseList: List<Course>){
