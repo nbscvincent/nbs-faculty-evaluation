@@ -44,7 +44,8 @@ object FacultyAppViewModelProvider {
     val FacultyFactory = viewModelFactory {
         initializer {
             FacultyViewModel(
-//                facultyEvaluationApp().container.facultyRepository
+                facultyEvaluationApp().container.onlineFacultyRepository
+
             )
         }
     }

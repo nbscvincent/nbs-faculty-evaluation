@@ -208,11 +208,16 @@ fun StudentPortal(
                     Courses(navController = studentNav)
                 }
                 composable(
-                    route = StudentNav.FORM.name+"/{course}",
-                    arguments = listOf(navArgument("course"){ type = NavType.StringType})
+                    route = StudentNav.FORM.name+"/{course}/{facultyName}",
+                    arguments = listOf(
+                        navArgument("course"){ type = NavType.StringType},
+                        navArgument("facultyName"){ type = NavType.StringType}
+                    )
                 ) {nbe ->
                     nbe.arguments?.getString("course")?.let { course ->
-                        Form(navController = studentNav, viewModel, loginViewModel, course)
+                        nbe.arguments?.getString("facultyName")?.let {facultyName ->
+                            Form(navController = studentNav, viewModel, loginViewModel, course, facultyName)
+                        }
                     }
 
                 }

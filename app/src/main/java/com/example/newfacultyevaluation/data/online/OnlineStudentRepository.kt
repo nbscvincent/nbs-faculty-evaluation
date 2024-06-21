@@ -5,6 +5,7 @@ import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
+import com.example.newfacultyevaluation.data.model.FormEvaluation
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
@@ -198,7 +199,9 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
         }
     }
 
-    override suspend fun upsertForm(form: Form) {
+
+
+    override suspend fun upsertForm(formEvaluation: FormEvaluation) {
         val cl = ktorClient.request(
             HttpRoutes.login
         ) {
@@ -208,10 +211,11 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             accept(ContentType.Application.Json)
             setBody(MultiPartFormDataContent(formData {
                 append("type", "save_form")
-                append("formID", form.formID)
-                append("overallPoints", form.overallPoints)
-                append("feedback", form.feedback.toString())
-
+                append("formID", formEvaluation.formID)
+                append("totalPoints", formEvaluation.totalPoints)
+                append("comments", formEvaluation.comments.toString())
+                append("studentNo", formEvaluation.studentNo)
+                append("facultyName", formEvaluation.facultyName)
             }))
         }
     }

@@ -43,11 +43,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.Form
+import com.example.newfacultyevaluation.data.model.FormEvaluation
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
 //import com.example.newfacultyevaluation.data.model.questions
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
+import kotlin.math.floor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +57,8 @@ fun Form(
     navController: NavController,
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
-    selectedCourse: String
+    selectedCourse: String,
+    facultyName: String
 ) {
     println("sjhdakjdsha ${viewModel.formID.value}")
 
@@ -70,14 +73,14 @@ fun Form(
     BackHandler {
         viewModel.resetAnsweredQuestions()
         navController.popBackStack()
-        navController.navigate(StudentNav.FORM.name+"/$selectedCourse")
+        navController.navigate(StudentNav.FORM.name+"/$selectedCourse/$facultyName")
     }
 
     Column(
         modifier = Modifier
             .padding(20.dp),
     ) {
-        QuestionCard(navController, viewModel, loginViewModel, selectedCourse)
+        QuestionCard(navController, viewModel, loginViewModel, selectedCourse, facultyName)
     }
 }
 
@@ -87,8 +90,8 @@ fun QuestionCard(
     navController: NavController,
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
-    selectedCourse: String
-
+    selectedCourse: String,
+    facultyName: String
 ) {
     val points = listOf(4,3,2,1)
 //    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
@@ -97,7 +100,7 @@ fun QuestionCard(
     }
 
     val questions by viewModel.getAllQuestions().collectAsState(initial = null)
-//    Text(text = "Evaluation for Mr./Ms. ${faculty.value?.fullName}".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+    Text(text = "Evaluation for Mr./Ms. $facultyName".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
     Spacer(modifier = Modifier.height(2.dp))
@@ -192,11 +195,19 @@ fun QuestionCard(
         val context = LocalContext.current
         Button(
             onClick = {
-//                viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
-                feedbacks.forEach {
-//                    viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
-                }
-
+////                viewModel.upsertFormStudentFaculty(FormStudentFaculty(viewModel.formID.value, loginViewModel.userID, faculty.value?.facultyID.toString()))
+//                feedbacks.forEach {
+////                    viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
+//                }
+                val formID = floor(Math.random() * 100000)
+                viewModel.insertFormEvaluation(
+                    FormEvaluation(
+                        formID = formID.toString(),
+                        totalPoints = viewModel.totalPoints.value,
+                        comments = feedbacks,
+                        facultyName = facultyName,
+                        studentNo = loginViewModel.userID
+                    ))
                 // Mark the evaluation as completed
                 viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)
 

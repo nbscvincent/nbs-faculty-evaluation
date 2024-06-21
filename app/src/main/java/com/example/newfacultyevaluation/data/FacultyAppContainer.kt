@@ -2,6 +2,7 @@ package com.example.newfacultyevaluation.data
 
 import android.content.Context
 import com.example.newfacultyevaluation.data.online.OnlineAdminRepository
+import com.example.newfacultyevaluation.data.online.OnlineFacultyRepository
 //import com.example.newfacultyevaluation.data.offlineRepo.OfflineAdminRepository
 //import com.example.newfacultyevaluation.data.offlineRepo.OfflineCourseRepository
 //import com.example.newfacultyevaluation.data.offlineRepo.OfflineFacultyRepository
@@ -28,6 +29,7 @@ interface FacultyAppContainer {
     val onlineUserRepository: OnlineUserRepository
     val onlineStudentRepository: OnlineStudentRepository
     val onlineAdminRepository: OnlineAdminRepository
+    val onlineFacultyRepository: OnlineFacultyRepository
 }
 
 class FacultyAppDataContainer(private val context: Context) : FacultyAppContainer {
@@ -66,6 +68,10 @@ class FacultyAppDataContainer(private val context: Context) : FacultyAppContaine
 
     override val onlineAdminRepository: OnlineAdminRepository by lazy {
         OnlineAdminRepository()
+    }
+
+    override val onlineFacultyRepository: OnlineFacultyRepository by lazy {
+        OnlineFacultyRepository()
     }
 
 

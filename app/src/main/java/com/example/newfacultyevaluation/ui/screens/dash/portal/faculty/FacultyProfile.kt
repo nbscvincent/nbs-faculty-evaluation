@@ -1,26 +1,23 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.faculty
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,9 +29,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,33 +38,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.FacultyNav
 import com.example.newfacultyevaluation.ui.nav.Main
-import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FacultyPortal(
+fun FacultyProfile (
+//    viewModel: LoginViewModel
     loginViewModel: LoginViewModel,
     viewModel: FacultyViewModel = viewModel(factory = FacultyAppViewModelProvider.FacultyFactory),
-    navController: NavController
-) {
 
-    /*
-        Select courses
-        Course Name, Total Students, Rating
-     */
-    val facultyNav = rememberNavController()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+){
+    val navController = rememberNavController()
     val scope = rememberCoroutineScope()
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val context = LocalContext.current
 
 
@@ -140,6 +127,7 @@ fun FacultyPortal(
 
             }
         }) {
+
         Scaffold(
             topBar = {
                 NavigationBar(
@@ -153,9 +141,7 @@ fun FacultyPortal(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        Text("Faculty Dashboard", fontSize = 30.sp)
-
+                        Text("Faculty Profile", fontSize = 30.sp)
                         Icon(
                             imageVector = Icons.Rounded.Settings,
                             contentDescription = "Settings",
@@ -163,9 +149,7 @@ fun FacultyPortal(
                                 .size(30.dp)
                                 .clickable {
                                     scope.launch {
-                                        drawerState.apply {
-                                            if (isClosed) open() else close()
-                                        }
+                                        // Handle settings click
                                     }
                                 },
                             tint = Color.White
@@ -173,70 +157,61 @@ fun FacultyPortal(
                     }
                 }
             }
-        ) {
-
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(it),
-                horizontalAlignment = Alignment.CenterHorizontally
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
+                Spacer(modifier = Modifier.height(50.dp))
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth().padding(end = 20.dp),
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-//                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
-//                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
-//                        .collectAsState(null)
-//                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
-//                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
-
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                        Text(text = "Course Name", color = Color.White)
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        courses?.forEach {
-//
-//                            Text(
-//                                text = it.courseName,
-//
-//
-//                                )
-//                        }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "User ID",
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(text = loginViewModel.userID, fontSize = 20.sp)
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                        Text(text = "Students Answered")
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = studentAnswered.toString())
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Full Name",
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(text = loginViewModel.fullName, fontSize = 20.sp)
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-//                        Text(text = "Ratings")
-//                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = rating.toString())
-//
-//                        Text(text = "Overall Average: %.2f".format(overallAverage))
-
-                        Text(text = "Overall Average")
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = "%.2f".format(overallAverage))
-
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Role",
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(text = loginViewModel.role, fontSize = 20.sp)
                     }
-
-
                 }
             }
         }
+
+//    Column {
+//        Text(text = viewModel.userID)
+//        Text(text = viewModel.fullName)
+//        Text(text = viewModel.role)
+//    }
+
     }
 }

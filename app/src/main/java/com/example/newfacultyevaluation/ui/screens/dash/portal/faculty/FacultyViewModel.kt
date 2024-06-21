@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseFaculty
+import com.example.newfacultyevaluation.data.model.FormEvaluation
+import com.example.newfacultyevaluation.data.online.OnlineFacultyRepository
 import com.example.newfacultyevaluation.data.repo.FacultyRepo
 import kotlinx.coroutines.flow.Flow
 
 class FacultyViewModel(
 //    private val facultyRepo: FacultyRepo
+    private val onlineFacultyRepository: OnlineFacultyRepository
 ): ViewModel() {
 
 //    fun getCourses(id: String): Flow<List<Course>> {
@@ -22,5 +25,13 @@ class FacultyViewModel(
 //    fun getOverallPoints(id: String): Flow<Int>{
 //        return facultyRepo.getOverallPoints(id)
 //    }
+
+//    fun getOverallAverage(userid: String): Flow<Double> {
+//        return onlineFacultyRepository.getOverallAverage(userid)
+//    }
+
+    fun getFormEvaluation(facultyID : String) : Flow<List<FormEvaluation>>{
+        return onlineFacultyRepository.getFormEvaluation(facultyID)
+    }
 
 }
