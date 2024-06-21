@@ -189,7 +189,7 @@ fun FacultyPortal(
 //                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
 //                        .collectAsState(null)
 //                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
-                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
+//                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
 
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -230,7 +230,7 @@ fun FacultyPortal(
 
                         Text(text = "Overall Average")
                         Spacer(modifier = Modifier.height(40.dp))
-                        Text(text = "%.2f".format(overallAverage))
+//                        Text(text = "%.2f".format(overallAverage))
 
                     }
 

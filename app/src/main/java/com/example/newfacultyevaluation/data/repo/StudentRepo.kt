@@ -5,6 +5,7 @@ import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.CourseStudent
 import com.example.newfacultyevaluation.data.model.Faculty
 import com.example.newfacultyevaluation.data.model.Form
+import com.example.newfacultyevaluation.data.model.FormEvaluation
 import com.example.newfacultyevaluation.data.model.FormStudentFaculty
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.model.Student
@@ -30,7 +31,7 @@ interface StudentRepo {
 
     suspend fun upsertFormStudentFaculty(formStudentFaculty: FormStudentFaculty)
 
-    suspend fun upsertForm(form: Form)
+    suspend fun upsertForm(formEvaluation: FormEvaluation)
 
     suspend fun insertCompletedEvaluation(completedEvaluation: CompletedEvaluation)
 

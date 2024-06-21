@@ -3,13 +3,16 @@ package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Course
+import com.example.newfacultyevaluation.data.model.FormEvaluation
 import com.example.newfacultyevaluation.data.model.Question
 import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
 import com.example.newfacultyevaluation.data.online.OnlineStudentRepository.CourseList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : ViewModel() {
+class StudentViewModel(private val onlineStudentRepository: OnlineStudentRepository) : ViewModel() {
 
     private val _totalPoints = mutableIntStateOf(0)
     val totalPoints: State<Int> get() = _totalPoints
@@ -61,12 +64,12 @@ class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : 
 //        }
 //    }
     fun getAllCourses(): Flow<List<Course>?>{
-        return onlineRepository.getAllCourses()
+        return onlineStudentRepository.getAllCourses()
 //        return studentRepo.getCoursesByStudentID(id)
     }
 
     fun getAllQuestions(): Flow<List<Question>>{
-        return onlineRepository.getAllQuestions()
+        return onlineStudentRepository.getAllQuestions()
     }
 //
 //    fun getAllCourses(): Flow<List<Course>>{
@@ -98,6 +101,12 @@ class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : 
         return CompletedEvaluationsCache.isEvaluationCompleted(courseID, studentID)
     }
 
+    fun insertFormEvaluation(formEvaluation: FormEvaluation){
+        viewModelScope.launch {
+            onlineStudentRepository.upsertForm(formEvaluation = formEvaluation)
+        }
+    }
+
 }
 object CompletedEvaluationsCache {
     private val completedEvaluations = mutableSetOf<Pair<String, String>>()
@@ -109,4 +118,6 @@ object CompletedEvaluationsCache {
     fun isEvaluationCompleted(courseID: String, studentID: String): Boolean {
         return completedEvaluations.contains(courseID to studentID)
     }
+
+
 }

@@ -111,7 +111,9 @@ fun SFaculty(
     }
 
     val scrollState = rememberScrollState()
-
+    var facultyName by remember {
+        mutableStateOf("")
+    }
     var year by remember {
         mutableStateOf("")
     }
@@ -323,6 +325,7 @@ fun SFaculty(
 
                             }
                         }
+                        facultyName = course.facultyName
                     }
                     Spacer(modifier = Modifier.height(1.dp))
 
@@ -380,7 +383,7 @@ fun SFaculty(
                         onClick = {
                             viewModel.updateFormID()
                             studentNavController.popBackStack()
-                            studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse")
+                            studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse/${facultyName}")
                         },
                         enabled = checked
                     ){
