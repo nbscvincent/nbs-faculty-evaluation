@@ -216,8 +216,7 @@ fun QuestionCard(
                         courseCode = selectedCourse
                     ))
                 // Mark the evaluation as completed
-                viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)
-
+                viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID, context)
                 Toast.makeText(context, "Form submitted", Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
                 navController.navigate(StudentNav.HOME.name)

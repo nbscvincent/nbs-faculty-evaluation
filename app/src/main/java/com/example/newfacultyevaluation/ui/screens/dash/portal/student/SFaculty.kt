@@ -126,6 +126,7 @@ fun SFaculty(
         studentNavController.popBackStack()
         studentNavController.navigate(StudentNav.HOME.name)
     }
+    val context = LocalContext.current
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -221,7 +222,7 @@ fun SFaculty(
                 it.yearLevel == loginViewModel.year && it.program == loginViewModel.selectedCourse
             }
             filteredCourses.forEach { course ->
-                val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID)
+                val isEvaluationCompleted = viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID,context)
 
                 if (!isEvaluationCompleted) {
                             Row(
@@ -318,7 +319,8 @@ fun SFaculty(
                                             },
                                             modifier = Modifier
                                                 .padding(end = 10.dp, bottom = 5.dp)
-                                                .align(Alignment.End)
+                                                .align(Alignment.End),
+                                            enabled = !viewModel.isEvaluationCompleted(course.courseCode, loginViewModel.userID, context)
                                         ) {
                                             Text(text = "Evaluate")
                                         }
@@ -474,7 +476,7 @@ fun SFaculty(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ){
-                        val context = LocalContext.current
+
                         Button(onClick = {
                             if(selectedCourse1.courseCode.isNotBlank()
                                 && selectedCourse1.courseName.isNotBlank()
