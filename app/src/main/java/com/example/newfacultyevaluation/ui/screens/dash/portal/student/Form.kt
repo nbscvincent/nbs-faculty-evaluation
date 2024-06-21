@@ -104,7 +104,7 @@ fun QuestionCard(
     val feedbacks by remember {
         mutableStateOf("")
     }
-    println("Faculty ID QCard: $facultyID")
+    println("Faculty ID QCard: $facultyID $selectedCourse")
 
     val questions by viewModel.getAllQuestions().collectAsState(initial = null)
     Text(text = "Evaluation for Instructor $facultyID".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
@@ -204,13 +204,15 @@ fun QuestionCard(
 ////                    viewModel.upsertForm(Form(viewModel.formID.value, overallPoints = viewModel.totalPoints.value, feedback = it))
 //                }
                 val formID = floor(Math.random() * 100000)
+                println("Faculty ID QCard Btn: $facultyID $selectedCourse")
+
                 viewModel.insertFormEvaluation(
                     FormEvaluation(
                         formID = formID.toString(),
                         comments = feedback,
                         facultyID = facultyID,
                         studentNo = loginViewModel.userID,
-                        totalPoints = viewModel.totalPoints.value,
+                        totalPoints = viewModel.totalPoints.value.toString(),
                         courseCode = selectedCourse
                     ))
                 // Mark the evaluation as completed

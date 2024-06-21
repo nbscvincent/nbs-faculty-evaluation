@@ -216,6 +216,7 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
                 append("comments", formEvaluation.comments.toString())
                 append("studentNo", formEvaluation.studentNo)
                 append("facultyID", formEvaluation.facultyID)
+                append("courseCode", formEvaluation.courseCode)
             }))
         }
         println("Res Form: $cl")

@@ -32,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -75,9 +76,17 @@ fun FacultyPortal(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val evaluation by viewModel.getFormEvaluation(loginViewModel.fullName).collectAsState(initial = emptyList())
+    val result : HashMap<String,String> = hashMapOf()
+    evaluation.forEach {
+        result[it.courseCode] = it.studentNo
+    }
     val context = LocalContext.current
-    var studentCount by remember {
+
+    var overallAve by remember {
         mutableStateOf(0)
+    }
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.countStudentsAnswered(evaluation)
     }
 
     ModalNavigationDrawer(drawerState = drawerState,
@@ -186,15 +195,12 @@ fun FacultyPortal(
                 .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                println("Evaluation: $evaluation")
-                evaluation.forEach { evaluation ->
-                    studentCount++
-                }
+                println("Evaluation EForm: $evaluation")
+
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
     //                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
     //                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
@@ -203,13 +209,16 @@ fun FacultyPortal(
     //                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
     
     
-                        Spacer(modifier = Modifier.weight(1f))
-                        Column {
-                            Spacer(modifier = Modifier.height(50.dp))
+//                        Spacer(modifier = Modifier.weight(1f))
+                        Column (
+                            modifier = Modifier.weight(1f)
+                        ){
     
-                            Text(text = "Course Name", color = Color.White)
-                            Spacer(modifier = Modifier.height(40.dp))
-                            evaluation.forEach { e -> Text(text = e.courseCode)}
+                            Text(text = "Course Name")
+                            result.forEach {
+                               Text(text = it.key)
+
+                            }
                             
     
     //                        courses?.forEach {
@@ -222,20 +231,25 @@ fun FacultyPortal(
     //                        }
                         }
     
-                        Spacer(modifier = Modifier.weight(1f))
+//                        Spacer(modifier = Modifier.weight(1f))
     
-                        Column {
-                            Spacer(modifier = Modifier.height(50.dp))
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
     
-                            Text(text = "Students Answered")
-                            Spacer(modifier = Modifier.height(40.dp))
-                            Text(text = studentCount.toString())
+                            Text(text = "Students")
+                            result.values.forEach {
+                                Text(text = it)
+                            }
+//                            viewModel.countStudentsAnswered(evaluation)
+//                            Text(text = viewModel.count.value.toString())
     //                        Text(text = studentAnswered.toString())
                         }
     
-                        Spacer(modifier = Modifier.weight(1f))
-                        Column {
-                            Spacer(modifier = Modifier.height(50.dp))
+//                        Spacer(modifier = Modifier.weight(1f))
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
     
     //                        Text(text = "Ratings")
     //                        Spacer(modifier = Modifier.height(40.dp))
@@ -244,15 +258,13 @@ fun FacultyPortal(
     //                        Text(text = "Overall Average: %.2f".format(overallAverage))
     
                             Text(text = "Overall Average")
-                            Spacer(modifier = Modifier.height(40.dp))
     //                        Text(text = "%.2f".format(overallAverage))
-                            var overallAve by remember {
-                                mutableStateOf(0)
-                            }
+
                             evaluation.forEach { e -> 
-                                overallAve += e.totalPoints 
+                                Text(e.totalPoints)
                             }
-//                            Text(text = "${ overallAve / studentCount }")
+//                            Text(overallAve.toString())
+//                            Text(text = "${ overallAve / evaluation.size }")
     
                         }
     
