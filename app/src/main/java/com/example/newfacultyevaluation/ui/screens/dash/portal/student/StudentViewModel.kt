@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.newfacultyevaluation.data.model.Course
 import com.example.newfacultyevaluation.data.model.FormEvaluation
 import com.example.newfacultyevaluation.data.model.Question
+import com.example.newfacultyevaluation.data.model.User
 import com.example.newfacultyevaluation.data.online.OnlineStudentRepository
 import com.example.newfacultyevaluation.data.online.OnlineStudentRepository.CourseList
+import com.example.newfacultyevaluation.data.online.OnlineUserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class StudentViewModel(private val onlineStudentRepository: OnlineStudentRepository) : ViewModel() {
+class StudentViewModel(private val onlineStudentRepository: OnlineStudentRepository, private val onlineUserRepository: OnlineUserRepository) : ViewModel() {
 
     private val _totalPoints = mutableIntStateOf(0)
     val totalPoints: State<Int> get() = _totalPoints
@@ -109,7 +111,9 @@ class StudentViewModel(private val onlineStudentRepository: OnlineStudentReposit
             onlineStudentRepository.upsertForm(formEvaluation = formEvaluation)
         }
     }
-
+    fun getFacultyID() : Flow<List<User>>{
+        return onlineUserRepository.getAllUsers()
+    }
 }
 object CompletedEvaluationsCache {
     private val completedEvaluations = mutableSetOf<Pair<String, String>>()

@@ -210,14 +210,15 @@ class OnlineStudentRepository(private val ktorClient: HttpClient = KtorClient() 
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
             setBody(MultiPartFormDataContent(formData {
-                append("type", "save_form")
+                append("type", "insert_form")
                 append("formID", formEvaluation.formID)
                 append("totalPoints", formEvaluation.totalPoints)
                 append("comments", formEvaluation.comments.toString())
                 append("studentNo", formEvaluation.studentNo)
-                append("facultyName", formEvaluation.facultyName)
+                append("facultyID", formEvaluation.facultyID)
             }))
         }
+        println("Res Form: $cl")
     }
 
     override suspend fun insertCompletedEvaluation(completedEvaluation: CompletedEvaluation) {

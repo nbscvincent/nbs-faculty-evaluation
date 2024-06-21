@@ -52,7 +52,8 @@ object FacultyAppViewModelProvider {
     val StudentFactory = viewModelFactory {
         initializer {
             StudentViewModel(
-                facultyEvaluationApp().container.onlineStudentRepository
+                facultyEvaluationApp().container.onlineStudentRepository,
+                facultyEvaluationApp().container.onlineUserRepository
             )
         }
     }

@@ -35,7 +35,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -71,8 +74,11 @@ fun FacultyPortal(
     val facultyNav = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val evaluation by viewModel.getFormEvaluation(loginViewModel.fullName).collectAsState(initial = emptyList())
     val context = LocalContext.current
-
+    var studentCount by remember {
+        mutableStateOf(0)
+    }
 
     ModalNavigationDrawer(drawerState = drawerState,
         drawerContent = {
@@ -180,62 +186,78 @@ fun FacultyPortal(
                 .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth().padding(end = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-//                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
-//                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
-//                        .collectAsState(null)
-//                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
-//                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
-
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                        Text(text = "Course Name", color = Color.White)
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        courses?.forEach {
-//
-//                            Text(
-//                                text = it.courseName,
-//
-//
-//                                )
-//                        }
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                        Text(text = "Students Answered")
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = studentAnswered.toString())
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    Column {
-                        Spacer(modifier = Modifier.height(50.dp))
-
-//                        Text(text = "Ratings")
-//                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = rating.toString())
-//
-//                        Text(text = "Overall Average: %.2f".format(overallAverage))
-
-                        Text(text = "Overall Average")
-                        Spacer(modifier = Modifier.height(40.dp))
-//                        Text(text = "%.2f".format(overallAverage))
-
-                    }
-
-
+                println("Evaluation: $evaluation")
+                evaluation.forEach { evaluation ->
+                    studentCount++
                 }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 20.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+    //                    val courses by viewModel.getCourses(loginViewModel.userID).collectAsState(null)
+    //                    val studentAnswered by viewModel.getStudentCountAnswered(loginViewModel.userID)
+    //                        .collectAsState(null)
+    //                    val rating by viewModel.getOverallPoints(loginViewModel.userID).collectAsState(null)
+    //                    val overallAverage by viewModel.getOverallAverage(loginViewModel.userID).collectAsState(initial = 0.0)
+    
+    
+                        Spacer(modifier = Modifier.weight(1f))
+                        Column {
+                            Spacer(modifier = Modifier.height(50.dp))
+    
+                            Text(text = "Course Name", color = Color.White)
+                            Spacer(modifier = Modifier.height(40.dp))
+                            evaluation.forEach { e -> Text(text = e.courseCode)}
+                            
+    
+    //                        courses?.forEach {
+    //
+    //                            Text(
+    //                                text = it.courseName,
+    //
+    //
+    //                                )
+    //                        }
+                        }
+    
+                        Spacer(modifier = Modifier.weight(1f))
+    
+                        Column {
+                            Spacer(modifier = Modifier.height(50.dp))
+    
+                            Text(text = "Students Answered")
+                            Spacer(modifier = Modifier.height(40.dp))
+                            Text(text = studentCount.toString())
+    //                        Text(text = studentAnswered.toString())
+                        }
+    
+                        Spacer(modifier = Modifier.weight(1f))
+                        Column {
+                            Spacer(modifier = Modifier.height(50.dp))
+    
+    //                        Text(text = "Ratings")
+    //                        Spacer(modifier = Modifier.height(40.dp))
+    //                        Text(text = rating.toString())
+    //
+    //                        Text(text = "Overall Average: %.2f".format(overallAverage))
+    
+                            Text(text = "Overall Average")
+                            Spacer(modifier = Modifier.height(40.dp))
+    //                        Text(text = "%.2f".format(overallAverage))
+                            var overallAve by remember {
+                                mutableStateOf(0)
+                            }
+                            evaluation.forEach { e -> 
+                                overallAve += e.totalPoints 
+                            }
+//                            Text(text = "${ overallAve / studentCount }")
+    
+                        }
+    
+                    }
+                
             }
         }
     }

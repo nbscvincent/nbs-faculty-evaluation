@@ -81,6 +81,7 @@ import com.example.newfacultyevaluation.ui.FacultyAppViewModelProvider
 import com.example.newfacultyevaluation.ui.nav.StudentNav
 import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import com.example.newfacultyevaluation.ui.theme.White
+import timber.log.Timber
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,11 +110,15 @@ fun SFaculty(
     var selectedCourse by remember {
         mutableStateOf("")
     }
-
+    var facultyID by remember {
+        mutableStateOf("")
+    }
     val scrollState = rememberScrollState()
     var facultyName by remember {
         mutableStateOf("")
     }
+
+    val facultyList by viewModel.getFacultyID().collectAsState(initial = emptyList())
     var year by remember {
         mutableStateOf("")
     }
@@ -125,7 +130,10 @@ fun SFaculty(
 
     Box(modifier = Modifier.fillMaxSize()) {
     Column(
-        modifier = Modifier.fillMaxSize().background(color = Color.White).verticalScroll(scrollState),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .verticalScroll(scrollState),
     ) {
         var showCheckBox by remember {
             mutableStateOf(false)
@@ -221,7 +229,8 @@ fun SFaculty(
                                 modifier = Modifier
                                     .padding()
                                     .fillMaxWidth()
-                                    .height(190.dp).background(color = Color.White)
+                                    .height(190.dp)
+                                    .background(color = Color.White)
 
                             ) {
                                 if (showCheckBox) {
@@ -258,7 +267,9 @@ fun SFaculty(
                                     shape = RoundedCornerShape(4.dp),
                                     ) {
                                     Column(
-                                        modifier = Modifier.background(Color.White).fillMaxWidth()
+                                        modifier = Modifier
+                                            .background(Color.White)
+                                            .fillMaxWidth()
                                     ) {
 
                                         Text(
@@ -266,7 +277,7 @@ fun SFaculty(
                                             modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 10.dp),
                                             fontWeight = FontWeight.Bold,
                                             textAlign = TextAlign.Left,
-                                            fontSize = 20.sp,
+                                            fontSize = 16.sp,
                                             color = Color.Black
                                         )
 
@@ -275,7 +286,7 @@ fun SFaculty(
                                             modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                             fontWeight = FontWeight.Light,
                                             textAlign = TextAlign.Center,
-                                            fontSize = 20.sp,
+                                            fontSize = 16.sp,
                                             color = Color.Black
                                         )
 
@@ -290,7 +301,7 @@ fun SFaculty(
                                             textAlign = TextAlign.Left,
                                             modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 20.sp,
+                                            fontSize = 16.sp,
                                             color = Color.Black
                                         )
 
@@ -302,6 +313,7 @@ fun SFaculty(
                                                 if (!showCheckBox) {
                                                     openDataPrivacy = true
                                                     selectedCourse = course.courseCode
+                                                    facultyID = course.facultyName
                                                 }
                                             },
                                             modifier = Modifier
@@ -316,7 +328,9 @@ fun SFaculty(
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.Center,
-                                        modifier = Modifier.fillMaxSize().background(Color.DarkGray)
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .background(Color.DarkGray)
                                     ) {
 
 
@@ -383,7 +397,7 @@ fun SFaculty(
                         onClick = {
                             viewModel.updateFormID()
                             studentNavController.popBackStack()
-                            studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse/${facultyName}")
+                            studentNavController.navigate(StudentNav.FORM.name+"/$selectedCourse/${facultyID}")
                         },
                         enabled = checked
                     ){

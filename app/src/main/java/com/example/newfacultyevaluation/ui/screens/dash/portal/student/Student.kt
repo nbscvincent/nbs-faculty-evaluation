@@ -60,7 +60,7 @@ import com.example.newfacultyevaluation.ui.screens.auth.LoginViewModel
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentPortal(
@@ -208,17 +208,22 @@ fun StudentPortal(
                     Courses(navController = studentNav)
                 }
                 composable(
-                    route = StudentNav.FORM.name+"/{course}/{facultyName}",
+                    route = StudentNav.FORM.name+"/{course}/{facultyID}",
                     arguments = listOf(
                         navArgument("course"){ type = NavType.StringType},
-                        navArgument("facultyName"){ type = NavType.StringType}
+                        navArgument("facultyID"){ type = NavType.StringType}
                     )
-                ) {nbe ->
-                    nbe.arguments?.getString("course")?.let { course ->
-                        nbe.arguments?.getString("facultyName")?.let {facultyName ->
-                            Form(navController = studentNav, viewModel, loginViewModel, course, facultyName)
-                        }
-                    }
+                ) { nbe ->
+
+
+                        Form(
+                            navController = studentNav,
+                            viewModel = viewModel,
+                            loginViewModel = loginViewModel,
+                            selectedCourse = nbe.arguments?.getString("course")!!,
+                            facultyID = nbe.arguments?.getString("facultyID")!!
+                        )
+
 
                 }
 

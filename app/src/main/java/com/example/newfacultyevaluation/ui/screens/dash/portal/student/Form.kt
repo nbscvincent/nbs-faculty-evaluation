@@ -58,9 +58,11 @@ fun Form(
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
     selectedCourse: String,
-    facultyName: String
+    facultyID: String
 ) {
     println("sjhdakjdsha ${viewModel.formID.value}")
+    println("Faculty ID QForm: $facultyID $selectedCourse")
+
 
     var overallPoints by remember {
         mutableIntStateOf(0)
@@ -73,14 +75,15 @@ fun Form(
     BackHandler {
         viewModel.resetAnsweredQuestions()
         navController.popBackStack()
-        navController.navigate(StudentNav.FORM.name+"/$selectedCourse/$facultyName")
+        navController.navigate(StudentNav.FORM.name+"/$selectedCourse/$facultyID")
     }
 
     Column(
         modifier = Modifier
             .padding(20.dp),
     ) {
-        QuestionCard(navController, viewModel, loginViewModel, selectedCourse, facultyName)
+        println("SLC: $selectedCourse")
+        QuestionCard(navController, viewModel, loginViewModel, selectedCourse, facultyID)
     }
 }
 
@@ -91,16 +94,20 @@ fun QuestionCard(
     viewModel: StudentViewModel,
     loginViewModel: LoginViewModel,
     selectedCourse: String,
-    facultyName: String
+    facultyID: String
 ) {
+    var feedback by remember {
+        mutableStateOf("")
+    }
     val points = listOf(4,3,2,1)
 //    val faculty = viewModel.getStudentFaculty(loginViewModel.userID, selectedCourse).collectAsState(null)
     val feedbacks by remember {
-        mutableStateOf(mutableListOf(""))
+        mutableStateOf("")
     }
+    println("Faculty ID QCard: $facultyID")
 
     val questions by viewModel.getAllQuestions().collectAsState(initial = null)
-    Text(text = "Evaluation for Mr./Ms. $facultyName".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+    Text(text = "Evaluation for Instructor $facultyID".uppercase(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.Bold, fontSize = 15.sp)
     Text(text = "Answered Questions: ${viewModel.answeredQuestions.value}")
     Text(text = "Total Points: ${viewModel.totalPoints.value}")
     Spacer(modifier = Modifier.height(2.dp))
@@ -114,11 +121,11 @@ fun QuestionCard(
 
 
     LazyColumn(
-        modifier = Modifier.height(500.dp),
+        modifier = Modifier.height(400.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(questions.orEmpty()) { question ->
-            if (question.id.toInt() < 17) {
+            if (question.id.toInt() < 18) {
                 var selectedPoint by rememberSaveable {
                     mutableIntStateOf(0)
                 }
@@ -162,9 +169,7 @@ fun QuestionCard(
                     }
                 }
             } else {
-                var feedback by remember {
-                    mutableStateOf("")
-                }
+
                 Card(
                     modifier = Modifier.padding(vertical = 10.dp)
                 ) {
@@ -182,7 +187,6 @@ fun QuestionCard(
                         )
                     }
                 }
-                feedbacks.add(feedback)
             }
         }
     }
@@ -203,10 +207,11 @@ fun QuestionCard(
                 viewModel.insertFormEvaluation(
                     FormEvaluation(
                         formID = formID.toString(),
+                        comments = feedback,
+                        facultyID = facultyID,
+                        studentNo = loginViewModel.userID,
                         totalPoints = viewModel.totalPoints.value,
-                        comments = feedbacks,
-                        facultyName = facultyName,
-                        studentNo = loginViewModel.userID
+                        courseCode = selectedCourse
                     ))
                 // Mark the evaluation as completed
                 viewModel.markEvaluationAsCompleted(selectedCourse, loginViewModel.userID)

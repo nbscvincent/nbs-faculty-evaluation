@@ -22,13 +22,13 @@ import kotlinx.coroutines.flow.flow
 
 class OnlineFacultyRepository(private val ktorClient: HttpClient = KtorClient()) : FacultyRepo {
     @OptIn(InternalAPI::class)
-    override fun getFormEvaluation(facultyID : String): Flow<List<FormEvaluation>> = flow {
+    override fun getFormEvaluation(facultyName : String): Flow<List<FormEvaluation>> = flow {
         try {
             val response: HttpResponse = ktorClient.post(HttpRoutes.login) {
                 contentType(ContentType.Application.Json)
                 body = MultiPartFormDataContent(formData {
                     append("type", "get_faculty_evaluation")
-                    append("facultyID", facultyID)
+                    append("facultyName", facultyName)
                 })
             }
             println("Res FEval: ${response.bodyAsText()}")
