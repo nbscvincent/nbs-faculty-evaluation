@@ -1,5 +1,7 @@
 package com.example.newfacultyevaluation.ui.screens.dash.portal.student
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
@@ -92,13 +94,14 @@ class StudentViewModel(private val onlineRepository: OnlineStudentRepository) : 
 //        }
 //    }
 
-    fun markEvaluationAsCompleted(courseID: String, studentID: String) {
+    fun markEvaluationAsCompleted(courseID: String, studentID: String, context: Context) {
         CompletedEvaluationsCache.markEvaluationAsCompleted(courseID, studentID)
+        EvaluationSharedPreferences.markEvaluationCompleted(context, courseID, studentID)
     }
 
-    // Function to check if an evaluation is completed
-    fun isEvaluationCompleted(courseID: String, studentID: String): Boolean {
-        return CompletedEvaluationsCache.isEvaluationCompleted(courseID, studentID)
+    fun isEvaluationCompleted(courseID: String, studentID: String, context: Context): Boolean {
+        return CompletedEvaluationsCache.isEvaluationCompleted(courseID, studentID) ||
+                EvaluationSharedPreferences.isEvaluationCompleted(context, courseID, studentID)
     }
 
 }
@@ -112,4 +115,26 @@ object CompletedEvaluationsCache {
     fun isEvaluationCompleted(courseID: String, studentID: String): Boolean {
         return completedEvaluations.contains(courseID to studentID)
     }
+}
+
+
+object EvaluationSharedPreferences {
+
+    private const val EVAL_PREFS_NAME = "evaluation_prefs"
+    private const val EVAL_PREFIX = "eval_"
+
+    private fun getPrefs(context: Context): SharedPreferences {
+        return context.getSharedPreferences(EVAL_PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun markEvaluationCompleted(context: Context, courseID: String, studentID: String) {
+        val prefs = getPrefs(context)
+        prefs.edit().putBoolean("$EVAL_PREFIX$courseID-$studentID", true).apply()
+    }
+
+    fun isEvaluationCompleted(context: Context, courseID: String, studentID: String): Boolean {
+        val prefs = getPrefs(context)
+        return prefs.getBoolean("$EVAL_PREFIX$courseID-$studentID", false)
+    }
+
 }
