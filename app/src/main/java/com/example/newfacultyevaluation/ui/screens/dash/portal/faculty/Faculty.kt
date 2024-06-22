@@ -233,18 +233,18 @@ fun FacultyPortal(
     
 //                        Spacer(modifier = Modifier.weight(1f))
     
-                        Column(
-                            modifier = Modifier.weight(1f)
-                        ) {
-    
-                            Text(text = "Students")
-                            result.values.forEach {
-                                Text(text = it)
-                            }
-//                            viewModel.countStudentsAnswered(evaluation)
-//                            Text(text = viewModel.count.value.toString())
-    //                        Text(text = studentAnswered.toString())
-                        }
+//                        Column(
+//                            modifier = Modifier.weight(1f)
+//                        ) {
+//
+//                            Text(text = "Students")
+//                            result.values.forEach {
+//                                Text(text = it)
+//                            }
+////                            viewModel.countStudentsAnswered(evaluation)
+////                            Text(text = viewModel.count.value.toString())
+//    //                        Text(text = studentAnswered.toString())
+//                        }
     
 //                        Spacer(modifier = Modifier.weight(1f))
                         Column(
