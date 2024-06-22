@@ -179,31 +179,31 @@ fun AdminPortal(
                         Text("Add User", fontSize = 20.sp , color = Color.Black)
                     }
 
-                    Row(
-                        modifier = Modifier
-                            .height(50.dp)
-                            .clickable {
-                                adminNavController.popBackStack()
-                                adminNavController.navigate(AdminNav.AddCourse.name)
-                                scope.launch { // Launch a coroutine scope
-                                    drawerState.close() // Close the drawer after navigation
-                                }
-                            }
-                            .fillMaxWidth()
-                        ,
-                        horizontalArrangement = Arrangement.spacedBy(30.dp ,Alignment.Start),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Spacer(Modifier.width(5.dp))
-                        Icon(
-                            imageVector = Icons.Rounded.Bookmark,
-                            contentDescription = "Add Course",
-                            modifier = Modifier
-                                .size(25.dp),
-                            tint = Color.Black
-                        )
-                        Text("Add Course", fontSize = 20.sp , color = Color.Black)
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .height(50.dp)
+//                            .clickable {
+//                                adminNavController.popBackStack()
+//                                adminNavController.navigate(AdminNav.AddCourse.name)
+//                                scope.launch { // Launch a coroutine scope
+//                                    drawerState.close() // Close the drawer after navigation
+//                                }
+//                            }
+//                            .fillMaxWidth()
+//                        ,
+//                        horizontalArrangement = Arrangement.spacedBy(30.dp ,Alignment.Start),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ){
+//                        Spacer(Modifier.width(5.dp))
+//                        Icon(
+//                            imageVector = Icons.Rounded.Bookmark,
+//                            contentDescription = "Add Course",
+//                            modifier = Modifier
+//                                .size(25.dp),
+//                            tint = Color.Black
+//                        )
+//                        Text("Add Course", fontSize = 20.sp , color = Color.Black)
+//                    }
 
                     Row(
                         modifier = Modifier
@@ -307,9 +307,9 @@ fun AdminPortal(
                 composable(route = AdminNav.AddUser.name){
                     AddUser(adminNavController,viewModel)
                 }
-                composable(route = AdminNav.AddCourse.name){
-                    AddCourses(adminNavController,viewModel)
-                }
+//                composable(route = AdminNav.AddCourse.name){
+//                    AddCourses(adminNavController,viewModel)
+//                }
                 composable(route = AdminNav.EditForm.name){
                     EditForm(adminNavController)
                 }
